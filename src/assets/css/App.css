@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+option {
+  color: black;
+}
+
+.swal-button-ok {
+  background-color: #c43030 !important;
+}
+
+.light-mode .p-datatable .p-datatable-tbody > tr > td {
+  background-color: #F2F2F2; /* Color de fondo para el modo claro */
+  color: #333; /* Color del texto para el modo claro */
+}
+
+.dark-mode .p-datatable .p-datatable-tbody > tr > td {
+  background-color: #333; /* Color de fondo para el modo oscuro */
+  color: #F2F2F2; /* Color del texto para el modo oscuro */
+}
