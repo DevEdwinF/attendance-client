@@ -1,14 +1,22 @@
 
 .attendance-register-container{
     display: flex;
-    justify-content: end;
-    align-items: center;
-    padding-right: 10%;
+    justify-content: center;
+    align-items: end;
+    /* padding-right: 10%; */
     height: 100vh;
     width: 100vw;
     background-image: url('../../../assets/img/attendance/bg-desktop.png');
     background-size: cover;
     background-position: center;
+}
+
+.attendance-register-content{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 90vw;
+	/* border: 5px solid purple; */
 }
 .form{
     background-color: white;
@@ -20,14 +28,8 @@
 .main{
 	width: 100%;
 	height: 580px;
-	background-color: rgb(184, 12, 12);
     text-align: center;
 	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-	border-radius: 10px;
-    -webkit-box-shadow: 10px 10px 36px 5px rgba(0,0,0,0.16);
-    -moz-box-shadow: 10px 10px 36px 5px rgba(0,0,0,0.16);
-    box-shadow: 10px 10px 36px 5px rgba(0,0,0,0.16);
 }
 
 .hi-tittle{
@@ -39,6 +41,20 @@
     margin-top: -30px !important;
     font-size: 1.8rem;
     color: rgb(184, 12, 12);
+}
+
+.cam-content{
+	padding-left:6em ;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* border: 1px solid green; */
+	flex-direction: column;
+}
+
+.cam{
+	border-radius: 20px;
+	width: 350px;
 }
 
 
@@ -120,10 +136,10 @@
     color: #fff !important;
 }
 .login{
-	height: 600px;
+	height: 1000px;
 	background-color: rgb(184, 12, 12);
 	border-radius: 60% / 10%;
-	transform: translateY(0px);
+	transform: translateY(-19em);
 	transition: .8s ease-in-out;
 }
 .login label{
@@ -150,10 +166,10 @@
 }
 
 #chk:checked ~ .login{
-	transform: translateY(-370px);
+	transform: translateY(4em);
 }
 #chk:checked ~ .login label{
-	transform: scale(1);	
+	transform: scale(.8);	
 }
 #chk:checked ~ .signup label{
 	transform: scale(.6);

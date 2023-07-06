@@ -18,9 +18,11 @@ export const AttendanceService = {
       throw new Error("Error al validar");
     }
   },
-  register: async (data: { document: number; state: string }) => {
+  register: async (data: { document: number; state: string; photo: string }) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
+      console.log(data)
+  
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -40,6 +42,7 @@ export const AttendanceService = {
       console.log(error);
     }
   },
+  
   getAllAttendance: async () => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/all`);
@@ -50,4 +53,3 @@ export const AttendanceService = {
     }
   }
 };
-

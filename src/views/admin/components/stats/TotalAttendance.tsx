@@ -16,18 +16,18 @@ const TotalAttendance = () => {
             console.error(error);
         }
     }
-    // useEffect(() => {
-    //     getStaticRc();
-    // })
-
     useEffect(() => {
         getStaticRc();
-        const intervalId = setInterval(() => {
-            getStaticRc();
-        }, 5000); 
+    })
 
-        return () => clearInterval(intervalId);
-    }, []);
+    // useEffect(() => {
+    //     getStaticRc();
+    //     const intervalId = setInterval(() => {
+    //         getStaticRc();
+    //     }, 5000); 
+
+    //     return () => clearInterval(intervalId);
+    // }, []);
 
     return (
         <Card /* style={{width:"400px", display: "flex", justifyContent: "flex-end"}} */>
