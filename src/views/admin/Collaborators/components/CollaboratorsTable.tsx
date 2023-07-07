@@ -10,8 +10,7 @@ interface Colaborator {
     document: number;
     name: string;
     email: string;
-    arrival: string;
-    departure: string;
+    position: string;
     date: string;
 }
 
@@ -20,7 +19,7 @@ const CollaboratorTable = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await CollaboratorService.getAllAttendance()
+            const response = await CollaboratorService.getAllCollaborators()
             setCollaborators(response);
         };
         fetchData();
@@ -39,9 +38,8 @@ const CollaboratorTable = () => {
                 <Column field="document" header="Documento"></Column>
                 <Column field="name" header="Nombre"></Column>
                 <Column field="email" header="Correo"></Column>
-                <Column field="arrival" header="Llegada"></Column>
-                <Column field="departure" header="Salida"></Column>
-                <Column field="date" header="Fecha de creación" body={(rowData) => formatDate(rowData.date)}></Column>
+                <Column field="position" header="Cargo"></Column>
+                {/* <Column field="date" header="Fecha de creación" body={(rowData) => formatDate(rowData.date)}></Column> */}
             </DataTable>
         </div>
     );

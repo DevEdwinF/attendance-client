@@ -13,12 +13,14 @@ import Webcam from 'react-webcam';
 interface FormValues {
   document: number;
   state: string;
+  location: string;
   photo: string;
 }
 
 const initialValues: FormValues = {
   document: null,
   state: '',
+  location: '',
   photo: ''
 };
 
@@ -37,11 +39,11 @@ const MyForm = () => {
       });
     } else {
       const imageSrc = webcamRef.current.getScreenshot();
-      const { document, state } = values;
+      const { document, state, location } = values;
       const photo = imageSrc as string;
 
       await AttendanceService.validate(document);
-      await AttendanceService.register({ document, state, photo });
+      await AttendanceService.register({ document, state, location, photo });
     }
   };
 
@@ -90,6 +92,12 @@ const MyForm = () => {
                     <option value="">Seleccionar...</option>
                     <option value="arrival">Llegada</option>
                     <option value="departure">Salida</option>
+                  </Field>
+                  <label className="label" htmlFor="location">¿Dónde te encuentras?</label>
+                  <Field as="select" id="location" name="location" style={{ width: "80%", border: "1px solid #b3b3b3", borderRadius: "5px", padding: "5px" }}>
+                    <option value="">Seleccionar...</option>
+                    <option value="arrival">Casa</option>
+                    <option value="departure">Oficina</option>
                   </Field>
                   <ErrorMessage name="state" component="div" />
 

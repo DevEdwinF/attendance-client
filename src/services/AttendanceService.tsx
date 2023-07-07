@@ -18,7 +18,7 @@ export const AttendanceService = {
       throw new Error("Error al validar");
     }
   },
-  register: async (data: { document: number; state: string; photo: string }) => {
+  register: async (data: { document: number; state: string; location:string; photo: string }) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
       console.log(data)

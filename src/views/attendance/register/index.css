@@ -26,10 +26,14 @@
     justify-content: center;
 }
 .main{
+	padding-top: 30%;
 	width: 100%;
-	height: 580px;
+	height: 100vh;
     text-align: center;
+	justify-content: center;
+	align-items: center;
 	overflow: hidden;
+	/* border: 2px solid blue; */
 }
 
 .hi-tittle{
@@ -44,7 +48,7 @@
 }
 
 .cam-content{
-	padding-left:6em ;
+	padding-left:16em ;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -139,7 +143,7 @@
 	height: 1000px;
 	background-color: rgb(184, 12, 12);
 	border-radius: 60% / 10%;
-	transform: translateY(-19em);
+	transform: translateY(13em);
 	transition: .8s ease-in-out;
 }
 .login label{
@@ -166,7 +170,7 @@
 }
 
 #chk:checked ~ .login{
-	transform: translateY(4em);
+	transform: translateY(-21em);
 }
 #chk:checked ~ .login label{
 	transform: scale(.8);	
