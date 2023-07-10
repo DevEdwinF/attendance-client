@@ -12,5 +12,14 @@ export const CollaboratorService = {
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
+  },
+  getCollaboratorSchedule: async(document: any) => {
+    try {
+      const response: AxiosResponse = await axios.get(`${baseUrl}/find/${document}`)
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      throw new Error('Error al obtener la asistencia');
+    }
   }
 };

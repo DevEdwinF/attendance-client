@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: end;
     /* padding-right: 10%; */
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     background-image: url('../../../assets/img/attendance/bg-desktop.png');
     background-size: cover;
@@ -143,7 +143,7 @@
 	height: 1000px;
 	background-color: rgb(184, 12, 12);
 	border-radius: 60% / 10%;
-	transform: translateY(13em);
+	transform: translateY(11em);
 	transition: .8s ease-in-out;
 }
 .login label{
@@ -179,5 +179,16 @@
 	transform: scale(.6);
 }
 
+
+@media (max-width: 1200px) {
+	.attendance-register-content{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 90vw;
+		border: 5px solid rgb(0, 94, 128);
+	}
+	
+}
 
 

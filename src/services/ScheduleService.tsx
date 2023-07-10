@@ -13,7 +13,15 @@ export const ScheduleService = {
     },
     saveSchedule: async (schedule: any) =>{
         try {
-            const response = await axios.post(`${baseUrl}/save`)
+            const response = await axios.post(`${baseUrl}/save`, schedule)
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    UpdateSchedule: async (id: any) =>{
+        try {
+            const response = await axios.post(`${baseUrl}/update${id}`)
             return response
         } catch (error) {
             console.log(error)
