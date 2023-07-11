@@ -85,7 +85,7 @@ const ScheduleManage = () => {
     const save = () => {
         ;
         console.log(schedule)
-        ScheduleService.saveSchedule(schedule).then(res => {
+        ScheduleService.assignSchedule(schedule).then(res => {
             setSchedule({})
             setScheduleDialog(false);
             setSaveSucces(!saveSucces);

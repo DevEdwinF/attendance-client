@@ -20,3 +20,13 @@ option {
   background-color: #333; /* Color de fondo para el modo oscuro */
   color: #F2F2F2; /* Color del texto para el modo oscuro */
 }
+
+.custom-save-button {
+  background-color: #A3BD31;
+  /* Otros estilos personalizados para el botón de guardar */
+}
+
+.custom-cancel-button {
+  background-color: #C91212;
+  /* Otros estilos personalizados para el botón de cancelar */
+}

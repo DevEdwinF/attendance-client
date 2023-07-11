@@ -1,38 +1,36 @@
-import axios from "axios"
+import axios from 'axios';
+import { Collaborator, Schedule } from '../views/admin/Collaborators/components/CollaboratorsTable';
 
-const baseUrl = 'http://localhost:8080/api/schedule'
+const baseUrl = 'http://localhost:8080/api/schedule';
 
 export const ScheduleService = {
     getAllSchedule: async () => {
         try {
-            const response = await axios.get(`${baseUrl}/all`)
-            return response
+            const response = await axios.get(`${baseUrl}/all`);
+            return response;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     },
-    saveSchedule: async (schedule: any) =>{
+    assignSchedule: async (schedules: Schedule[]) => {
+        const filteredSchedules = schedules.filter(
+            schedule => schedule.arrival_time !== '' || schedule.departure_time !== ''
+        );
         try {
-            const response = await axios.post(`${baseUrl}/save`, schedule)
-            return response
+            const response = await axios.post(`${baseUrl}/assign`, filteredSchedules);
+            return response;
         } catch (error) {
-            console.log(error)
+            throw error
         }
     },
-    UpdateSchedule: async (id: any) =>{
+    deleteSchedule: async (id: number) => {
         try {
-            const response = await axios.post(`${baseUrl}/update${id}`)
-            return response
+            const response = await axios.delete(`${baseUrl}/delete/${id}`);
+            return response;
         } catch (error) {
-            console.log(error)
-        }
-    },
-    deleteSchedule:async (id: number) => {
-        try {
-            const response = await axios.delete
-            return response
-        } catch (error) {
-            console.log("este es el error de delete", error)
+            throw error
         }
     }
-}
+};
+
+export default ScheduleService;

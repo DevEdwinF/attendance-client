@@ -21,18 +21,9 @@ export const AttendanceService = {
   register: async (data: { document: number; state: string; location:string; photo: string }) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
-      console.log(data)
-  
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Registro exitoso',
-        showConfirmButton: false,
-        timer: 1500,
-        customClass: {
-          confirmButton: 'swal-button-ok'
-        }
-      });
+      console.log(data);
+      showSuccessAlert();
+      return response.data;
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
@@ -40,9 +31,9 @@ export const AttendanceService = {
         text: error.response?.data?.message
       });
       console.log(error);
+      throw new Error("Verifica si el documento está escrito correctamente");
     }
   },
-  
   getAllAttendance: async () => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/all`);
@@ -51,5 +42,34 @@ export const AttendanceService = {
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
+  },
+  saveTranslated: async (document: any) =>{
+    try {
+      const response: AxiosResponse = await axios.post(`${baseUrl}/register/translated`, document);
+      console.log(response);
+      showSuccessAlert();
+      return response.data;
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error al registrar translado'
+      });
+      console.log(error);
+      throw new Error('Error al obtener la asistencia');
+    }
   }
+};
+
+const showSuccessAlert = () => {
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'Registro exitoso',
+    showConfirmButton: false,
+    timer: 1500,
+    customClass: {
+      confirmButton: 'swal-button-ok'
+    }
+  });
 };

@@ -1,7 +1,10 @@
 import axios, { AxiosResponse } from "axios";
+import { Api } from '../config/Api'
 import Swal from "sweetalert2";
 
-const baseUrl = 'http://localhost:8080/api/collaborator';
+const endPoint = '/api/collaborator'
+const baseUrl = Api.url + endPoint;
+
 
 export const CollaboratorService = {
   getAllCollaborators: async () => {

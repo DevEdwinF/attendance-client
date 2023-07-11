@@ -1,17 +1,16 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRef, useState } from 'react';
 import { AttendanceService } from 'services/AttendanceService';
-import Card from 'components/card/Card';
-import background from 'assets/img/attendance/bg-desktop.png'
-import './index.css';
-import { useHistory } from 'react-router-dom';
-
 import Swal from 'sweetalert2';
 import Clock from 'util/ClockUtil';
 import Webcam from 'react-webcam';
-
+import { Dialog } from 'primereact/dialog';
+import TranslatedRegister from '../components/TranslatedRegister';
+import { useHistory } from 'react-router-dom';
+import { History } from 'history';
+import './index.css'
 interface FormValues {
-  document: number;
+  document: number | null;
   state: string;
   location: string;
   photo: string;
@@ -21,21 +20,30 @@ const initialValues: FormValues = {
   document: null,
   state: '',
   location: '',
-  photo: ''
+  photo: '',
 };
 
 const MyForm = () => {
   const webcamRef = useRef(null);
-  const [photo, setPhoto] = useState('');
+  const [translated, setTranslated] = useState(false);
+  const history: History = useHistory();
 
-  const history = useHistory();
+  const translatedVisible = () => {
+    setTranslated(true);
+  };
+
+  const handleCloseDialog = () => {
+    setTranslated(false); // Establecemos translated en false para cerrar el diálogo
+    console.log('handleCloseDialog is being called');
+    console.log(`translated state after handleCloseDialog: ${translated}`);
+  };
 
   const handleSubmit = async (values: FormValues) => {
     if (values.document === null || values.state === '') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Todos los campos son obligatorios!'
+        text: 'Todos los campos son obligatorios!',
       });
     } else {
       const imageSrc = webcamRef.current.getScreenshot();
@@ -44,75 +52,119 @@ const MyForm = () => {
 
       await AttendanceService.validate(document);
       await AttendanceService.register({ document, state, location, photo });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'El registro de translado se ha guardado correctamente.',
+      }).then(() => {
+        handleCloseDialog();
+        window.close();
+      });
     }
   };
-
-
-
 
   const handleLogin = () => {
     history.push('/admin/default');
   };
 
   return (
-    <section className='attendance-register-container'>
-      <div className='attendance-register-content'>
-        <div className='cam-content'>
-         
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              className='cam'
-              
-            />
-          
-
+    <section className="attendance-register-container">
+      <div className="attendance-register-content">
+        <div className="cam-content">
+          <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" className="cam" />
           <Clock />
         </div>
-        <div className='form'>
+        <div className="form">
           <div className="main">
             <input type="checkbox" id="chk" aria-hidden="true" />
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
               <Form>
-
                 <div className="signup">
-                  <label className='label title' htmlFor="chk" aria-hidden="true">
-                    <h2 className='hi-tittle'>Hola,</h2>
+                  <label className="label title" htmlFor="chk" aria-hidden="true">
+                    <h2 className="hi-tittle">Hola,</h2>
                   </label>
-                  <h2 className='hi-msg'>Bienvenido(a) de nuevo</h2>
-
-
-                  <label className="label" htmlFor="document">Documento:</label>
-                  <Field type="number" id="document" name="document" placeholder="Ingresa aquí tu documento" style={{ width: "80%", border: "1px solid #b3b3b3", borderRadius: "5px", padding: "5px" }} />
+                  <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
+                  <label className="label" htmlFor="document">
+                    Documento:
+                  </label>
+                  <Field
+                    type="number"
+                    id="document"
+                    name="document"
+                    placeholder="Ingresa aquí tu documento"
+                    style={{
+                      width: '80%',
+                      border: '1px solid #b3b3b3',
+                      borderRadius: '5px',
+                      padding: '5px',
+                    }}
+                  />
                   <ErrorMessage name="document" component="div" />
 
-                  <label className="label" htmlFor="state">¿Qué vas a registrar?</label>
-                  <Field as="select" id="state" name="state" style={{ width: "80%", border: "1px solid #b3b3b3", borderRadius: "5px", padding: "5px" }}>
+                  <label className="label" htmlFor="state">
+                    ¿Qué vas a registrar?
+                  </label>
+                  <Field
+                    as="select"
+                    id="state"
+                    name="state"
+                    style={{
+                      width: '80%',
+                      border: '1px solid #b3b3b3',
+                      borderRadius: '5px',
+                      padding: '5px',
+                    }}
+                  >
                     <option value="">Seleccionar...</option>
                     <option value="arrival">Llegada</option>
                     <option value="departure">Salida</option>
                   </Field>
-                  <label className="label" htmlFor="location">¿Dónde te encuentras?</label>
-                  <Field as="select" id="location" name="location" style={{ width: "80%", border: "1px solid #b3b3b3", borderRadius: "5px", padding: "5px" }}>
+                  <label className="label" htmlFor="location">
+                    ¿Dónde te encuentras?
+                  </label>
+                  <Field
+                    as="select"
+                    id="location"
+                    name="location"
+                    style={{
+                      width: '80%',
+                      border: '1px solid #b3b3b3',
+                      borderRadius: '5px',
+                      padding: '5px',
+                    }}
+                  >
                     <option value="">Seleccionar...</option>
                     <option value="arrival">Casa</option>
                     <option value="departure">Oficina</option>
                   </Field>
                   <ErrorMessage name="state" component="div" />
-
-
-
-                  <button className="button-attendance" type="submit">Enviar registro</button>
+                  <button className="button-attendance" type="submit">
+                    Enviar registro
+                  </button>
                 </div>
               </Form>
             </Formik>
-
+            <button className="button-attendance" onClick={translatedVisible}>
+              Translado
+            </button>
+            <Dialog
+              header="Registro de translado"
+              visible={translated}
+              style={{ width: '50vw' }}
+              onHide={handleCloseDialog}
+            >
+              <TranslatedRegister onClose={handleCloseDialog} />
+            </Dialog>
             <div className="login">
-              <label className="label login-tittle" htmlFor="chk" aria-hidden="true">Ingreso <br />Administrador</label>
+              <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
+                Ingreso <br />Administrador
+              </label>
               <input className="input input-login" type="document" name="document" placeholder="Documento" />
               <input className="input input-login" type="password" name="pswd" placeholder="Contraseña" />
-              <button className="button btn-login" onClick={handleLogin}>Entrar</button>
+              <button className="button btn-login" onClick={handleLogin}>
+                Entrar
+              </button>
             </div>
           </div>
         </div>
