@@ -6,12 +6,12 @@ interface FormValues {
     document: number;
 }
 
-interface Props {
-    onClose: () => void;
+const initialValues: FormValues = {
+    document: null,
 }
 
-const TranslatedRegister: React.FC<Props> = ({ onClose }) => {
-    const handleSubmit = async (values: FormValues, formikHelpers: any) => {
+const TranslatedRegister  = () => {
+    const handleSubmitTranslated = async (values: FormValues, formikHelpers: any) => {
         const { resetForm } = formikHelpers;
 
         if (values.document === 0) {
@@ -34,7 +34,6 @@ const TranslatedRegister: React.FC<Props> = ({ onClose }) => {
             });
 
             resetForm();
-            onClose();
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -45,7 +44,7 @@ const TranslatedRegister: React.FC<Props> = ({ onClose }) => {
     };
     return (
         <div>
-            <Formik initialValues={{ document: 0 }} onSubmit={handleSubmit}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmitTranslated}>
                 <Form>
                     <label className="label" htmlFor="document">
                         Documento:

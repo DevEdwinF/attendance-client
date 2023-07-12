@@ -8,7 +8,8 @@ import { Dialog } from 'primereact/dialog';
 import TranslatedRegister from '../components/TranslatedRegister';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
-import './index.css'
+import './index.css';
+
 interface FormValues {
   document: number | null;
   state: string;
@@ -28,12 +29,8 @@ const MyForm = () => {
   const [translated, setTranslated] = useState(false);
   const history: History = useHistory();
 
-  const translatedVisible = () => {
-    setTranslated(true);
-  };
-
   const handleCloseDialog = () => {
-    setTranslated(false); // Establecemos translated en false para cerrar el diálogo
+    setTranslated(false);
     console.log('handleCloseDialog is being called');
     console.log(`translated state after handleCloseDialog: ${translated}`);
   };
@@ -66,6 +63,10 @@ const MyForm = () => {
 
   const handleLogin = () => {
     history.push('/admin/default');
+  };
+
+  const handleTranslatedClick = () => {
+    setTranslated(true);
   };
 
   return (
@@ -142,22 +143,26 @@ const MyForm = () => {
                   <button className="button-attendance" type="submit">
                     Enviar registro
                   </button>
+                  <label className="btn-translated" htmlFor="chktranslated" aria-hidden="true" onClick={handleTranslatedClick}>
+                    Translado
+                  </label>
                 </div>
               </Form>
             </Formik>
-            <button className="button-attendance" onClick={translatedVisible}>
-              Translado
-            </button>
-            <Dialog
-              header="Registro de translado"
-              visible={translated}
-              style={{ width: '50vw' }}
-              onHide={handleCloseDialog}
-            >
-              <TranslatedRegister onClose={handleCloseDialog} />
-            </Dialog>
             <div className="login">
-              <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
+            <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
+                Translados
+              </label>
+                 <TranslatedRegister/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={`translated${translated ? ' translated-open' : ''}`}>
+        <label htmlFor="chk-translated" aria-hidden="true" onClick={handleCloseDialog}>
+          Cancelar
+        </label>
+        <label>
                 Ingreso <br />Administrador
               </label>
               <input className="input input-login" type="document" name="document" placeholder="Documento" />
@@ -165,9 +170,6 @@ const MyForm = () => {
               <button className="button btn-login" onClick={handleLogin}>
                 Entrar
               </button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

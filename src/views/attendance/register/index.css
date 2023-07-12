@@ -1,54 +1,59 @@
-
-.attendance-register-container{
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    /* padding-right: 10%; */
-    min-height: 100vh;
-    width: 100vw;
-    background-image: url('../../../assets/img/attendance/bg-desktop.png');
-    background-size: cover;
-    background-position: center;
+.attendance-register-container {
+	display: flex;
+	justify-content: center;
+	align-items: end;
+	/* padding-right: 10%; */
+	min-height: 100vh;
+	width: 100vw;
+	background-image: url('../../../assets/img/attendance/bg-desktop.png');
+	background-size: cover;
+	background-position: center;
 }
 
-.attendance-register-content{
+.attendance-register-content {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 90vw;
 	/* border: 5px solid purple; */
 }
-.form{
-    background-color: white;
-    width: 450px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+.form {
+	background-color: transparent;
+	width: 450px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* border: 1px solid purple; */
+	z-index: 1;
+	/* Agrega una capa superior para evitar superposiciones */
 }
-.main{
+
+.main {
 	padding-top: 30%;
 	width: 100%;
 	height: 100vh;
-    text-align: center;
+	text-align: center;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
 	/* border: 2px solid blue; */
 }
 
-.hi-tittle{
-    font-size: 5rem;
-    color: rgb(184, 12, 12);
-    margin-top: 20px;
-}
-.hi-msg{
-    margin-top: -30px !important;
-    font-size: 1.8rem;
-    color: rgb(184, 12, 12);
+.hi-tittle {
+	font-size: 5rem;
+	color: rgb(184, 12, 12);
+	margin-top: 20px;
 }
 
-.cam-content{
-	padding-left:16em ;
+.hi-msg {
+	margin-top: -30px !important;
+	font-size: 1.8rem;
+	color: rgb(184, 12, 12);
+}
+
+.cam-content {
+	padding-left: 16em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -56,21 +61,27 @@
 	flex-direction: column;
 }
 
-.cam{
+.cam {
 	border-radius: 20px;
 	width: 350px;
 }
 
 
-#chk{
+#chk {
 	display: none;
 }
-.signup{
+
+#chktranslated{
+	display: none;
+}
+
+.signup {
 	position: relative;
-	width:100%;
+	width: 100%;
 	height: 100%;
 }
-.label{
+
+.label {
 	color: #222222;
 	font-size: 1.3em;
 	justify-content: center;
@@ -83,13 +94,13 @@
 
 
 
-.title{
-    font-size: 2rem;
-    color:  rgb(184, 12, 12);
+.title {
+	font-size: 2rem;
+	color: rgb(184, 12, 12);
 }
 
 
-.input{
+.input {
 	width: 60%;
 	height: 20px;
 	background: #ffffff;
@@ -101,7 +112,8 @@
 	outline: none;
 	border-radius: 1.5rem;
 }
-.button-attendance{
+
+.button-attendance {
 	width: 82%;
 	height: 50px;
 	margin: 20px auto;
@@ -118,77 +130,111 @@
 	transition: .2s ease-in;
 	cursor: pointer;
 }
-.button-attendance:hover{
+
+.button-attendance:hover {
 	background: rgb(130, 153, 40);
 }
 
-.input-login{
-    width: 80%;
-    height: 50px;
-    background: #ffffff;
-    justify-content: center;
-    display: flex;
-    margin: 20px auto;
-    padding: 10px;
-    border: 1px solid #a7a7a7;
-    outline: none;
-    border-radius: 5px;
+/* ... */
+
+.translated {
+	background-image: url('/src/assets/img/attendance/bg-.png');
+	background-size: cover;
+	position: absolute;
+	border: 1px solid blue;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 51vw;
+	transform: translateX(70em);
+	z-index: 2;
+	transition: transform .9s ease-in-out;
+  }
+  
+  .translated-open {
+	transform: translateX(0);
+	transition: transform .8s ease-in-out;
+  }
+  
+  /* ... */
+  
+
+
+.input-login {
+	width: 80%;
+	height: 50px;
+	background: #ffffff;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: 1px solid #a7a7a7;
+	outline: none;
+	border-radius: 5px;
 }
 
-.login-tittle{
-    font-size: 2rem;
-    color: #fff !important;
+.login-tittle {
+	font-size: 2rem;
+	color: #fff !important;
 }
-.login{
+
+.login {
 	height: 1000px;
 	background-color: rgb(184, 12, 12);
 	border-radius: 60% / 10%;
 	transform: translateY(11em);
 	transition: .8s ease-in-out;
+	position: relative;
+	margin-bottom: 0px;
 }
-.login label{
+
+.login label {
 	color: #f8f8f8;
 	transform: scale(.6);
 }
 
-.btn-login{
-    background-color: none;
-    border: 1.5px solid white;
-    border-radius: 1.5rem;
-    color: white;
-    font-size: 1.2rem;
-    width: 80%;
-    height: 50px;
-    transition: .3s;
+.btn-login {
+	background-color: none;
+	border: 1.5px solid white;
+	border-radius: 1.5rem;
+	color: white;
+	font-size: 1.2rem;
+	width: 80%;
+	height: 50px;
+	transition: .3s;
 }
 
-.btn-login:hover{
-    background-color: white;
-    color: rgb(184, 12, 12);
-    border: 1.5px solid rgb(184, 12, 12);
-    transition: .3s;
+.btn-login:hover {
+	background-color: white;
+	color: rgb(184, 12, 12);
+	border: 1.5px solid rgb(184, 12, 12);
+	transition: .3s;
 }
 
-#chk:checked ~ .login{
+#chktranslated:checked~.translated-container {
+	transform: translateX(0em);
+}
+
+#chk:checked~.login {
 	transform: translateY(-21em);
 }
-#chk:checked ~ .login label{
-	transform: scale(.8);	
+
+#chk:checked~.login label {
+	transform: scale(.8);
 }
-#chk:checked ~ .signup label{
+
+#chk:checked~.signup label {
 	transform: scale(.6);
 }
 
 
 @media (max-width: 1200px) {
-	.attendance-register-content{
+	.attendance-register-content {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		width: 90vw;
 		border: 5px solid rgb(0, 94, 128);
 	}
-	
+
 }
-
-
