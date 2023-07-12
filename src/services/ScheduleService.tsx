@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Collaborator, Schedule } from '../views/admin/Collaborators/components/CollaboratorsTable';
+import Swal from 'sweetalert2';
 
 const baseUrl = 'http://localhost:8080/api/schedule';
 
@@ -18,7 +19,7 @@ export const ScheduleService = {
         );
         try {
             const response = await axios.post(`${baseUrl}/assign`, filteredSchedules);
-            return response;
+            showSuccessAlert()
         } catch (error) {
             throw error
         }
@@ -32,5 +33,18 @@ export const ScheduleService = {
         }
     }
 };
+
+const showSuccessAlert = () => {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Horario actualizado correctamente',
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        confirmButton: 'swal-button-ok'
+      }
+    });
+  };
 
 export default ScheduleService;

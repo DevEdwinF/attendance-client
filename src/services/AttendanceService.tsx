@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 
-const baseUrl = 'http://localhost:8080/api/attendance';
+const baseUrl = 'http://10.0.6.104:8080/api/attendance';
+// const baseUrl = 'http://localhost:8080/api/attendance';
 
 export const AttendanceService = {
   validate: async (document: number) => {
@@ -21,7 +22,6 @@ export const AttendanceService = {
   register: async (data: { document: number; state: string; location:string; photo: string }) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
-      console.log(data);
       showSuccessAlert();
       return response.data;
     } catch (error: any) {

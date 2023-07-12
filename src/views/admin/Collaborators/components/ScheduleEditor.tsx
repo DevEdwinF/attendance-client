@@ -8,7 +8,9 @@ import { Collaborator, Schedule } from './CollaboratorsTable';
 import { InputText } from 'primereact/inputtext';
 import { ScheduleService } from '../../../../services/ScheduleService';
 import classNames from 'classnames';
-import '../../../../assets/css/App.css'
+import '../../../../assets/css/App.css';
+import { MdDeleteOutline } from 'react-icons/md';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface ScheduleEditorProps {
   collaborator: Collaborator;
@@ -18,25 +20,38 @@ interface ScheduleEditorProps {
 
 export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, onSave, onClose }) => {
   const [schedules, setSchedules] = useState<Collaborator['schedules']>([]);
+  const [loading, setLoading] = useState(false);
 
-  const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; // Days of the week
+  const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
   useEffect(() => {
     const initialSchedules = daysOfWeek.map(day => {
       const existingSchedule = collaborator.schedules.find(schedule => schedule.day === day);
-      return existingSchedule || { id: 0, fk_collaborators_document: collaborator.document, day, arrival_time: '', departure_time: '' };
+      return existingSchedule || {
+        id: 0,
+        fk_collaborators_document: collaborator.document,
+        day,
+        arrival_time: '',
+        departure_time: '',
+      };
     });
     setSchedules(initialSchedules);
   }, [collaborator]);
 
   const handleSave = async () => {
     try {
+      setLoading(true);
+
       const response = await ScheduleService.assignSchedule(schedules);
       onSave({ ...collaborator, schedules });
+      onClose();
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const handleDelete = async (day: string) => {
     try {
@@ -61,7 +76,7 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
       <Calendar
         value={schedule.arrival_time ? new Date(schedule.arrival_time) : null}
         timeOnly={true}
-        hourFormat="24"
+        hourFormat="12"
         onChange={e => {
           const newSchedules = [...schedules];
           if (e.value instanceof Date) {
@@ -82,7 +97,7 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
       <Calendar
         value={schedule.departure_time ? new Date(schedule.departure_time) : null}
         timeOnly={true}
-        hourFormat="24"
+        hourFormat="12"
         onChange={e => {
           const newSchedules = [...schedules];
           if (e.value instanceof Date) {
@@ -101,9 +116,12 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   const deleteButtonTemplate = (schedule: Schedule) => {
     return (
       <Button
-        icon="pi pi-trash"
+        icon={<MdDeleteOutline />}
         onClick={() => handleDelete(schedule.day)}
-        className="p-button-danger"
+        rounded
+        text
+        severity="danger"
+        aria-label="Cancel"
       />
     );
   };
@@ -112,21 +130,27 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
     onClose();
   };
 
-  const saveButtonClass = classNames('custom-save-button');
-const cancelButtonClass = classNames('custom-cancel-button');
-
-
   return (
-    <Dialog visible={true} style={{ width: '30vw' }} header="Editar horarios" onHide={onClose}>
+    <Dialog visible={true} style={{ width: '50vw' }} header="Editar horarios" onHide={onClose}>
       <DataTable value={schedules}>
         <Column header="Día" body={dayTemplate} />
         <Column header="Llegada" body={arrivalTemplate} />
         <Column header="Salida" body={departureTemplate} />
         <Column header="" body={deleteButtonTemplate} style={{ width: '6em' }} />
       </DataTable>
-      <div className="p-d-flex p-ai-left p-mt-3">
-        <Button label="Cancelar" onClick={handleCancel} className={cancelButtonClass} />
-        <Button label="Guardar" icon="pi pi-check" onClick={handleSave} className={saveButtonClass} />
+      <div className="btn-schedule-editor-content">
+        <button onClick={handleCancel} className="btn-cancel-schedule-editor">
+          Cancelar
+        </button>
+        <button onClick={handleSave} className="btn-save-schedule-editor">
+  {loading ? (
+    <ProgressSpinner style={{ width: '20px', height: '20px', color: '#fff' }} />
+  ) : (
+    <span>Guardar</span>
+  )}
+</button>
+
+
       </div>
     </Dialog>
   );

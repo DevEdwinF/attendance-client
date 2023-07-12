@@ -48,13 +48,8 @@ const MyForm = () => {
       const photo = imageSrc as string;
 
       await AttendanceService.validate(document);
-      await AttendanceService.register({ document, state, location, photo });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'El registro de translado se ha guardado correctamente.',
-      }).then(() => {
+      await AttendanceService.register({ document, state, location, photo })
+      .then(() => {
         handleCloseDialog();
         window.close();
       });
@@ -71,6 +66,9 @@ const MyForm = () => {
 
   return (
     <section className="attendance-register-container">
+      <label className="btn-translated" aria-hidden="true" onClick={handleTranslatedClick}>
+        Translado
+      </label>
       <div className="attendance-register-content">
         <div className="cam-content">
           <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" className="cam" />
@@ -143,33 +141,31 @@ const MyForm = () => {
                   <button className="button-attendance" type="submit">
                     Enviar registro
                   </button>
-                  <label className="btn-translated" htmlFor="chktranslated" aria-hidden="true" onClick={handleTranslatedClick}>
-                    Translado
-                  </label>
+
                 </div>
               </Form>
             </Formik>
             <div className="login">
-            <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
+              <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
                 Translados
               </label>
-                 <TranslatedRegister/>
+              <TranslatedRegister />
             </div>
           </div>
         </div>
       </div>
       <div className={`translated${translated ? ' translated-open' : ''}`}>
-        <label htmlFor="chk-translated" aria-hidden="true" onClick={handleCloseDialog}>
-          Cancelar
+        <label className='btn-cancel' onClick={handleCloseDialog}>
+          
         </label>
-        <label>
-                Ingreso <br />Administrador
-              </label>
-              <input className="input input-login" type="document" name="document" placeholder="Documento" />
-              <input className="input input-login" type="password" name="pswd" placeholder="Contraseña" />
-              <button className="button btn-login" onClick={handleLogin}>
-                Entrar
-              </button>
+        <label className='login-admin-tittle'>
+          Ingreso <br/>Administrador
+        </label>
+        <input className="input input-login" type="document" name="document" placeholder="Documento" />
+        <input className="input input-login" type="password" name="pswd" placeholder="Contraseña" />
+        <button className="btn-login-admin" onClick={handleLogin}>
+          Entrar
+        </button>
       </div>
     </section>
   );

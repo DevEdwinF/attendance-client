@@ -1,42 +1,35 @@
 .attendance-register-container {
-	display: flex;
-	justify-content: center;
-	align-items: end;
-	/* padding-right: 10%; */
-	min-height: 100vh;
 	width: 100vw;
+	height: 100vh;
 	background-image: url('../../../assets/img/attendance/bg-desktop.png');
 	background-size: cover;
 	background-position: center;
 }
 
 .attendance-register-content {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 90vw;
-	/* border: 5px solid purple; */
+	height: 100vh;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
 }
 
 .form {
+	padding-left: 20%;
 	background-color: transparent;
 	width: 450px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	/* border: 1px solid purple; */
 	z-index: 1;
-	/* Agrega una capa superior para evitar superposiciones */
 }
 
 .main {
-	padding-top: 30%;
 	width: 100%;
 	height: 100vh;
 	text-align: center;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
+	/* display: none; */
 	/* border: 2px solid blue; */
 }
 
@@ -53,11 +46,9 @@
 }
 
 .cam-content {
-	padding-left: 16em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* border: 1px solid green; */
 	flex-direction: column;
 }
 
@@ -71,7 +62,7 @@
 	display: none;
 }
 
-#chktranslated{
+#chktranslated {
 	display: none;
 }
 
@@ -139,9 +130,14 @@
 
 .translated {
 	background-image: url('/src/assets/img/attendance/bg-.png');
-	background-size: cover;
+	background-size: 100% 100%;
 	position: absolute;
-	border: 1px solid blue;
+	padding: 10% 0px ;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	/* border: 1px solid blue; */
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -149,28 +145,88 @@
 	transform: translateX(70em);
 	z-index: 2;
 	transition: transform .9s ease-in-out;
-  }
-  
-  .translated-open {
-	transform: translateX(0);
-	transition: transform .8s ease-in-out;
-  }
-  
-  /* ... */
-  
+}
 
+.translated-open {
+	transform: translateX(0em);
+	transition: transform .8s ease-in-out;
+}
+
+.login-admin-tittle{
+	font-size: 2rem;
+	color: #fff !important;
+}
+
+.btn-cancel{
+	position: absolute;
+	left: 60px;
+	top: 1px;
+	color: white;
+}
+
+.btn-schedule-editor-content{
+	margin-top: 10px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.btn-cancel-schedule-editor{
+	background-color: rgb(184, 12, 12);
+	margin-right: 20px;
+	width: 200px;
+	height: 30px;
+	border-radius: 1.5em;
+	color: #fff;
+	transition: .3s;
+}
+
+.btn-cancel-schedule-editor:hover{
+	background-color: rgb(172, 12, 12);
+	transition: .3s;
+	
+}
+.btn-save-schedule-editor{
+	background-color: rgb(163, 190, 50);
+	width: 200px;
+	border-radius: 1.5em;
+	height: 30px;
+	color: #fff;
+	transition: .3s;
+}
+
+.btn-save-schedule-editor:hover{
+	background-color: rgb(130, 153, 40);
+	transition: .3s;
+}
+
+.btn-save-schedule-editor.loading {
+	padding: 5px;
+  }
+  
+  .btn-save-schedule-editor.loading .p-progress-spinner {
+	width: 20px !important;
+	height: 20px !important;
+	color: white !important;
+  }
+.btn-translated{
+	position: absolute;
+	right: 60px;
+	top: 1px;
+	color: rgb(75, 75, 75);
+}
 
 .input-login {
-	width: 80%;
+	width: 40%;
 	height: 50px;
 	background: #ffffff;
 	justify-content: center;
 	display: flex;
-	margin: 20px auto;
+	margin: 15px auto;
 	padding: 10px;
 	border: 1px solid #a7a7a7;
 	outline: none;
-	border-radius: 5px;
+	border-radius: 1.5em;
 }
 
 .login-tittle {
@@ -182,7 +238,7 @@
 	height: 1000px;
 	background-color: rgb(184, 12, 12);
 	border-radius: 60% / 10%;
-	transform: translateY(11em);
+	transform: translateY(0em);
 	transition: .8s ease-in-out;
 	position: relative;
 	margin-bottom: 0px;
@@ -193,30 +249,25 @@
 	transform: scale(.6);
 }
 
-.btn-login {
+.btn-login-admin {
 	background-color: none;
 	border: 1.5px solid white;
 	border-radius: 1.5rem;
 	color: white;
 	font-size: 1.2rem;
-	width: 80%;
+	width: 40%;
 	height: 50px;
-	transition: .3s;
+	transition: .5s;
 }
 
-.btn-login:hover {
+.btn-login-admin:hover {
 	background-color: white;
-	color: rgb(184, 12, 12);
-	border: 1.5px solid rgb(184, 12, 12);
-	transition: .3s;
-}
-
-#chktranslated:checked~.translated-container {
-	transform: translateX(0em);
+	color: rgb(163, 190, 50);
+	transition: .5s;
 }
 
 #chk:checked~.login {
-	transform: translateY(-21em);
+	transform: translateY(-10em);
 }
 
 #chk:checked~.login label {
@@ -227,7 +278,7 @@
 	transform: scale(.6);
 }
 
-
+/* 
 @media (max-width: 1200px) {
 	.attendance-register-content {
 		display: flex;
@@ -237,4 +288,4 @@
 		border: 5px solid rgb(0, 94, 128);
 	}
 
-}
+} */
