@@ -17,6 +17,7 @@ export const ScheduleService = {
         const filteredSchedules = schedules.filter(
             schedule => schedule.arrival_time !== '' || schedule.departure_time !== ''
         );
+        console.log(schedules)
         try {
             const response = await axios.post(`${baseUrl}/assign`, filteredSchedules);
             showSuccessAlert()

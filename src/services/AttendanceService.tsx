@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 
-const baseUrl = 'http://10.0.6.104:8080/api/attendance';
-// const baseUrl = 'http://localhost:8080/api/attendance';
+// const baseUrl = 'http://10.0.6.104:8080/api/attendance';
+const baseUrl = 'http://localhost:8080/api/attendance';
 
 export const AttendanceService = {
   validate: async (document: number) => {

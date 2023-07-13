@@ -40,7 +40,7 @@ const TotalAttendanceDay = () => {
             <Text color={"#C91212"} fontSize='28px' mb="10px"  fontWeight='700' lineHeight='100%'>
                 {stats !== null
                     ? <div> {stats}</div>
-                    : <div>Loading...</div>
+                    : <div>Cargando...</div>
                 }
             </Text>
         </Card>

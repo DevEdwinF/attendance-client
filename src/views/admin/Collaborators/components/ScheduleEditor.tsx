@@ -22,7 +22,7 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   const [schedules, setSchedules] = useState<Collaborator['schedules']>([]);
   const [loading, setLoading] = useState(false);
 
-  const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   useEffect(() => {
     const initialSchedules = daysOfWeek.map(day => {
@@ -52,7 +52,6 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
     }
   };
 
-
   const handleDelete = async (day: string) => {
     try {
       const index = schedules.findIndex(schedule => schedule.day === day);
@@ -72,16 +71,18 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   };
 
   const arrivalTemplate = (schedule: Schedule) => {
+    const arrivalTime = schedule.arrival_time ? new Date(`1970-01-01T${schedule.arrival_time}Z`) : null;
     return (
       <Calendar
-        value={schedule.arrival_time ? new Date(schedule.arrival_time) : null}
+        value={arrivalTime}
         timeOnly={true}
         hourFormat="12"
         onChange={e => {
           const newSchedules = [...schedules];
           if (e.value instanceof Date) {
             const index = newSchedules.findIndex(s => s.day === schedule.day);
-            newSchedules[index].arrival_time = e.value.toISOString();
+            const arrivalTimeString = e.value.toISOString().substr(11, 8);
+            newSchedules[index].arrival_time = arrivalTimeString;
           } else {
             const index = newSchedules.findIndex(s => s.day === schedule.day);
             newSchedules[index].arrival_time = '';
@@ -93,16 +94,18 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   };
 
   const departureTemplate = (schedule: Schedule) => {
+    const departureTime = schedule.departure_time ? new Date(`1970-01-01T${schedule.departure_time}Z`) : null;
     return (
       <Calendar
-        value={schedule.departure_time ? new Date(schedule.departure_time) : null}
+        value={departureTime}
         timeOnly={true}
         hourFormat="12"
         onChange={e => {
           const newSchedules = [...schedules];
           if (e.value instanceof Date) {
             const index = newSchedules.findIndex(s => s.day === schedule.day);
-            newSchedules[index].departure_time = e.value.toISOString();
+            const departureTimeString = e.value.toISOString().substr(11, 8);
+            newSchedules[index].departure_time = departureTimeString;
           } else {
             const index = newSchedules.findIndex(s => s.day === schedule.day);
             newSchedules[index].departure_time = '';
@@ -143,14 +146,12 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
           Cancelar
         </button>
         <button onClick={handleSave} className="btn-save-schedule-editor">
-  {loading ? (
-    <ProgressSpinner style={{ width: '20px', height: '20px', color: '#fff' }} />
-  ) : (
-    <span>Guardar</span>
-  )}
-</button>
-
-
+          {loading ? (
+            <ProgressSpinner style={{ width: '20px', height: '20px', color: '#fff' }} />
+          ) : (
+            <span>Guardar</span>
+          )}
+        </button>
       </div>
     </Dialog>
   );
