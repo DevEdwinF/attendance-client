@@ -22,6 +22,7 @@ interface Colaborator {
   departure: string;
   date: string;
   photo: string;
+  late: boolean;
 }
 
 const AttendanceTable = () => {
@@ -70,17 +71,25 @@ const AttendanceTable = () => {
     return null;
   };
 
+  const renderLateStatus = (rowData: Colaborator) => {
+    const statusClass = rowData.late ? 'text-red' : 'text-green';
+    const statusText = rowData.late ? 'Tarde' : 'A tiempo';
+
+    return <span className={statusClass}>{statusText}</span>;
+  };
+
   return (
     <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
       <div className="">
         <DataTable value={attendance} header={header} footer={footer} className={tableClass}>
-        <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
+          <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
           <Column field="document" header="Documento"></Column>
           <Column field="name" header="Nombre"></Column>
           <Column field="email" header="Correo"></Column>
           <Column field="location" header="Lugar"></Column>
           <Column field="arrival" header="Llegada"></Column>
           <Column field="departure" header="Salida"></Column>
+          <Column field="late" header="Estado" body={renderLateStatus}></Column>
           <Column field="photo" header="Foto" body={renderPhoto}></Column>
         </DataTable>
         <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>

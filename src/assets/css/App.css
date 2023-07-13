@@ -35,3 +35,13 @@ option {
   background-color: #C91212;
   /* Otros estilos personalizados para el botón de cancelar */
 }
+
+.text-red {
+  color: red;
+  font-weight: 700;
+}
+
+.text-green {
+  color: green;
+  font-weight: 700;
+}
