@@ -72,10 +72,10 @@ const AttendanceTable = () => {
   };
 
   const renderLateStatus = (rowData: Colaborator) => {
-    const statusClass = rowData.late ? 'text-red' : 'text-green';
-    const statusText = rowData.late ? 'Tarde' : 'A tiempo';
-
-    return <span className={statusClass}>{statusText}</span>;
+    if (rowData.late) {
+      return <span className="text-red">Tarde</span>;
+    }
+    return <span className="text-green">A tiempo</span>;
   };
 
   return (

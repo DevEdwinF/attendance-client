@@ -12,6 +12,7 @@ import '../../../../assets/css/App.css';
 import { MdDeleteOutline } from 'react-icons/md';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
+
 interface ScheduleEditorProps {
   collaborator: Collaborator;
   onSave: (collaborator: Collaborator) => void;
@@ -72,49 +73,55 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
 
   const arrivalTemplate = (schedule: Schedule) => {
     const arrivalTime = schedule.arrival_time ? new Date(`1970-01-01T${schedule.arrival_time}Z`) : null;
+    const arrivalTimeAdjusted = arrivalTime ? new Date(arrivalTime.getTime() + (5 * 60 * 60 * 1000)) : null;
+    const arrivalTimeString = arrivalTimeAdjusted ? arrivalTimeAdjusted.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
+    
     return (
       <Calendar
-        value={arrivalTime}
+        value={arrivalTimeAdjusted}
         timeOnly={true}
         hourFormat="12"
-        onChange={e => {
+        onChange={(e) => {
           const newSchedules = [...schedules];
-          if (e.value instanceof Date) {
-            const index = newSchedules.findIndex(s => s.day === schedule.day);
-            const arrivalTimeString = e.value.toISOString().substr(11, 8);
-            newSchedules[index].arrival_time = arrivalTimeString;
-          } else {
-            const index = newSchedules.findIndex(s => s.day === schedule.day);
-            newSchedules[index].arrival_time = '';
-          }
+          const index = newSchedules.findIndex(s => s.day === schedule.day);
+          const selectedTime = e.value as Date;
+          const selectedTimeAdjusted = new Date(selectedTime.getTime() - (5 * 60 * 60 * 1000));
+          newSchedules[index].arrival_time = selectedTimeAdjusted ? selectedTimeAdjusted.toISOString().substr(11, 8) : '';
           setSchedules(newSchedules);
         }}
       />
     );
   };
-
+  
   const departureTemplate = (schedule: Schedule) => {
     const departureTime = schedule.departure_time ? new Date(`1970-01-01T${schedule.departure_time}Z`) : null;
+    const departureTimeAdjusted = departureTime ? new Date(departureTime.getTime() + (5 * 60 * 60 * 1000)) : null;
+    const departureTimeString = departureTimeAdjusted ? departureTimeAdjusted.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
+    
     return (
       <Calendar
-        value={departureTime}
+        value={departureTimeAdjusted}
         timeOnly={true}
         hourFormat="12"
-        onChange={e => {
+        onChange={(e) => {
           const newSchedules = [...schedules];
-          if (e.value instanceof Date) {
-            const index = newSchedules.findIndex(s => s.day === schedule.day);
-            const departureTimeString = e.value.toISOString().substr(11, 8);
-            newSchedules[index].departure_time = departureTimeString;
-          } else {
-            const index = newSchedules.findIndex(s => s.day === schedule.day);
-            newSchedules[index].departure_time = '';
-          }
+          const index = newSchedules.findIndex(s => s.day === schedule.day);
+          const selectedTime = e.value as Date;
+          const selectedTimeAdjusted = new Date(selectedTime.getTime() - (5 * 60 * 60 * 1000));
+          newSchedules[index].departure_time = selectedTimeAdjusted ? selectedTimeAdjusted.toISOString().substr(11, 8) : '';
           setSchedules(newSchedules);
         }}
       />
     );
   };
+  
+  
+  const formatDateToHHMM = (date: Date): string => {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+  
 
   const deleteButtonTemplate = (schedule: Schedule) => {
     return (
