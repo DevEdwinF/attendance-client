@@ -26,18 +26,9 @@ const routes = [
 		icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
 		component: MainDashboard
 	},
-	// {
-	// 	name: 'NFT Marketplace',
-	// 	layout: '/admin',
-	// 	path: '/nft-marketplace',
-	// 	icon: <Icon as={MdContactSupport
-	// 	} width='20px' height='20px' color='inherit' />,
-	// 	component: NFTMarketplace,
-	// 	secondary: true
-	// },
 	{
 		name: 'Asistencia',
-		layout: '/admin',
+		layout: '/',
 		icon: <Icon as={MdDone} width='20px' height='20px' color='inherit' />,
 		path: '/data-tables',
 		component: DataTables
@@ -49,41 +40,7 @@ const routes = [
 		path: '/collaborators',
 		component: Collaborators
 	},
-	// {
-	// 	name: 'Horary',
-	// 	layout: '/admin',
-	// 	icon: <Icon as={MdDone} width='20px' height='20px' color='inherit' />,
-	// 	path: '/horary',
-	// 	component: ScheduleManage
-	// },
-	// {
-	// 	name: 'Profile',
-	// 	layout: '/admin',
-	// 	path: '/profile',
-	// 	icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
-	// 	component: Profile
-	// },
-	{
-		name: 'Sign In',
-		layout: '/auth',
-		path: '/sign-in',
-		icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-		component: SignInCentered
-	},
-	{
-		name: 'Attendance',
-		layout: '/auth',
-		path: '/attendance/register',
-		icon: <Icon as={MdDone} width='20px' height='20px' color='inherit' />,
-		component: Attendance
-	},
-	// {
-	// 	name: 'RTL Admin',
-	// 	layout: '/rtl',
-	// 	path: '/rtl-default',
-	// 	icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-	// 	component: RTL
-	// }
+
 ];
 
 export default routes;

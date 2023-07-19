@@ -7,7 +7,8 @@ import AdminLayout from './layouts/admin';
 import RTLLayout from './layouts/rtl';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme/theme';
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
+import "primereact/resources/themes/lara-light-indigo/theme.css"; 
+import  Attendance  from 'views/attendance/register/index';    
     
 //core
 import "primereact/resources/primereact.min.css";
@@ -17,9 +18,8 @@ ReactDOM.render(
 		<React.StrictMode>
 			<HashRouter>
 				<Switch>
-					<Route path={`/auth`} component={AuthLayout} />
+					<Route path={`/`} component={Attendance}/>
 					<Route path={`/admin`} component={AdminLayout} />
-					<Route path={`/rtl`} component={RTLLayout} />
 					<Redirect from='/' to='/admin' />
 				</Switch>
 			</HashRouter>

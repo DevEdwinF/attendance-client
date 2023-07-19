@@ -9,6 +9,7 @@ import TranslatedRegister from '../components/TranslatedRegister';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import './index.css';
+import { AuthService } from 'services/AuthService';
 
 interface FormValues {
   document: number | null;
@@ -24,10 +25,35 @@ const initialValues: FormValues = {
   photo: '',
 };
 
+interface loginValues {
+  email: string;
+  password: string;
+}
+
+const initialValuesLogin: loginValues ={
+  email: 'epirajan@smart.edu.co',
+  password: '123456',
+}
+
 const MyForm = () => {
   const webcamRef = useRef(null);
   const [translated, setTranslated] = useState(false);
   const history: History = useHistory();
+
+  const handleLogin = async () => {
+    try {
+      const response = await AuthService.login(initialValuesLogin);
+      localStorage.setItem('token', response);
+      history.push('/admin/default');
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error al iniciar sesión',
+      });
+    }
+  };
 
   const handleCloseDialog = () => {
     setTranslated(false);
@@ -56,9 +82,9 @@ const MyForm = () => {
     }
   };
 
-  const handleLogin = () => {
-    history.push('/admin/default');
-  };
+  // const handleLogin = () => {
+  //   history.push('/admin/default');
+  // };
 
   const handleTranslatedClick = () => {
     setTranslated(true);
@@ -154,19 +180,31 @@ const MyForm = () => {
           </div>
         </div>
       </div>
-      <div className={`translated${translated ? ' translated-open' : ''}`}>
-        <label className='btn-cancel' onClick={handleCloseDialog}>
-          
-        </label>
-        <label className='login-admin-tittle'>
-          Ingreso <br/>Administrador
-        </label>
-        <input className="input input-login" type="document" name="document" placeholder="Documento" />
-        <input className="input input-login" type="password" name="pswd" placeholder="Contraseña" />
-        <button className="btn-login-admin" onClick={handleLogin}>
-          Entrar
-        </button>
-      </div>
+      <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
+      <Form>
+        <div className={`translated${translated ? ' translated-open' : ''}`}>
+          <label className='btn-cancel' onClick={handleCloseDialog}></label>
+          <label className='login-admin-tittle'>
+            Ingreso <br/>Administrador
+          </label>
+          <Field
+            className="input input-login"
+            type="email"
+            name="email"
+            placeholder="Correo smart"
+          />
+          <Field
+            className="input input-login"
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+          />
+          <button className="btn-login-admin" type="submit">
+            Entrar
+          </button>
+        </div>
+      </Form>
+    </Formik>
     </section>
   );
 };
