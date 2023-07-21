@@ -31,8 +31,8 @@ interface loginValues {
 }
 
 const initialValuesLogin: loginValues ={
-  email: 'epirajan@smart.edu.co',
-  password: '123456',
+  email: '',
+  password: '',
 }
 
 const MyForm = () => {
@@ -40,9 +40,9 @@ const MyForm = () => {
   const [translated, setTranslated] = useState(false);
   const history: History = useHistory();
 
-  const handleLogin = async () => {
+  const handleLogin = async (values: loginValues) => {
     try {
-      const response = await AuthService.login(initialValuesLogin);
+      const response = await AuthService.login(values);
       localStorage.setItem('token', response);
       history.push('/admin/default');
     } catch (error) {
@@ -82,9 +82,6 @@ const MyForm = () => {
     }
   };
 
-  // const handleLogin = () => {
-  //   history.push('/admin/default');
-  // };
 
   const handleTranslatedClick = () => {
     setTranslated(true);
