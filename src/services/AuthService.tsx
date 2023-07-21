@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Api } from "config/Api";
+import { HeaderPost } from "./Header";
 
 const endPoint = '/auth'
 const baseUrl = Api.url + endPoint;
@@ -17,4 +18,14 @@ export const AuthService = {
             throw new Error(error.response.data.message);
         }
     },
+    validateToken: async()=>{
+        try {
+            const response = await axios.get(`${baseUrl}/validate-token`, HeaderPost);
+            console.log(response)
+            return response.data;
+        } catch (error: any) {
+            console.log(error.response)
+            throw new Error(error.response.data.message);
+        }
+    }
 };

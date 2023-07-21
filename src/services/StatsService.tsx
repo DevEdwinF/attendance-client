@@ -1,11 +1,12 @@
 import axios from "axios";
+import { HeaderPost } from "./Header";
 
 const baseUrl = 'http://localhost:8080/api/stats'
 
 export const StatService = {
     getAllStats: async () => {
         try {
-            const response = await axios.get(`${baseUrl}/all`);
+            const response = await axios.get(`${baseUrl}/all`, HeaderPost);
             console.log(response)
             return response.data.count
         }
@@ -15,7 +16,7 @@ export const StatService = {
     },
     getAllStatsToday: async () => {
         try {
-            const response = await axios.get(`${baseUrl}/day/all`);
+            const response = await axios.get(`${baseUrl}/day/all`, HeaderPost);
             console.log(response)
             return response.data.count
         }

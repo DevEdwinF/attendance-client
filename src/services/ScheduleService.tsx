@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { Collaborator, Schedule } from '../views/admin/Collaborators/components/CollaboratorsTable';
 import Swal from 'sweetalert2';
+import { HeaderPost } from './Header';
 
 const baseUrl = 'http://localhost:8080/api/schedule';
 
 export const ScheduleService = {
     getAllSchedule: async () => {
         try {
-            const response = await axios.get(`${baseUrl}/all`);
+            const response = await axios.get(`${baseUrl}/all`,  HeaderPost);
             return response;
         } catch (error) {
             console.log(error);
@@ -19,7 +20,7 @@ export const ScheduleService = {
         );
         console.log(schedules)
         try {
-            const response = await axios.post(`${baseUrl}/assign`, filteredSchedules);
+            const response = await axios.post(`${baseUrl}/assign`, filteredSchedules,  HeaderPost);
             showSuccessAlert()
         } catch (error) {
             throw error
@@ -27,7 +28,7 @@ export const ScheduleService = {
     },
     deleteSchedule: async (id: number) => {
         try {
-            const response = await axios.delete(`${baseUrl}/delete/${id}`);
+            const response = await axios.delete(`${baseUrl}/delete/${id}`, HeaderPost);
             return response;
         } catch (error) {
             throw error

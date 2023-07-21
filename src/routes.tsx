@@ -28,7 +28,7 @@ const routes = [
 	},
 	{
 		name: 'Asistencia',
-		layout: '/',
+		layout: '/admin',
 		icon: <Icon as={MdDone} width='20px' height='20px' color='inherit' />,
 		path: '/data-tables',
 		component: DataTables

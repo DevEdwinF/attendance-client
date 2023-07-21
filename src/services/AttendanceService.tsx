@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
+import { HeaderPost } from "./Header";
 
 // const baseUrl = 'http://10.0.6.104:8080/api/attendance';
 const baseUrl = 'http://localhost:8080/api/attendance';
@@ -36,7 +37,7 @@ export const AttendanceService = {
   },
   getAllAttendance: async () => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all`);
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all`,  HeaderPost);
       console.log(response);
       return response.data;
     } catch (error) {
@@ -45,7 +46,7 @@ export const AttendanceService = {
   },
   saveTranslated: async (document: any) =>{
     try {
-      const response: AxiosResponse = await axios.post(`${baseUrl}/register/translated`, document);
+      const response: AxiosResponse = await axios.post(`${baseUrl}/register/translated`, document,  HeaderPost);
       console.log(response);
       showSuccessAlert();
       return response.data;
