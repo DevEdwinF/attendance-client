@@ -44,7 +44,7 @@ const MyForm = () => {
     try {
       const response = await AuthService.login(values);
       localStorage.setItem('token', response);
-      history.push('/admin/default');
+      window.location.reload();
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -54,7 +54,7 @@ const MyForm = () => {
       });
     }
   };
-
+  
   const handleCloseDialog = () => {
     setTranslated(false);
     console.log('handleCloseDialog is being called');

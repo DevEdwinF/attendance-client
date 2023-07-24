@@ -19,11 +19,24 @@ interface ScheduleEditorProps {
   onClose: () => void;
 }
 
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+interface SpanishDays {
+  [key: string]: string;
+}
+
+const spanishDays: SpanishDays = {
+  Monday: 'Lunes',
+  Tuesday: 'Martes',
+  Wednesday: 'Miércoles',
+  Thursday: 'Jueves',
+  Friday: 'Viernes',
+  Saturday: 'Sábado',
+};
 export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, onSave, onClose }) => {
   const [schedules, setSchedules] = useState<Collaborator['schedules']>([]);
   const [loading, setLoading] = useState(false);
 
-  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   useEffect(() => {
     const initialSchedules = daysOfWeek.map(day => {
@@ -38,6 +51,8 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
     });
     setSchedules(initialSchedules);
   }, [collaborator]);
+
+
 
   const handleSave = async () => {
     try {
@@ -68,9 +83,9 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   };
 
   const dayTemplate = (schedule: Schedule) => {
-    return <span>{schedule.day}</span>;
+    const translatedDay = spanishDays[schedule.day] || schedule.day;
+    return <span>{translatedDay}</span>;
   };
-
   const arrivalTemplate = (schedule: Schedule) => {
     const arrivalTime = schedule.arrival_time ? new Date(`1970-01-01T${schedule.arrival_time}Z`) : null;
     const arrivalTimeAdjusted = arrivalTime ? new Date(arrivalTime.getTime() + (5 * 60 * 60 * 1000)) : null;

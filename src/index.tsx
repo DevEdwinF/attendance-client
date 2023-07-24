@@ -23,7 +23,6 @@ const App = () => {
 	const [authenticated, setAuthenticated] = useState(false);
 
 	useEffect(() => {
-		// Verificar el token al cargar la aplicación
 		const checkAuthentication = () => {
 			const token = localStorage.getItem('token');
 			setAuthenticated(token !== null);
