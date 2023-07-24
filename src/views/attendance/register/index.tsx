@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import './index.css';
 import { AuthService } from 'services/AuthService';
+import { MdArrowCircleLeft } from 'react-icons/md';
 
 interface FormValues {
   document: number | null;
@@ -90,7 +91,7 @@ const MyForm = () => {
   return (
     <section className="attendance-register-container">
       <label className="btn-translated" aria-hidden="true" onClick={handleTranslatedClick}>
-        Translado
+       <p>Ingreso administrador</p>
       </label>
       <div className="attendance-register-content">
         <div className="cam-content">
@@ -180,7 +181,9 @@ const MyForm = () => {
       <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
       <Form>
         <div className={`translated${translated ? ' translated-open' : ''}`}>
-          <label className='btn-cancel' onClick={handleCloseDialog}></label>
+          <label className='btn-cancel' onClick={handleCloseDialog}>
+            <MdArrowCircleLeft className='icon-cancel'/>
+          </label>
           <label className='login-admin-tittle'>
             Ingreso <br/>Administrador
           </label>
