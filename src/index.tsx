@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './assets/css/App.css';
 import { HashRouter, Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
@@ -19,25 +19,37 @@ const isAuthenticated = () => {
 	return token !== null;
 };
 
+const App = () => {
+	const [authenticated, setAuthenticated] = useState(false);
 
-ReactDOM.render(
-	<ChakraProvider theme={theme}>
-		<React.StrictMode>
-			<BrowserRouter>
-				<Switch>
-					<Route exact path="/" component={Attendance} />
-					<AuthRoute
-						path="/admin"
-						component={AdminLayout}
-						isAuthenticated={isAuthenticated()}
-					/>
-				</Switch>
-			</BrowserRouter>,
-		</React.StrictMode>
-	</ChakraProvider>,
-	document.getElementById('root')
-);
+	useEffect(() => {
+		// Verificar el token al cargar la aplicación
+		const checkAuthentication = () => {
+			const token = localStorage.getItem('token');
+			setAuthenticated(token !== null);
+		};
 
+		checkAuthentication();
+	}, []);
 
+	return (
+		<ChakraProvider theme={theme}>
+			<React.StrictMode>
+				<BrowserRouter>
+					<Switch>
+						<Route exact path="/">
+							{authenticated ? <Redirect to="/admin/default" /> : <Attendance />}
+						</Route>
+						<AuthRoute
+							path="/admin"
+							component={AdminLayout}
+							isAuthenticated={authenticated}
+						/>
+					</Switch>
+				</BrowserRouter>,
+			</React.StrictMode>
+		</ChakraProvider>
+	);
+};
 
-
+ReactDOM.render(<App />, document.getElementById('root'));
