@@ -86,7 +86,7 @@ const AttendanceTable = () => {
           <Column field="document" header="Documento"></Column>
           <Column field="name" header="Nombre"></Column>
           <Column field="email" header="Correo"></Column>
-          <Column field="location" header="Lugar"></Column>
+          <Column field="Location" header="Lugar"></Column>
           <Column field="arrival" header="Llegada"></Column>
           <Column field="departure" header="Salida"></Column>
           <Column field="late" header="Estado" body={renderLateStatus}></Column>

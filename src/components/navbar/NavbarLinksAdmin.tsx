@@ -19,17 +19,43 @@ import { ItemContent } from 'components/menu/ItemContent';
 import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // Assets
 import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
+import { async } from 'q';
+import Auth from 'layouts/auth';
+import { AuthService } from 'services/AuthService';
+
+interface UserInfo {
+	name: string;
+	role: string;
+	roleName: string;
+}
+
 export default function HeaderLinks(props: { secondary: boolean }) {
 	const { secondary } = props;
 	const { colorMode, toggleColorMode } = useColorMode();
-	// Chakra Color Mode
+	const [userInfo, setUserInfo] = useState<UserInfo>()
+
+	const handleLogout = async () => {
+		await AuthService.logout();
+		window.location.href = '/';
+	}
+
+	const getUserInfo = async () => {
+		const user = await AuthService.getUserInfo();
+		setUserInfo(user);
+	}
+
+	useEffect(() => {
+		getUserInfo();
+	}, []);
+
+
 	const navbarIcon = useColorModeValue('gray.400', 'white');
 	let menuBg = useColorModeValue('white', 'navy.800');
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -137,7 +163,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 					<Avatar
 						_hover={{ cursor: 'pointer' }}
 						color='white'
-						name='Edwin Pirajan'
+						name={userInfo?.name} // Use the 'name' property of the 'userInfo' object, not the 'UserInfo' type
 						bg='#b90c00'
 						size='sm'
 						w='40px'
@@ -155,8 +181,11 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							borderColor={borderColor}
 							fontSize='sm'
 							fontWeight='700'
-							color={textColor}>
-							👋&nbsp; Hey, Edwin
+							color={textColor}
+						>
+							👋&nbsp; Hey,&nbsp; {userInfo?.name && userInfo.name.split(' ')[0]}
+							<br />
+							{userInfo?.roleName}
 						</Text>
 					</Flex>
 					<Flex flexDirection='column' p='10px'>
@@ -171,7 +200,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							_focus={{ bg: 'none' }}
 							color='red.400'
 							borderRadius='8px'
-							px='14px'>
+							px='14px' onClick={handleLogout}>
 							<Text fontSize='sm'>Salir</Text>
 						</MenuItem>
 					</Flex>

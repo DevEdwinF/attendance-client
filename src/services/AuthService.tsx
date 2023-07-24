@@ -27,5 +27,16 @@ export const AuthService = {
             console.log(error.response)
             throw new Error(error.response.data.message);
         }
+    },
+    getUserInfo:async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/user-info`, HeaderPost)
+            return response.data
+        } catch (error) {
+            throw new Error ("Usuario no encontrado")
+        }
+    },
+    logout: async() => {
+        localStorage.removeItem('token');
     }
 };
