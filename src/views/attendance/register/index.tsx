@@ -51,7 +51,7 @@ const MyForm = () => {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Error al iniciar sesión',
+        text: 'Usuario o clave incorrectos',
       });
     }
   };
