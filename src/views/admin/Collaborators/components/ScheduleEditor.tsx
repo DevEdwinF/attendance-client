@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import '../../../../assets/css/App.css';
 import { MdDeleteOutline } from 'react-icons/md';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toast } from 'primereact/toast';
 
 
 interface ScheduleEditorProps {
@@ -36,6 +37,7 @@ const spanishDays: SpanishDays = {
 export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, onSave, onClose }) => {
   const [schedules, setSchedules] = useState<Collaborator['schedules']>([]);
   const [loading, setLoading] = useState(false);
+  const toast = useRef<any>(null);
 
 
   useEffect(() => {
@@ -70,13 +72,19 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
 
   const handleDelete = async (day: string) => {
     try {
-      const index = schedules.findIndex(schedule => schedule.day === day);
+      const index = schedules.findIndex((schedule) => schedule.day === day);
       const scheduleToDelete = schedules[index];
       const response = await ScheduleService.deleteSchedule(scheduleToDelete.id);
-      console.log(response.data);
       const newSchedules = [...schedules];
       newSchedules.splice(index, 1);
       setSchedules(newSchedules);
+
+      // Show the toast notification when a schedule is deleted
+      toast.current.show({
+        severity: 'success',
+        summary: 'Horario eliminado',
+        life: 2000, // 2 seconds
+      });
     } catch (error) {
       console.error(error);
     }
@@ -141,13 +149,14 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   const deleteButtonTemplate = (schedule: Schedule) => {
     return (
       <Button
-        icon={<MdDeleteOutline />}
         onClick={() => handleDelete(schedule.day)}
         rounded
         text
         severity="danger"
         aria-label="Cancel"
-      />
+      >
+        <MdDeleteOutline style={{ fontSize: '28px' }} /> 
+      </Button>
     );
   };
 
@@ -156,12 +165,12 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   };
 
   return (
-    <Dialog visible={true} style={{ width: '50vw' }} header="Editar horarios" onHide={onClose}>
+    <Dialog visible={true} style={{ width: '45vw' }} header="Editar horarios" onHide={onClose}>
       <DataTable value={schedules}>
         <Column header="Día" body={dayTemplate} />
         <Column header="Llegada" body={arrivalTemplate} />
         <Column header="Salida" body={departureTemplate} />
-        <Column header="" body={deleteButtonTemplate} style={{ width: '6em' }} />
+        <Column header="" body={deleteButtonTemplate} />
       </DataTable>
       <div className="btn-schedule-editor-content">
         <button onClick={handleCancel} className="btn-cancel-schedule-editor">
@@ -175,6 +184,7 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
           )}
         </button>
       </div>
+      <Toast ref={toast} />
     </Dialog>
   );
 };

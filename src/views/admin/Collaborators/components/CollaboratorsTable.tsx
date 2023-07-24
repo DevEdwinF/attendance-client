@@ -5,10 +5,11 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { CollaboratorService } from 'services/CollaboratorService';
 import { InputText } from 'primereact/inputtext';
-import { ScheduleEditor } from './ScheduleEditor'; // Importa el componente ScheduleEditor aquí
+import { ScheduleEditor } from './ScheduleEditor'; 
+import { MdEdit } from 'react-icons/md';
 
-// Definición de la interfaz del horario
-// types.ts
+
+
 export interface Schedule {
     id: number;
     day: string;
@@ -44,26 +45,32 @@ const CollaboratorTable = () => {
     }, []);
 
     const updateCollaborator = async (updatedCollaborator: Collaborator) => {
-        // Supongo que tienes un método de updateCollaborator en tu servicio
-        // const response = await CollaboratorService.updateCollaborator(updatedCollaborator);
-        // Actualizar la lista de colaboradores aquí
+
     }
 
     const actionBodyTemplate = (rowData: Collaborator) => {
         return (
-            <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={async () => {
-                try {
-                    const schedules = await CollaboratorService.getCollaboratorSchedule(rowData.document);
-                    if(schedules){
-                        setEditingCollaborator({ ...rowData, schedules, id: rowData.id, fk_collaborators_document: rowData.fk_collaborators_document }); 
-                    }else{
-                        throw new Error('No se pudieron obtener los horarios');
+            <Button
+                rounded
+                text
+                severity="success"
+                aria-label="Editar"
+                className="custom-edit-button"
+                onClick={async () => {
+                    try {
+                        const schedules = await CollaboratorService.getCollaboratorSchedule(rowData.document);
+                        if (schedules) {
+                            setEditingCollaborator({ ...rowData, schedules, id: rowData.id, fk_collaborators_document: rowData.fk_collaborators_document });
+                        } else {
+                            throw new Error('No se pudieron obtener los horarios');
+                        }
+                    } catch (error) {
+                        console.error(error);
                     }
-                } catch (error) {
-                    console.error(error);
-                    // Manejo del error
-                }
-            }} />
+                }}
+            >
+                <MdEdit color='gray' />
+            </Button>
         );
     };
     

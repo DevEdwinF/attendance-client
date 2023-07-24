@@ -157,8 +157,8 @@ const MyForm = () => {
                     }}
                   >
                     <option value="">Seleccionar...</option>
-                    <option value="arrival">Casa</option>
-                    <option value="departure">Oficina</option>
+                    <option value="casa">Casa</option>
+                    <option value="oficina">Oficina</option>
                   </Field>
                   <ErrorMessage name="state" component="div" />
                   <button className="button-attendance" type="submit">

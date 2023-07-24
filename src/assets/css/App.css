@@ -45,3 +45,14 @@ option {
   color: green;
   font-weight: 700;
 }
+
+/* Estilos para el botón con el ícono del lápiz */
+.custom-edit-button {
+  background: transparent;
+  border: none;
+}
+
+/* Estilos para el ícono del lápiz en el hover del botón */
+.custom-edit-button:hover .p-button-icon {
+  color: #007bff; /* Cambia el color del lápiz al color deseado en el hover */
+}
