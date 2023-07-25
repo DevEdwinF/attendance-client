@@ -24,7 +24,6 @@ export default function AdminNavbar(props: {
 
 	const { secondary,  brandText } = props;
 
-	// Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
 	let mainText = useColorModeValue('navy.700', 'white');
 	let secondaryText = useColorModeValue('gray.700', 'white');
 	let navbarPosition = 'fixed' as const;
@@ -108,7 +107,6 @@ export default function AdminNavbar(props: {
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 					</Breadcrumb>
-					{/* Here we create navbar brand, based on route name */}
 					<Link
 						color={mainText}
 						href='#'

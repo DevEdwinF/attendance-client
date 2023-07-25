@@ -1,23 +1,17 @@
-// Chakra imports
 import { Flex, useColorModeValue } from '@chakra-ui/react';
-import Logo from '../../../assets/img/corporative/logo.png'
+import LogoRed from '../../../assets/img/corporative/logo-red.svg';
+import LogoWhite from '../../../assets/img/corporative/logo-white.svg';
 import { Image } from '@chakra-ui/react';
 
-// Custom components
-
-
 export function SidebarBrand() {
-	//   Chakra color mode
-	let logoColor = useColorModeValue('navy.700', 'white');
+  const logoColor = useColorModeValue('navy.700', 'white');
+  const logoSrc = logoColor === 'navy.700' ? LogoRed : LogoWhite;
 
-	return (
-		<Flex alignItems='center' flexDirection='column'>
-			{/* <HorizonLogo h='26px' w='175px' my='32px' color={logoColor} />
-			<HSeparator mb='20px' /> */}
-			{/* Importar Image de chakra ui */}
-			<Image src={Logo} alt='logo' my='32px' />
-		</Flex>
-	);
+  return (
+    <Flex alignItems='center' flexDirection='column'>
+      <Image src={logoSrc} alt='logo' width='150px' height='150px' my='16px' />
+    </Flex>
+  );
 }
 
 export default SidebarBrand;

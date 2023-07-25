@@ -3,6 +3,7 @@ import Card from 'components/card/Card';
 import { StatService } from 'services/StatsService';
 import { Text, useColorModeValue } from '@chakra-ui/react';
 
+
 const TotalAttendance = () => {
     const [stats, setStats] = useState<number | null>(null);
 
@@ -31,7 +32,7 @@ const TotalAttendance = () => {
 
     return (
         <Card /* style={{width:"400px", display: "flex", justifyContent: "flex-end"}} */>
-            <Text color={textColor} fontSize='28px' mb="10px" fontWeight='700' lineHeight='100%'>
+            <Text color={textColor} fontSize='18px' mb="10px" fontWeight='700' lineHeight='100%'>
                 Total registros este mes
             </Text>
             <Text color={"#C91212"} fontSize='28px' mb="10px"  fontWeight='700' lineHeight='100%'>

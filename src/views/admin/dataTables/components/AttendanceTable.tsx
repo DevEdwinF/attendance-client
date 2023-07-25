@@ -81,7 +81,7 @@ const AttendanceTable = () => {
   return (
     <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
       <div className="">
-        <DataTable value={attendance} header={header} footer={footer} className={tableClass}>
+        <DataTable style={{fontSize:".85em"}} value={attendance} header={header} footer={footer} className={tableClass}>
           <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
           <Column field="document" header="Documento"></Column>
           <Column field="name" header="Nombre"></Column>

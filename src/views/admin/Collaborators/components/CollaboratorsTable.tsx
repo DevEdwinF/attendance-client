@@ -85,7 +85,7 @@ const CollaboratorTable = () => {
 
     return (
         <div className="card">
-            <DataTable value={collaborators} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}>
+            <DataTable style={{fontSize:".85em"}} value={collaborators} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}>
                 <Column field="document" header="Documento"></Column>
                 <Column field="name" header="Nombre"></Column>
                 <Column field="email" header="Correo"></Column>
