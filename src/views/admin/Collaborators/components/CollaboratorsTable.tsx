@@ -90,7 +90,7 @@ const CollaboratorTable = () => {
                 <Column field="name" header="Nombre"></Column>
                 <Column field="email" header="Correo"></Column>
                 <Column field="position" header="Cargo"></Column>
-                <Column body={actionBodyTemplate}></Column> {/* Columna para el botón de editar */}
+                <Column body={actionBodyTemplate}></Column>
             </DataTable>
 
             {editingCollaborator && <ScheduleEditor collaborator={editingCollaborator} onSave={updateCollaborator} onClose={() => setEditingCollaborator(null)} />}
