@@ -1,9 +1,9 @@
-.attendance-register-container {
+.attendance-register-container-desktop {
 	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
 	background-image: url('../../../assets/img/attendance/bg-desktop.png');
-	background-size: cover;
+	background-size: 100% 100%;
 	background-position: center;
 }
 
@@ -58,7 +58,10 @@
 	width: 350px;
 }
 
-
+.clock {
+	font-size: 2.5em;
+	color: rgb(255, 255, 255);
+}
 
 #chk {
 	display: none;
@@ -107,7 +110,7 @@
 }
 
 .button-attendance {
-	width: 82%;
+	width: 100%;
 	height: 50px;
 	margin: 20px auto;
 	justify-content: center;
@@ -135,7 +138,7 @@
 	background-size: 100% 100%;
 	position: absolute;
 	overflow: hidden;
-	padding: 10% 0px ;
+	padding: 10% 0px;
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -149,7 +152,7 @@
 	transform: translateX(70em);
 	z-index: 2;
 	transition: transform .9s ease-in-out;
-	
+
 }
 
 .translated-open {
@@ -158,11 +161,12 @@
 	height: 100vh;
 }
 
-.login-admin-tittle{
+.login-admin-tittle {
 	font-size: 2rem;
 	color: #fff !important;
 }
-.btn-cancel{
+
+.btn-cancel {
 	position: absolute;
 	left: 100px;
 	top: 6px;
@@ -170,27 +174,27 @@
 	font-size: 1.8em;
 }
 
-.icon-cancel{
+.icon-cancel {
 	font-size: 1.6em;
 	transition: .3s;
 	cursor: pointer;
 }
 
-.icon-cancel:hover{
+.icon-cancel:hover {
 	color: #e7e7e7;
 	transition: .3s;
-	
+
 }
 
 
-.btn-schedule-editor-content{
+.btn-schedule-editor-content {
 	margin-top: 10px;
 	width: 100%;
 	display: flex;
 	justify-content: center;
 }
 
-.btn-cancel-schedule-editor{
+.btn-cancel-schedule-editor {
 	background-color: rgb(184, 12, 12);
 	margin-right: 20px;
 	width: 200px;
@@ -200,12 +204,13 @@
 	transition: .3s;
 }
 
-.btn-cancel-schedule-editor:hover{
+.btn-cancel-schedule-editor:hover {
 	background-color: rgb(172, 12, 12);
 	transition: .3s;
-	
+
 }
-.btn-save-schedule-editor{
+
+.btn-save-schedule-editor {
 	background-color: rgb(163, 190, 50);
 	width: 200px;
 	border-radius: 1.5em;
@@ -214,21 +219,22 @@
 	transition: .3s;
 }
 
-.btn-save-schedule-editor:hover{
+.btn-save-schedule-editor:hover {
 	background-color: rgb(130, 153, 40);
 	transition: .3s;
 }
 
 .btn-save-schedule-editor.loading {
 	padding: 5px;
-  }
-  
-  .btn-save-schedule-editor.loading .p-progress-spinner {
+}
+
+.btn-save-schedule-editor.loading .p-progress-spinner {
 	width: 20px !important;
 	height: 20px !important;
 	color: white !important;
-  }
-.btn-translated p{
+}
+
+.btn-translated p {
 	position: absolute;
 	right: 60px;
 	top: 1px;
@@ -237,7 +243,7 @@
 	font-size: 1.2em;
 }
 
-.btn-translated p:hover{
+.btn-translated p:hover {
 	color: rgb(37, 37, 37);
 	text-decoration: underline;
 	transition: .4s;
@@ -267,7 +273,6 @@
 	border-radius: 60% / 10%;
 	transform: translateY(0em);
 	transition: .8s ease-in-out;
-	/* position: relative; */
 	margin-bottom: 0px;
 }
 
@@ -305,14 +310,83 @@
 	transform: scale(.6);
 }
 
-/* 
+.attendance-register-container-mobile {
+	display: none;
+}
+
+
 @media (max-width: 1200px) {
-	.attendance-register-content {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 90vw;
-		border: 5px solid rgb(0, 94, 128);
+	.attendance-register-container-desktop {
+		display: none;
 	}
 
-} */
+	.attendance-register-container-mobile {
+		position: relative;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100vw;
+		/* height: 100vh; */
+		overflow-y: hidden !important;
+	}
+
+	.form {
+		display: flex;
+		justify-content: center;
+		padding: 0;
+		align-items: center;
+		width: 100%;
+		border: solid blue 2px;
+	}
+
+	.main {
+		/* display: flex; */
+		border: solid red 2px;
+	}
+
+
+
+	.translated-mobile {
+		padding-top: 6%;
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: start;
+		flex-direction: column;
+		bottom: -210px;
+		height: 300px;
+		width: 100%;
+		background-color: rgb(184, 12, 12);
+		border-radius: 60% / 10%;
+	    transition: .8s ease-in-out;
+	}
+
+	.translated-mobile-open{
+		bottom: 10%;
+		transition: .8s ease-in-out;
+	}
+
+	.cam {
+		width: 280px !important;
+	}
+
+	.clock {
+		font-size: 2.5em;
+		color: rgb(163, 190, 50);
+	}
+
+	.translated-tittle{
+		font-size: 2rem;
+		color: #fff !important;
+		margin-bottom: 10%;
+	}
+
+	.translated-content{
+		border: 1px solid purple;
+		width: 100%;
+	}
+
+
+}

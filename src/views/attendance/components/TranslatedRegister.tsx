@@ -46,19 +46,16 @@ const TranslatedRegister  = () => {
         <div>
             <Formik initialValues={initialValues} onSubmit={handleSubmitTranslated}>
                 <Form>
-                    <label className="label" htmlFor="document">
-                        Documento:
-                    </label>
                     <Field
                         type="number"
                         id="document"
                         name="document"
                         placeholder="Ingresa aquí tu documento"
                         style={{
-                            width: '80%',
+                            width: '100%',
                             border: '1px solid #b3b3b3',
                             borderRadius: '5px',
-                            padding: '5px',
+                            padding: '10px',
                         }}
                     />
                     <ErrorMessage name="document" component="div" />

@@ -16,7 +16,7 @@ const Clock = () => {
 
   return (
     <div>
-      <h2 style={{fontSize:"2.5rem", color:"#ffffff"}}>{time.toLocaleTimeString()}.</h2>
+      <h2 className='clock'>{time.toLocaleTimeString()}.</h2>
     </div>
   );
 };

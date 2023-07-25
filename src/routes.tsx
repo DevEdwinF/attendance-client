@@ -1,5 +1,5 @@
 import { Icon } from '@chakra-ui/react';
-import { MdBarChart, MdPerson, MdHome, MdLock, MdOutlineShoppingCart, MdContactSupport, MdDone, MdOutlineCalendarMonth, MdAccountCircle} from 'react-icons/md';
+import { MdBarChart, MdPerson, MdHome, MdLock, MdOutlineShoppingCart, MdContactSupport, MdDone, MdOutlineCalendarMonth, MdAccountCircle, MdOutlineDashboard, MdOutlinePeopleOutline} from 'react-icons/md';
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -11,10 +11,10 @@ import Collaborators from 'views/admin/Collaborators';
 
 const routes = [
 	{
-		name: 'Panel de control',
+		name: 'Dashboard',
 		layout: '/admin',
 		path: '/default',
-		icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
+		icon: <Icon as={MdOutlineDashboard} width='20px' height='20px' color='inherit' />,
 		component: MainDashboard
 	},
 	{
@@ -27,7 +27,7 @@ const routes = [
 	{
 		name: 'Collaborators',
 		layout: '/admin',
-		icon: <Icon as={MdAccountCircle} width='20px' height='20px' color='inherit' />,
+		icon: <Icon as={MdOutlinePeopleOutline} width='20px' height='20px' color='inherit' />,
 		path: '/collaborators',
 		component: Collaborators
 	},
