@@ -11,6 +11,8 @@ import { History } from 'history';
 import './index.css';
 import { AuthService } from 'services/AuthService';
 import { MdArrowCircleLeft } from 'react-icons/md';
+import { Image } from '@chakra-ui/react';
+import AirplanePapper from 'assets/img/imgUtil/airplane-papper.svg'
 
 interface FormValues {
   document: number | null;
@@ -38,8 +40,9 @@ const initialValuesLogin: loginValues = {
 
 const MyForm = () => {
   const webcamRef = useRef(null);
-  const [translated, setTranslated] = useState(false);
-  const [translatedM, setTranslatedM] = useState(false)
+  const [translatedDialog, SetTranslatedDialog] = useState(false);
+  const [loginAdminContainer, setLoginAdminContainer] = useState(false);
+  const [translatedMobile, setTranslatedMobile] = useState(false)
   const history: History = useHistory();
 
   const handleLogin = async (values: loginValues) => {
@@ -58,15 +61,15 @@ const MyForm = () => {
   };
 
   const handleCloseDialog = () => {
-    setTranslated(false);
-    console.log('handleCloseDialog is being called');
-    console.log(`translated state after handleCloseDialog: ${translated}`);
+    setLoginAdminContainer(false);
   };
 
+  const handleTranslatedDialog = () =>{
+    SetTranslatedDialog(!translatedDialog);
+  }
+
   const handleCloseDialogMobile = () => {
-    setTranslatedM(false);
-    console.log('handleCloseDialog is being called');
-    console.log(`translated state after handleCloseDialog: ${translatedM}`);
+    setTranslatedMobile(false);
   };
 
   const handleSubmit = async (values: FormValues) => {
@@ -91,18 +94,18 @@ const MyForm = () => {
   };
 
 
-  const handleTranslatedClick = () => {
-    setTranslated(true);
+  const handleLoginAdminClick = () => {
+    setLoginAdminContainer(true);
   };
 
-  const handleTranslatedMClick = () =>{
-    setTranslatedM(!translatedM);
+  const handleTranslatedMobileClick = () => {
+    setTranslatedMobile(!translatedMobile);
   }
 
   return (
     <>
-      <section className="attendance-register-container-desktop">
-        <label className="btn-translated" aria-hidden="true" onClick={handleTranslatedClick}>
+      <div className="attendance-register-container-desktop">
+        <label className="btn-translated" aria-hidden="true" onClick={handleLoginAdminClick}>
           <p>Ingreso administrador</p>
         </label>
         <div className="attendance-register-content">
@@ -112,11 +115,10 @@ const MyForm = () => {
           </div>
           <div className="form">
             <div className="main">
-              <input type="checkbox" id="chk" aria-hidden="true" />
-              <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                <Form>
-                  <div className="signup">
-                    <label className="label title" htmlFor="chk" aria-hidden="true">
+              <div className="signup">
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                  <Form>
+                    <label className="label title" aria-hidden="true">
                       <h2 className="hi-tittle">Hola,</h2>
                     </label>
                     <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
@@ -128,8 +130,119 @@ const MyForm = () => {
                       id="document"
                       name="document"
                       placeholder="Ingresa aquí tu documento"
+                      className="field-style"
+                    />
+                    <ErrorMessage name="document" component="div" />
+
+                    <label className="label" htmlFor="state">
+                      ¿Qué vas a registrar?
+                    </label>
+                    <Field
+                      as="select"
+                      id="state"
+                      name="state"
+                      className="field-style"
+                    >
+                      <option className='select-text' value="">Seleccionar...</option>
+                      <option value="arrival">Llegada</option>
+                      <option value="departure">Salida</option>
+                    </Field>
+                    <label className="label" htmlFor="location">
+                      ¿Dónde te encuentras?
+                    </label>
+                    <Field
+                      as="select"
+                      id="location"
+                      name="location"  
+                      className="field-style"  
+                    >
+                      <option value="">Seleccionar...</option>
+                      <option value="casa">Casa</option>
+                      <option value="oficina">Oficina</option>
+                    </Field>
+                    <ErrorMessage name="state" component="div" />
+                    <button className="btn-attendance" type="submit">
+                      Enviar registro 
+                     
+                      &nbsp
+
+                      <Image src={AirplanePapper}/>
+                    </button>
+                  </Form>
+                </Formik>
+
+              </div>
+            </div>
+            <div className={`translated-container${translatedDialog ? ' translated-container-open' : ''}`}>
+              <label className="translated-tittle" aria-hidden="true" onClick={handleTranslatedDialog}>
+                <h2>Traslados</h2>
+              </label>
+              <TranslatedRegister />
+            </div>
+          </div>
+          ----
+        </div>
+        <div className={`login-admin-container${loginAdminContainer ? ' login-admin-container-open' : ''}`}>
+          <div className='login-admin-content'>
+            <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
+              <Form className='login-admin-form'>
+                <label className='btn-cancel' onClick={handleCloseDialog}>
+                  <MdArrowCircleLeft className='icon-cancel' />
+                </label>
+                <label className='login-admin-tittle'>
+                  Ingreso Administrador
+                </label>
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Correo smart"
+                  className="field-style field-email"
+                />
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Contraseña"
+                  className="field-style field-password"
+                />
+                <button className="btn-login-admin" type="submit">
+                  Entrar
+                </button>
+
+              </Form>
+            </Formik>
+          </div>
+
+
+        </div>
+
+      </div>
+
+      <div className='attendance-register-container-mobile'>
+        <div className='attendance-register-content-mobile'>
+          <div className="cam-content">
+            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" className="cam" />
+            <Clock />
+          </div>
+          <div className="form-mobile">
+            <div className="main">
+              <div className="signup">
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                  <Form>
+                    <label className="label title" htmlFor="chk" aria-hidden="true">
+                      <h2 className="hi-tittle">Hola,</h2>
+                    </label>
+                    <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
+
+                    <label className="label" htmlFor="document">
+                      Documento:
+                    </label>
+                    <Field
+                      type="number"
+                      id="document"
+                      name="document"
+                      placeholder="Ingresa aquí tu documento"
                       style={{
-                        width: '80%',
+                        width: '100%',
                         border: '1px solid #b3b3b3',
                         borderRadius: '5px',
                         padding: '5px',
@@ -145,7 +258,7 @@ const MyForm = () => {
                       id="state"
                       name="state"
                       style={{
-                        width: '80%',
+                        width: '100%',
                         border: '1px solid #b3b3b3',
                         borderRadius: '5px',
                         padding: '5px',
@@ -163,7 +276,7 @@ const MyForm = () => {
                       id="location"
                       name="location"
                       style={{
-                        width: '80%',
+                        width: '100%',
                         border: '1px solid #b3b3b3',
                         borderRadius: '5px',
                         padding: '5px',
@@ -178,142 +291,31 @@ const MyForm = () => {
                       Enviar registro
                     </button>
 
-                  </div>
-                </Form>
-              </Formik>
-              <div className="login">
-                <label className="label login-tittle" htmlFor="chk" aria-hidden="true">
-                  Translados
-                </label>
-                <TranslatedRegister />
+                  </Form>
+                </Formik>
               </div>
             </div>
           </div>
-        </div>
-        <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
-          <Form>
-            <div className={`translated${translated ? ' translated-open' : ''}`}>
-              <label className='btn-cancel' onClick={handleCloseDialog}>
-                <MdArrowCircleLeft className='icon-cancel' />
-              </label>
-              <label className='login-admin-tittle'>
-                Ingreso <br />Administrador
-              </label>
-              <Field
-                className="input input-login"
-                type="email"
-                name="email"
-                placeholder="Correo smart"
-              />
-              <Field
-                className="input input-login"
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-              />
-              <button className="btn-login-admin" type="submit">
-                Entrar
-              </button>
-            </div>
-          </Form>
-        </Formik>
-      </section>
-
-      {/* ------------------------- */}
-      <section className='attendance-register-container-mobile'>
-
-        <label className="btn-translated" aria-hidden="true" onClick={handleTranslatedClick}>
-          <p>Ingreso administrador</p>
-        </label>
-        <div className='attendance-register-content-mobile'>
-          <div className="form">
-            <div className="main">
-              <input type="checkbox" id="chk" aria-hidden="true" />
-              <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                <Form>
-                  <div className="signup">
-                    <label className="label title" htmlFor="chk" aria-hidden="true">
-                      <h2 className="hi-tittle">Hola,</h2>
-                    </label>
-                    <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
-                    <div className="cam-content">
-                      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" className="cam" />
-                      <Clock />
-                    </div>
-                    <label className="label" htmlFor="document">
-                      Documento:
-                    </label>
-                    <Field
-                      type="number"
-                      id="document"
-                      name="document"
-                      placeholder="Ingresa aquí tu documento"
-                      style={{
-                        width: '80%',
-                        border: '1px solid #b3b3b3',
-                        borderRadius: '5px',
-                        padding: '5px',
-                      }}
-                    />
-                    <ErrorMessage name="document" component="div" />
-
-                    <label className="label" htmlFor="state">
-                      ¿Qué vas a registrar?
-                    </label>
-                    <Field
-                      as="select"
-                      id="state"
-                      name="state"
-                      style={{
-                        width: '80%',
-                        border: '1px solid #b3b3b3',
-                        borderRadius: '5px',
-                        padding: '5px',
-                      }}
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="arrival">Llegada</option>
-                      <option value="departure">Salida</option>
-                    </Field>
-                    <label className="label" htmlFor="location">
-                      ¿Dónde te encuentras?
-                    </label>
-                    <Field
-                      as="select"
-                      id="location"
-                      name="location"
-                      style={{
-                        width: '80%',
-                        border: '1px solid #b3b3b3',
-                        borderRadius: '5px',
-                        padding: '5px',
-                      }}
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="casa">Casa</option>
-                      <option value="oficina">Oficina</option>
-                    </Field>
-                    <ErrorMessage name="state" component="div" />
-                    <button className="button-attendance" type="submit">
-                      Enviar registro
-                    </button>
-
-                  </div>
-                </Form>
-              </Formik>
-
-            </div>
+          <div className='btn-section-mobile'>
+            <button className='btn-translated-mobile' onClick={handleTranslatedMobileClick}>
+              Translados
+            </button>
+            <button className='btn-admin-login-mobile'>
+              Administrador
+            </button>
           </div>
         </div>
-        <div className='translated-content'>
-        <div className={`translated-mobile${translatedM ? ' translated-mobile-open' : ''}`}>
-          <label className="translated-tittle"  aria-hidden="true" onClick={handleTranslatedMClick}>
+        <div className={`translated-content-mobile${translatedMobile ? ' translated-content-mobile-open' : ''}`}>
+          <label className='btn-cancel-login' onClick={handleTranslatedMobileClick}>
+            <MdArrowCircleLeft className='icon-cancel' />
+          </label>
+          <label className="translated-tittle" aria-hidden="true" onClick={handleTranslatedMobileClick}>
             Translados
           </label>
           <TranslatedRegister />
         </div>
-        </div>
-      </section>
+      </div>
+
     </>
   );
 };

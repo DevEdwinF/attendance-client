@@ -51,15 +51,10 @@ const TranslatedRegister  = () => {
                         id="document"
                         name="document"
                         placeholder="Ingresa aquí tu documento"
-                        style={{
-                            width: '100%',
-                            border: '1px solid #b3b3b3',
-                            borderRadius: '5px',
-                            padding: '10px',
-                        }}
+                        className="field-style"
                     />
                     <ErrorMessage name="document" component="div" />
-                    <button className="button-attendance" type="submit">
+                    <button className="btn-attendance" type="submit">
                         Enviar registro
                     </button>
                 </Form>
