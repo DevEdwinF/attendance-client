@@ -163,9 +163,6 @@ const MyForm = () => {
                     <ErrorMessage name="state" component="div" />
                     <button className="btn-attendance" type="submit">
                       Enviar registro 
-                     
-                      &nbsp
-
                       <Image src={AirplanePapper}/>
                     </button>
                   </Form>
@@ -207,7 +204,6 @@ const MyForm = () => {
                 <button className="btn-login-admin" type="submit">
                   Entrar
                 </button>
-
               </Form>
             </Formik>
           </div>
@@ -315,7 +311,6 @@ const MyForm = () => {
           <TranslatedRegister />
         </div>
       </div>
-
     </>
   );
 };

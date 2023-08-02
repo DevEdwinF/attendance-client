@@ -1,7 +1,9 @@
 import axios from "axios";
 import { HeaderPost } from "./Header";
+import { Api } from "config/Api";
 
-const baseUrl = 'http://localhost:8080/api/stats'
+const endPoint = '/stats';
+const baseUrl = Api.url + endPoint;
 
 export const StatService = {
     getAllStats: async () => {

@@ -2,8 +2,10 @@ import axios from 'axios';
 import { Collaborator, Schedule } from '../views/admin/Collaborators/components/CollaboratorsTable';
 import Swal from 'sweetalert2';
 import { HeaderPost } from './Header';
+import { Api } from 'config/Api';
 
-const baseUrl = 'http://localhost:8080/api/schedule';
+const endPoint = '/schedule';
+const baseUrl = Api.url + endPoint;
 
 export const ScheduleService = {
     getAllSchedule: async () => {
