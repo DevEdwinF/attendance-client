@@ -87,7 +87,8 @@ const CollaboratorTable = () => {
                 <Column field="document" header="Documento"></Column>
                 <Column field="f_name" header="Nombre"></Column>
                 <Column field="l_name" header="Apellido"></Column>
-                <Column field="email" header="Correo"></Column>
+                <Column field="email" header="Correo personal"></Column>
+                <Column field="bmail" header="Correo smart"></Column>
                 <Column field="position" header="Cargo"></Column>
                 <Column field="fk_collaborator_id" header=""></Column>
 

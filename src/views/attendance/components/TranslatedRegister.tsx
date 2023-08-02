@@ -3,18 +3,18 @@ import { AttendanceService } from 'services/AttendanceService';
 import Swal from 'sweetalert2';
 
 interface FormValues {
-    document: number;
+    document: string;
 }
 
 const initialValues: FormValues = {
-    document: null,
+    document: '',
 }
 
 const TranslatedRegister  = () => {
     const handleSubmitTranslated = async (values: FormValues, formikHelpers: any) => {
         const { resetForm } = formikHelpers;
 
-        if (values.document === 0) {
+        if (values.document === '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -38,7 +38,7 @@ const TranslatedRegister  = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Verifica si el documento está escrito correctamente',
+                text: 'Ocurrió un error',
             });
         }
     };
@@ -47,7 +47,7 @@ const TranslatedRegister  = () => {
             <Formik initialValues={initialValues} onSubmit={handleSubmitTranslated}>
                 <Form>
                     <Field
-                        type="number"
+                        type="text"
                         id="document"
                         name="document"
                         placeholder="Ingresa aquí tu documento"
