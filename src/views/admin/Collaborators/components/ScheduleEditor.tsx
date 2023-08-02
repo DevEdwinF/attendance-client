@@ -41,11 +41,12 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
 
 
   useEffect(() => {
+    console.log('Collaborator in ScheduleEditor:', collaborator);
     const initialSchedules = daysOfWeek.map(day => {
       const existingSchedule = collaborator.schedules.find(schedule => schedule.day === day);
       return existingSchedule || {
         id: 0,
-        fk_collaborators_document: collaborator.document,
+        fk_collaborator_id: 1, // Corrige esta línea
         day,
         arrival_time: '',
         departure_time: '',
@@ -54,14 +55,16 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
     setSchedules(initialSchedules);
   }, [collaborator]);
 
-
-
   const handleSave = async () => {
     try {
       setLoading(true);
-
-      const response = await ScheduleService.assignSchedule(schedules);
-      onSave({ ...collaborator, schedules });
+  
+      // Usa la variable de estado local "schedules" aquí en lugar de collaborator.schedules
+      await ScheduleService.assignSchedule(schedules);
+  
+      // Agrega fk_collaborator_id al objeto collaborator antes de llamar a onSave
+      const updatedCollaborator = { ...collaborator, schedules, fk_collaborator_id: collaborator.id };
+      onSave(updatedCollaborator);
       onClose();
     } catch (error) {
       console.error(error);

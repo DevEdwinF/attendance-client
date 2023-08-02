@@ -5,7 +5,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { CollaboratorService } from 'services/CollaboratorService';
 import { InputText } from 'primereact/inputtext';
-import { ScheduleEditor } from './ScheduleEditor'; 
+import { ScheduleEditor } from './ScheduleEditor';
 import { MdEdit } from 'react-icons/md';
 
 
@@ -15,22 +15,21 @@ export interface Schedule {
     day: string;
     arrival_time: string;
     departure_time: string;
-    fk_collaborators_document: number;
+    fk_collaborator_id: any;
 }
 
 export interface Collaborator {
     document: number;
-    name: string;
+    f_name: string;
+    l_name: string;
     email: string;
     position: string;
     leader: string;
     date: string;
-    id: number; // Make it required
-    fk_collaborators_document: number; // Make it required
-    schedules?: Schedule[]; // Agregamos un array de Schedule en la interfaz de Collaborator
+    id: number;
+    fk_collaborator_id: number;
+    schedules: Schedule[];
 }
-
-
 
 const CollaboratorTable = () => {
     const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
@@ -45,35 +44,34 @@ const CollaboratorTable = () => {
     }, []);
 
     const updateCollaborator = async (updatedCollaborator: Collaborator) => {
-
+        
     }
 
     const actionBodyTemplate = (rowData: Collaborator) => {
         return (
-            <Button
-                rounded
-                text
-                severity="success"
-                aria-label="Editar"
-                className="custom-edit-button"
-                onClick={async () => {
-                    try {
-                        const schedules = await CollaboratorService.getCollaboratorSchedule(rowData.document);
-                        if (schedules) {
-                            setEditingCollaborator({ ...rowData, schedules, id: rowData.id, fk_collaborators_document: rowData.fk_collaborators_document });
-                        } else {
-                            throw new Error('No se pudieron obtener los horarios');
-                        }
-                    } catch (error) {
-                        console.error(error);
-                    }
-                }}
-            >
-                <MdEdit color='gray' />
-            </Button>
+          <Button
+            rounded
+            text
+            severity="success"
+            aria-label="Editar"
+            className="custom-edit-button"
+            onClick={async () => {
+              try {
+                const schedules = await CollaboratorService.getCollaboratorSchedule(rowData.document);
+                if (schedules) {
+                    setEditingCollaborator({ ...rowData, schedules });
+                } else {
+                  throw new Error('No se pudieron obtener los horarios');
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
+            <MdEdit color='gray' />
+          </Button>
         );
-    };
-    
+      };
 
     const header = (
         <div className="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -85,11 +83,14 @@ const CollaboratorTable = () => {
 
     return (
         <div className="card">
-            <DataTable style={{fontSize:".85em"}} value={collaborators} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}>
+            <DataTable style={{ fontSize: ".85em" }} value={collaborators} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}>
                 <Column field="document" header="Documento"></Column>
-                <Column field="name" header="Nombre"></Column>
+                <Column field="f_name" header="Nombre"></Column>
+                <Column field="l_name" header="Apellido"></Column>
                 <Column field="email" header="Correo"></Column>
                 <Column field="position" header="Cargo"></Column>
+                <Column field="fk_collaborator_id" header=""></Column>
+
                 <Column body={actionBodyTemplate}></Column>
             </DataTable>
 

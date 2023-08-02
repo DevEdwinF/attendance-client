@@ -15,14 +15,14 @@ import { Image } from '@chakra-ui/react';
 import AirplanePapper from 'assets/img/imgUtil/airplane-papper.svg'
 
 interface FormValues {
-  document: number | null;
+  document: string | null;
   state: string;
   location: string;
   photo: string;
 }
 
 const initialValues: FormValues = {
-  document: null,
+  document: '',
   state: '',
   location: '',
   photo: '',

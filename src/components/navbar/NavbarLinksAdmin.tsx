@@ -31,7 +31,8 @@ import Auth from 'layouts/auth';
 import { AuthService } from 'services/AuthService';
 
 interface UserInfo {
-	name: string;
+	fName: string;
+	lName: string;
 	role: string;
 	roleName: string;
 }
@@ -163,7 +164,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 					<Avatar
 						_hover={{ cursor: 'pointer' }}
 						color='white'
-						name={userInfo?.name} // Use the 'name' property of the 'userInfo' object, not the 'UserInfo' type
+						name={userInfo?.fName} // Use the 'name' property of the 'userInfo' object, not the 'UserInfo' type
 						bg='#b90c00'
 						size='sm'
 						w='40px'
@@ -183,7 +184,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							fontWeight='700'
 							color={textColor}
 						>
-							👋&nbsp; Hey,&nbsp; {userInfo?.name && userInfo.name.split(' ')[0]}
+							👋&nbsp; Hey,&nbsp; {userInfo?.fName && userInfo.fName.split(' ')[0] }
 							<br />
 							{userInfo?.roleName}
 						</Text>

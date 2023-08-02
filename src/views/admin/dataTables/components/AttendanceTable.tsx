@@ -14,7 +14,7 @@ import '../../../../assets/css/App.css';
 import { formatDate } from 'util/DateUtil';
 
 interface Colaborator {
-  document: number;
+  document: string;
   name: string;
   email: string;
   location: string;
@@ -84,7 +84,8 @@ const AttendanceTable = () => {
         <DataTable style={{fontSize:".85em"}} value={attendance} header={header} footer={footer} className={tableClass}>
           <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
           <Column field="document" header="Documento"></Column>
-          <Column field="name" header="Nombre"></Column>
+          <Column field="f_name" header="Nombre"></Column>
+          <Column field="l_name" header="Apellido"></Column>
           <Column field="email" header="Correo"></Column>
           <Column field="Location" header="Lugar"></Column>
           <Column field="arrival" header="Llegada"></Column>

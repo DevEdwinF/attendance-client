@@ -6,7 +6,7 @@ import { HeaderPost } from "./Header";
 const baseUrl = 'http://localhost:8080/api/attendance';
   
 export const AttendanceService = {
-  validate: async (document: number) => {
+  validate: async (document: any) => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/validate/${document}`);
       return response.data;
@@ -20,7 +20,7 @@ export const AttendanceService = {
       throw new Error("Error al validar");
     }
   },
-  register: async (data: { document: number; state: string; location:string; photo: string }) => {
+  register: async (data: { document: string; state: string; location:string; photo: string }) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
       showSuccessAlert();
