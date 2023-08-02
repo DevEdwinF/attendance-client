@@ -2,7 +2,7 @@ import axios from "axios";
 import { HeaderPost } from "./Header";
 import { Api } from "config/Api";
 
-const endPoint = '/stats';
+const endPoint = '/api/stats';
 const baseUrl = Api.url + endPoint;
 
 export const StatService = {
