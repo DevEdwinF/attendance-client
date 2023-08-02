@@ -73,7 +73,7 @@ const MyForm = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
-    if (values.document === null || values.state === '') {
+    if (values.document === '' || values.state === '') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -126,7 +126,7 @@ const MyForm = () => {
                       Documento:
                     </label>
                     <Field
-                      type="number"
+                      type="text"
                       id="document"
                       name="document"
                       placeholder="Ingresa aquí tu documento"
