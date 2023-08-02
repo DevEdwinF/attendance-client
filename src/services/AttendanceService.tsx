@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { HeaderPost } from "./Header";
 import { Api } from "config/Api";
 
-const endPoint = '/attendance';
+const endPoint = '/api/attendance';
 const baseUrl = Api.url + endPoint;
   
 export const AttendanceService = {
