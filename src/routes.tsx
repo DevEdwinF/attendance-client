@@ -5,6 +5,7 @@ import { MdBarChart, MdPerson, MdHome, MdLock, MdOutlineShoppingCart, MdContactS
 import MainDashboard from 'views/admin/default';
 import DataTables from 'views/admin/dataTables';
 import Collaborators from 'views/admin/Collaborators';
+import UserManage from 'views/admin/usersManage';
 
 
 
@@ -30,6 +31,13 @@ const routes = [
 		icon: <Icon as={MdOutlinePeopleOutline} width='20px' height='20px' color='inherit' />,
 		path: '/collaborators',
 		component: Collaborators
+	},
+	{
+		name: 'Users',
+		layout: '/admin',
+		icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+		path: '/users',
+		component: UserManage
 	},
 
 ];

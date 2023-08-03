@@ -142,7 +142,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
           className={tableClass}
           first={first}
           rows={rows}
-          filterDisplay="row"
+          // filterDisplay="row"
           onPage={onPage}
         >
           <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>

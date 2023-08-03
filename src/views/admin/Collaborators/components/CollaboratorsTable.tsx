@@ -23,6 +23,7 @@ export interface Collaborator {
   f_name: string;
   l_name: string;
   email: string;
+  bmail: string;
   position: string;
   leader: string;
   date: string;
@@ -43,6 +44,7 @@ const CollaboratorTable = () => {
     f_name: '',
     l_name: '',
     email: '',
+    bmail: '',
     position: '',
     leader: '',
   });
@@ -117,6 +119,7 @@ const CollaboratorTable = () => {
     f_name: 'Nombre',
     l_name: 'Apellido',
     email: 'Correo personal',
+    bmail: 'Correo smart',
     position: 'Cargo',
     leader: 'Líder',
     date: 'Fecha',                
@@ -173,7 +176,7 @@ const CollaboratorTable = () => {
       footer={footer}
       first={first}
       rows={rows}
-      filterDisplay="row"
+      // filterDisplay="row"
       onPage={onPage}
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
     >
@@ -206,10 +209,10 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
-    field="email"
-    header="Correo personal"
+    field="bmail"
+    header="Correo smart"
     filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('email')} // Use filterElement to provide custom filter template
+    filterElement={filterTemplate('bmail')} // Use filterElement to provide custom filter template
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
@@ -229,11 +232,13 @@ const CollaboratorTable = () => {
 <Column
     field="date"
     header="Fecha"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('date')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('date')} 
     filterPlaceholder="Filtrar por fecha"
     body={(rowData) => formatDate(rowData.date)}
 />
+<Column body={actionBodyTemplate} style={{ width: '3rem' }} />
+{/*  */}
     </DataTable>
       <Paginator
         first={first}

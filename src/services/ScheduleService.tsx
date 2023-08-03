@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { HeaderPost } from './Header';
 import { Api } from 'config/Api';
 
-const endPoint = '/schedule';
+const endPoint = '/api/schedule';
 const baseUrl = Api.url + endPoint;
 
 export const ScheduleService = {
