@@ -1,3 +1,4 @@
+// UsersTable.tsx
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -5,7 +6,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
 import { UserService } from 'services/UserService';
-import EditUserComponent from './UsersEditor';
+import EditUserComponent, { EditUserUserProps } from './UsersEditor';
 
 interface User {
     id: number;
@@ -14,12 +15,11 @@ interface User {
     f_name: string;
     l_name: string;
     role: string;
-    role_name: string;
 }
 
 export default function UsersTable() {
     const [users, setUsers] = useState<User[]>([]);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [editingUser, setEditingUser] = useState<User | null>(null);
     const [displayDialog, setDisplayDialog] = useState(false);
 
     useEffect(() => {
@@ -27,8 +27,23 @@ export default function UsersTable() {
     }, []);
 
     const editUser = (user: User) => {
-        setSelectedUser(user);
+        setEditingUser(user);
         setDisplayDialog(true);
+    };
+
+    const updateUser = async (editedUser: User) => {
+        try {
+            const message = await UserService.updateUser(editedUser);
+            console.log(message); // Puedes mostrar un mensaje de éxito si lo deseas
+            // Actualiza el estado de los usuarios con los datos actualizados
+            setUsers(prevUsers =>
+                prevUsers.map(prevUser => (prevUser.id === editedUser.id ? editedUser : prevUser))
+            );
+            setEditingUser(null); // Cierra el diálogo de edición
+        } catch (error) {
+            console.error('Error al actualizar el usuario:', error);
+            // Puedes mostrar un mensaje de error si lo deseas
+        }
     };
 
     const deleteUser = (user: User) => {
@@ -60,18 +75,13 @@ export default function UsersTable() {
                 <Column body={actionBodyTemplate} style={{ width: '8rem' }} />
             </DataTable>
 
-            <Dialog visible={displayDialog} header="Editar usuario" onHide={onHideDialog}>
-                {selectedUser && (
-                    <EditUserComponent
-                        user={selectedUser}
-                        onSave={(updatedUser) => {
-                            setUsers(prevUsers => prevUsers.map(user => user.id === updatedUser.id ? updatedUser : user));
-                            setDisplayDialog(false);
-                        }}
-                        onCancel={onHideDialog}
-                    />
-                )}
-            </Dialog>
+            {displayDialog && editingUser && (
+                <EditUserComponent
+                    user={editingUser}
+                    onSave={updateUser}
+                    onClose={() => setEditingUser(null)}
+                />
+            )}
         </div>
     );
 }

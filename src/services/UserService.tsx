@@ -31,7 +31,7 @@ export const UserService ={
     },
     updateUser: async(data: any) => {
         try {
-            const response: AxiosResponse = await axios.put(`${baseUrl}/update`, data);
+            const response: AxiosResponse = await axios.patch(`${baseUrl}/update`, data);
             return response.data.message;
         } catch (error) {
             throw error

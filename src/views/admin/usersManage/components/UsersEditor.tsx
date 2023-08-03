@@ -1,6 +1,8 @@
+// UsersEditor.tsx
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Dialog } from 'primereact/dialog';
 
 interface User {
     id: number;
@@ -9,17 +11,17 @@ interface User {
     f_name: string;
     l_name: string;
     role: string;
-    role_name: string;
+    password?: string; // Agrega la propiedad password como opcional
 }
 
-interface EditUserComponentProps {
+export interface EditUserUserProps {
     user: User;
-    onSave: (user: User) => void;
-    onCancel: () => void;
+    onSave: (editedUser: User) => void; // Cambia el nombre del parámetro a 'editedUser'
+    onClose: () => void;
 }
 
-const EditUserComponent: React.FC<EditUserComponentProps> = ({ user, onSave, onCancel }) => {
-    const [editedUser, setEditedUser] = useState<User>(user);
+const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose }) => {
+    const [editedUser, setEditedUser] = useState<User>({ ...user, password: '' });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -34,35 +36,41 @@ const EditUserComponent: React.FC<EditUserComponentProps> = ({ user, onSave, onC
     };
 
     return (
-        <div>
+        <Dialog visible={true} style={{ width: '45vw' }} header="Editar usuarios" onHide={onClose}>
             <div>
-                <span>Documento:</span>
-                <InputText name="document" value={editedUser.document} onChange={handleInputChange} />
-            </div>
-            <div>
-                <span>Correo:</span>
-                <InputText name="email" value={editedUser.email} onChange={handleInputChange} />
-            </div>
-            <div>
-                <span>Nombre:</span>
-                <InputText name="f_name" value={editedUser.f_name} onChange={handleInputChange} />
-            </div>
-            <div>
-                <span>Apellido:</span>
-                <InputText name="l_name" value={editedUser.l_name} onChange={handleInputChange} />
-            </div>
-            <hr />
-            <h3 style={{ textAlign:'center' }}>Datos de acceso</h3>
-            <div>
-                <span>Rol:</span>
-                <InputText name="role" value={editedUser.role} onChange={handleInputChange} />
-            </div>
+                <div>
+                    <span>Documento:</span>
+                    <InputText name="document" value={editedUser.document} onChange={handleInputChange} />
+                </div>
+                <div>
+                    <span>Correo:</span>
+                    <InputText name="email" value={editedUser.email} onChange={handleInputChange} />
+                </div>
+                <div>
+                    <span>Contraseña:</span>
+                    <InputText type="password" name="password" value={editedUser.password} onChange={handleInputChange} />
+                </div>
+                <div>
+                    <span>Nombre:</span>
+                    <InputText name="f_name" value={editedUser.f_name} onChange={handleInputChange} />
+                </div>
+                <div>
+                    <span>Apellido:</span>
+                    <InputText name="l_name" value={editedUser.l_name} onChange={handleInputChange} />
+                </div>
+                <hr />
+                <h3 style={{ textAlign: 'center' }}>Datos de acceso</h3>
+                <div>
+                    <span>Rol:</span>
+                    <InputText name="role" value={editedUser.role} onChange={handleInputChange} />
+                </div>
 
-            <div>
-                <Button label="Guardar" onClick={handleSave} />
-                <Button label="Cancelar" onClick={onCancel} className="p-button-secondary p-ml-2" />
+                <div>
+                    <Button label="Guardar" onClick={handleSave} />
+                    <Button label="Cancelar" onClick={onClose} className="p-button-secondary p-ml-2" />
+                </div>
             </div>
-        </div>
+        </Dialog>
     );
 };
 
