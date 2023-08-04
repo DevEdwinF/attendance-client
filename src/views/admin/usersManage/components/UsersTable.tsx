@@ -7,6 +7,8 @@ import { Dialog } from 'primereact/dialog';
 
 import { UserService } from 'services/UserService';
 import EditUserComponent, { EditUserUserProps } from './UsersEditor';
+import { RiContactsBookUploadLine } from 'react-icons/ri';
+import Swal from 'sweetalert2';
 
 interface User {
     id: number;
@@ -33,22 +35,51 @@ export default function UsersTable() {
 
     const updateUser = async (editedUser: User) => {
         try {
-            const message = await UserService.updateUser(editedUser);
-            console.log(message); // Puedes mostrar un mensaje de éxito si lo deseas
-            // Actualiza el estado de los usuarios con los datos actualizados
+            const response = await UserService.updateUser(editedUser);
+            Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: response,
+                showConfirmButton: false,
+                timer: 1500
+            });
             setUsers(prevUsers =>
                 prevUsers.map(prevUser => (prevUser.id === editedUser.id ? editedUser : prevUser))
             );
-            setEditingUser(null); // Cierra el diálogo de edición
+            setEditingUser(null);
         } catch (error) {
             console.error('Error al actualizar el usuario:', error);
-            // Puedes mostrar un mensaje de error si lo deseas
         }
     };
 
-    const deleteUser = (user: User) => {
-        // Implementar lógica para eliminar el usuario
+    const deleteUser = async (user: User) => {
+        try {
+            /* How create question what eliminated user? */
+            const response =
+                await Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: 'rgb(144, 191, 178)',
+                    cancelButtonColor: 'rgb(196, 48, 48)',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Si, eliminar'
+                })
+            if (response.isConfirmed) {
+                const response = await UserService.deleteUser(user.document);
+                Swal.fire(
+                    '¡Eliminado!',
+                    response,
+                    'success'
+                )
+                setUsers(prevUsers => prevUsers.filter(prevUser => prevUser.id !== user.id));
+            }
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+        }
     };
+
 
     const onHideDialog = () => {
         setDisplayDialog(false);

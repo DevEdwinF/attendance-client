@@ -37,9 +37,9 @@ export const UserService ={
             throw error
         }
     },
-    deleteUser: async(id: any) => {
+    deleteUser: async(document: string) => {
         try {
-            const response: AxiosResponse = await axios.delete(`${baseUrl}/delete/${id}`);
+            const response: AxiosResponse = await axios.delete(`${baseUrl}/delete/${document}`);
             return response.data.message;
         } catch (error) {
             throw error

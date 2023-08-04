@@ -11,12 +11,12 @@ interface User {
     f_name: string;
     l_name: string;
     role: string;
-    password?: string; // Agrega la propiedad password como opcional
+    password?: string;
 }
 
 export interface EditUserUserProps {
     user: User;
-    onSave: (editedUser: User) => void; // Cambia el nombre del parámetro a 'editedUser'
+    onSave: (editedUser: User) => void;
     onClose: () => void;
 }
 
