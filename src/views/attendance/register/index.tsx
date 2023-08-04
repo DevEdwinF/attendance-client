@@ -81,8 +81,10 @@ const MyForm = () => {
       });
     } else {
       const imageSrc = webcamRef.current.getScreenshot();
+      console.log("Imagen capturada:", imageSrc);
       const { document, state, location } = values;
       const photo = imageSrc as string;
+      console.log(photo)
 
       await AttendanceService.validate(document);
       await AttendanceService.register({ document, state, location, photo })
@@ -92,6 +94,8 @@ const MyForm = () => {
         });
     }
   };
+
+  // console.log(photo)
 
 
   const handleLoginAdminClick = () => {

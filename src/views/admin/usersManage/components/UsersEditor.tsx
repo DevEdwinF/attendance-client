@@ -38,7 +38,7 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose 
     return (
         <Dialog visible={true} style={{ width: '45vw' }} header="Editar usuarios" onHide={onClose}>
             <div>
-                <div>
+                <div className='form-update-user'>
                     <span>Documento:</span>
                     <InputText name="document" value={editedUser.document} onChange={handleInputChange} />
                 </div>

@@ -9,6 +9,8 @@ import { UserService } from 'services/UserService';
 import EditUserComponent, { EditUserUserProps } from './UsersEditor';
 import { RiContactsBookUploadLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import { MdDeleteOutline, MdEdit } from 'react-icons/md';
+import CreateUserComponent from './CreateUserComponent';
 
 interface User {
     id: number;
@@ -23,10 +25,22 @@ export default function UsersTable() {
     const [users, setUsers] = useState<User[]>([]);
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [displayDialog, setDisplayDialog] = useState(false);
+    const [displayCreateDialog, setDisplayCreateDialog] = useState(false);
 
     useEffect(() => {
         UserService.getUserAll().then(data => setUsers(data));
     }, []);
+
+     useEffect(() => {
+        if (!displayCreateDialog) {
+            // If the create dialog is closed, fetch the updated list of users
+            UserService.getUserAll().then(data => setUsers(data));
+        }
+    }, [displayCreateDialog]);
+
+    const handleCreateUserClick = () => {
+        setDisplayCreateDialog(true);
+    };
 
     const editUser = (user: User) => {
         setEditingUser(user);
@@ -51,6 +65,8 @@ export default function UsersTable() {
             console.error('Error al actualizar el usuario:', error);
         }
     };
+
+    
 
     const deleteUser = async (user: User) => {
         try {
@@ -87,15 +103,16 @@ export default function UsersTable() {
 
     const actionBodyTemplate = (rowData: User) => {
         return (
-            <>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editUser(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteUser(rowData)} />
-            </>
+            <div style={{display:"flex", flexDirection:"row"}}>
+                <Button  rounded  text severity="success" aria-label="Editar" className="custom-edit-button" onClick={() => editUser(rowData)}><MdEdit color="gray" /></Button>
+                <Button rounded text severity="danger" aria-label="Cancel" onClick={() => deleteUser(rowData)} ><MdDeleteOutline color="gray"/> </Button>
+            </div>
         );
     };
 
     return (
         <div className="card">
+             <Button label="Crear Usuario" onClick={handleCreateUserClick} />
             <DataTable value={users} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="document" header="Documento"></Column>
                 <Column field="email" header="Correo"></Column>
@@ -103,8 +120,14 @@ export default function UsersTable() {
                 <Column field="l_name" header="Apellido"></Column>
                 <Column field="role" header="Rol"></Column>
                 <Column field="role_name" header="Nombre del rol"></Column>
-                <Column body={actionBodyTemplate} style={{ width: '8rem' }} />
+                <Column body={actionBodyTemplate} style={{ width: '8rem', }} />
             </DataTable>
+
+            <CreateUserComponent
+                visible={displayCreateDialog}
+                onHide={() => setDisplayCreateDialog(false)}
+                onCreate={handleCreateUserClick} // Función para crear un nuevo usuario
+            />
 
             {displayDialog && editingUser && (
                 <EditUserComponent

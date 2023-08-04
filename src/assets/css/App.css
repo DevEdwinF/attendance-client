@@ -58,3 +58,12 @@ option {
 .custom-edit-button:hover .p-button-icon {
   color: #007bff; /* Cambia el color del lápiz al color deseado en el hover */
 }
+
+.form-update-user{
+  display: flex;
+  flex-direction: column;
+}
+
+.input-text-update-user {
+  width: 100%;
+}

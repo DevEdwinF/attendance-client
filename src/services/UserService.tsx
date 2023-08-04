@@ -1,18 +1,34 @@
 import axios, { AxiosResponse } from "axios";
 import { Api } from "config/Api"
+import {UserCreate} from "views/admin/usersManage/components/CreateUserComponent"
+
 
 const endPoint = '/api/user'
 const baseUrl = Api.url + endPoint
 
+
 export const UserService ={
-    create: async(data: any) => {
+    create: async (newUser: UserCreate) => { 
         try {
-            const response: AxiosResponse = await axios.post(`${baseUrl}/create`);
-            return response.data.message;
+          const { document, email, password, f_name, l_name, rol } = newUser;
+          const response: AxiosResponse = await axios.post(`${baseUrl}/create`, {
+            document,
+            f_name,
+            l_name,
+            email,
+            password,
+            rol,
+          }); 
+          return response.data.message;
         } catch (error) {
-            throw error
+          if (axios.isAxiosError(error) && error.response && error.response.data && error.response.data.message) {
+            return error.response.data.message;
+          } else {
+            // If the error object doesn't have the expected structure, return a generic error message
+            return 'Error al crear el usuario';
+          }
         }
-    },
+      },
     getUserAll: async() => {
         try {
             const response: AxiosResponse = await axios.get(`${baseUrl}/all`);

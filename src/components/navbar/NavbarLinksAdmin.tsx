@@ -29,7 +29,6 @@ import routes from 'routes';
 import { async } from 'q';
 import Auth from 'layouts/auth';
 import { AuthService } from 'services/AuthService';
-import { EditProfileDialog } from 'views/admin/usersManage/components/EditProfileDialog';
 
 interface UserInfo {
 	fName: string;
@@ -42,25 +41,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 	const { secondary } = props;
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [userInfo, setUserInfo] = useState<UserInfo>()
-	const [displayEditDialog, setDisplayEditDialog] = useState(false);
-  const [editedUserInfo, setEditedUserInfo] = useState<UserInfo>({
-    fName: '',
-    lName: '',
-    role: '',
-    roleName: '',
-  });
 
- const handleEditProfile = () => {
-    if (userInfo) {
-      // Abre el diálogo de edición de perfil solo si tenemos los datos del usuario
-      setEditedUserInfo(userInfo);
-      setDisplayEditDialog(true);
-    }
-  };
-
-  const handleSaveProfile = () => {
-    // ... código de guardado y actualización de perfil anterior ...
-  };
 	const handleLogout = async () => {
 		await AuthService.logout();
 		window.location.href = '/';
@@ -130,42 +111,28 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 			</Flex>
 			<SidebarResponsive routes={routes} />
 			<Menu>
-        <MenuButton p="0px">
-          <Icon
-            mt="6px"
-            as={MdNotificationsNone}
-            color={navbarIcon}
-            w="18px"
-            h="18px"
-            me="10px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p="20px"
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
-          mt="22px"
-          me={{ base: '30px', md: 'unset' }}
-          minW={{ base: 'unset', md: '400px', xl: '450px' }}
-          maxW={{ base: '360px', md: 'unset' }}
-        >
-          <Flex w="100%" mb="20px">
-            <Text fontSize="md" fontWeight="600" color={textColor}>
-              Notificaciones
-            </Text>
-            <Text
-              fontSize="sm"
-              fontWeight="500"
-              color={textColorBrand}
-              ms="auto"
-              cursor="pointer"
-            >
-              Marcar todo como leído
-            </Text>
-          </Flex>
-          {/* <Flex flexDirection='column'>
+				<MenuButton p='0px'>
+					<Icon mt='6px' as={MdNotificationsNone} color={navbarIcon} w='18px' h='18px' me='10px' />
+				</MenuButton>
+				<MenuList
+					boxShadow={shadow}
+					p='20px'
+					borderRadius='20px'
+					bg={menuBg}
+					border='none'
+					mt='22px'
+					me={{ base: '30px', md: 'unset' }}
+					minW={{ base: 'unset', md: '400px', xl: '450px' }}
+					maxW={{ base: '360px', md: 'unset' }}>
+					<Flex w='100%' mb='20px'>
+						<Text fontSize='md' fontWeight='600' color={textColor}>
+							Notificaciones
+						</Text>
+						<Text fontSize='sm' fontWeight='500' color={textColorBrand} ms='auto' cursor='pointer'>
+							Marcar todo como leído
+						</Text>
+					</Flex>
+					{/* <Flex flexDirection='column'>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px='0' borderRadius='8px' mb='10px'>
 							<ItemContent info='Horizon UI Dashboard PRO' />
 						</MenuItem>
@@ -173,105 +140,77 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							<ItemContent info='Horizon Design System Free' />
 						</MenuItem>
 					</Flex> */}
-        </MenuList>
-      </Menu>
-      <Button
-        variant="no-hover"
-        bg="transparent"
-        p="0px"
-        minW="unset"
-        minH="unset"
-        h="18px"
-        w="max-content"
-        onClick={toggleColorMode}
-      >
-        <Icon
-          me="10px"
-          h="18px"
-          w="18px"
-          color={navbarIcon}
-          as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
-        />
-      </Button>
-      <Menu>
-        <MenuButton p="0px">
-          <Avatar
-            _hover={{ cursor: 'pointer' }}
-            color="white"
-            name={userInfo?.fName}
-            bg="#b90c00"
-            size="sm"
-            w="40px"
-            h="40px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p="0px"
-          mt="10px"
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
-        >
-          <Flex w="100%" mb="0px">
-            <Text
-              ps="20px"
-              pt="16px"
-              pb="10px"
-              w="100%"
-              borderBottom="1px solid"
-              borderColor={borderColor}
-              fontSize="sm"
-              fontWeight="700"
-              color={textColor}
-            >
-              👋&nbsp; Hey,&nbsp; {userInfo?.fName && userInfo.fName.split(' ')[0]}
-              <br />
-              {userInfo?.roleName}
-            </Text>
-          </Flex>
-          <Flex flexDirection="column" p="10px">
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              borderRadius="8px"
-              px="14px"
-              onClick={handleEditProfile} // Abre el diálogo de edición de perfil
-            >
-              <Text fontSize="sm">Configuración</Text>
-            </MenuItem>
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              borderRadius="8px"
-              px="14px"
-            >
-              <Text fontSize="sm">Noticias</Text>
-            </MenuItem>
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              color="red.400"
-              borderRadius="8px"
-              px="14px"
-              onClick={handleLogout}
-            >
-              <Text fontSize="sm">Salir</Text>
-            </MenuItem>
-          </Flex>
-        </MenuList>
-      </Menu>
-
-      {/* Diálogo de edición de perfil */}
-      <EditProfileDialog
-        isOpen={displayEditDialog}
-        onClose={() => setDisplayEditDialog(false)}
-        userInfo={editedUserInfo}
-        onSave={handleSaveProfile}
-      />
-    </Flex>
-  );
+				</MenuList>
+			</Menu>
+			<Button
+				variant='no-hover'
+				bg='transparent'
+				p='0px'
+				minW='unset'
+				minH='unset'
+				h='18px'
+				w='max-content'
+				onClick={toggleColorMode}>
+				<Icon
+					me='10px'
+					h='18px'
+					w='18px'
+					color={navbarIcon}
+					as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
+				/>
+			</Button>
+			<Menu>
+				<MenuButton p='0px'>
+					<Avatar
+						_hover={{ cursor: 'pointer' }}
+						color='white'
+						name={userInfo?.fName} // Use the 'name' property of the 'userInfo' object, not the 'UserInfo' type
+						bg='#b90c00'
+						size='sm'
+						w='40px'
+						h='40px'
+					/>
+				</MenuButton>
+				<MenuList boxShadow={shadow} p='0px' mt='10px' borderRadius='20px' bg={menuBg} border='none'>
+					<Flex w='100%' mb='0px'>
+						<Text
+							ps='20px'
+							pt='16px'
+							pb='10px'
+							w='100%'
+							borderBottom='1px solid'
+							borderColor={borderColor}
+							fontSize='sm'
+							fontWeight='700'
+							color={textColor}
+						>
+							👋&nbsp; Hey,&nbsp; {userInfo?.fName && userInfo.fName.split(' ')[0] }
+							<br />
+							{userInfo?.roleName}
+						</Text>
+					</Flex>
+					<Flex flexDirection='column' p='10px'>
+						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
+							<Text fontSize='sm'>Configuración</Text>
+						</MenuItem>
+						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
+							<Text fontSize='sm'>Noticias</Text>
+						</MenuItem>
+						<MenuItem
+							_hover={{ bg: 'none' }}
+							_focus={{ bg: 'none' }}
+							color='red.400'
+							borderRadius='8px'
+							px='14px' onClick={handleLogout}>
+							<Text fontSize='sm'>Salir</Text>
+						</MenuItem>
+					</Flex>
+				</MenuList>
+			</Menu>
+		</Flex>
+	);
 }
+
 HeaderLinks.propTypes = {
 	variant: PropTypes.string,
 	fixed: PropTypes.bool,
