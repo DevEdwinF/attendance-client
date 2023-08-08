@@ -1,8 +1,3 @@
 export const Api = {
-    url: 'http://10.100.0.13:8080'
+    url: 'http://localhost:8080'
   };
-
-  //comment
-
-
-  // Path: src\config\Constants.ts

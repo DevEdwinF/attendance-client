@@ -237,7 +237,7 @@ const MyForm = () => {
                       Documento:
                     </label>
                     <Field
-                      type="number"
+                      type="text"
                       id="document"
                       name="document"
                       placeholder="Ingresa aquí tu documento"

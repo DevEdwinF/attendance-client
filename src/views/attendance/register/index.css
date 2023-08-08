@@ -230,6 +230,7 @@
 	font-size: 1.8em;
 }
 
+/* --------------------------- */
 .icon-cancel {
 	font-size: 1.6em;
 	transition: .3s;
@@ -348,15 +349,9 @@
 	transform: scale(.6);
 }
 
-
-
-
-
-
-
-.attendance-register-container-mobile{
-	display: none;
-}
+	/* .attendance-register-container-mobile{
+			display: none;
+		} */
 
 
 @media (max-width: 748px) {
@@ -365,6 +360,7 @@
 	}
 
 	.attendance-register-container-mobile {
+		overflow-x: hidden;
 		display: flex;
 		justify-content: center;
 		width: 100vw;
