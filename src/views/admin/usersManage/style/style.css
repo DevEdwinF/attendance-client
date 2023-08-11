@@ -1,0 +1,37 @@
+.user-data-content{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+}
+
+.btn-create-user-content{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-create-user{
+    background-color:  #A3BD31;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+}
+
+.btn-cancel-create-user{
+    margin-right: 10px;
+    background-color: #C91212;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+
+}

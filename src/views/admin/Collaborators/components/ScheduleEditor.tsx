@@ -39,7 +39,6 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   const [loading, setLoading] = useState(false);
   const toast = useRef<any>(null);
 
-
   useEffect(() => {
     console.log('Collaborator in ScheduleEditor:', collaborator);
     const initialSchedules = daysOfWeek.map(day => {

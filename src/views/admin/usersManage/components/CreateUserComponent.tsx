@@ -6,6 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { UserService } from 'services/UserService';
 import Swal from 'sweetalert2';
+import '../style/style.css'
 
 export interface UserCreate {
     document: string;
@@ -65,7 +66,7 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
 
     return (
         <Dialog header="Crear Usuario" visible={visible} onHide={onHide}>
-            <div>
+            <div className='user-data-content'>
                 <label>Documento:</label>
                 <InputText value={document} onChange={(e) => setDocument(e.target.value)} />
 
@@ -84,13 +85,17 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
                 <label>Rol:</label>
                 <Dropdown
                     value={role}
-                    options={[1, 2, 3]} // Cambia esto a las opciones reales de roles
+                    options={[1, 2, 3]} 
                     onChange={(e) => setRole(e.value)}
                     placeholder="Seleccionar rol"
                 />
 
-                <Button label="Crear" onClick={handleCreate} />
-                <Button label="Cancelar" onClick={onHide} />
+                {/* <Button label="Crear" onClick={handleCreate} />
+                <Button label="Cancelar" onClick={onHide} /> */}
+                <div className='btn-create-user-content'>
+                <button className="btn-cancel-create-user" onClick={onHide}>cancelar</button>
+                <button className="btn-create-user" onClick={handleCreate}>Crear</button>
+                </div>
             </div>
         </Dialog>
     );
