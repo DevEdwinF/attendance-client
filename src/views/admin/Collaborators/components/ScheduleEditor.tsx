@@ -43,10 +43,12 @@ export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, on
   useEffect(() => {
     console.log('Collaborator in ScheduleEditor:', collaborator);
     const initialSchedules = daysOfWeek.map(day => {
+      console.log(collaborator.id_collaborator)
       const existingSchedule = collaborator.schedules.find(schedule => schedule.day === day);
       return existingSchedule || {
         id: 0,
-        fk_collaborator_id: 1, // Corrige esta línea
+        // fk_collaborator_id: collaborator.schedules.find(schedule => schedule.fk_collaborator_id)?.fk_collaborator_id,
+        fk_collaborator_id: collaborator.id_collaborator,
         day,
         arrival_time: '',
         departure_time: '',

@@ -26,6 +26,7 @@ export interface Collaborator {
   bmail: string;
   position: string;
   leader: string;
+  id_collaborator?: number,
   date: string;
   id: string; // Change the type from number to string here
   fk_collaborator_id: string; // Change the type from number to string here
@@ -76,7 +77,6 @@ const CollaboratorTable = () => {
   };
 
   const updateCollaborator = async (updatedCollaborator: Collaborator) => {
-    // Lógica para actualizar el colaborador
   };
 
   const actionBodyTemplate = (rowData: Collaborator) => {
@@ -128,12 +128,13 @@ const CollaboratorTable = () => {
     schedules: 'Horarios',          
   };
   
-  const convertToString = (value: string | Schedule[]): string => {
+  const convertToString = (value: string | Schedule[] | number): string => {
     if (Array.isArray(value)) {
-      // Manejar el caso de array, por ejemplo, concatenando los valores de las propiedades del array.
       return value.map((schedule) => `${schedule.day} ${schedule.arrival_time}-${schedule.departure_time}`).join(', ');
     }
-    // Si es un string normal, devolverlo tal cual.
+    if (typeof value === 'number'){
+      return value.toString();
+    }
     return value;
   };
   
