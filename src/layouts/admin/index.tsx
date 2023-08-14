@@ -1,5 +1,4 @@
 import { Portal, Box, useDisclosure } from '@chakra-ui/react';
-import axios from 'axios';
 import Footer from 'components/footer/FooterAdmin';
 import Navbar from 'components/navbar/NavbarAdmin';
 import Sidebar from 'components/sidebar/Sidebar';
@@ -20,7 +19,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await AuthService.validateToken();
+				await AuthService.validateToken();
 				setValidToken(true);
 			} catch (error) {
 				setValidToken(false);
@@ -35,7 +34,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	}
 
 	if (!validToken) {
-		return <Redirect to="/login" />;
+		return <Redirect to="/" />;
 	}
 
 	const getRoute = () => {
@@ -43,7 +42,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	};
 
 	const getActiveRoute = (routes: RoutesType[]): string => {
-		let activeRoute = 'Default Brand Text';
+		let activeRoute = 'Smart';
 		for (let i = 0; i < routes.length; i++) {
 			if (window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1) {
 				return routes[i].name;
@@ -82,7 +81,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 		});
 	};
 
-	document.documentElement.dir = 'ltr';
+	// document.documentElement.dir = 'ltr';
 
 	return (
 		<Box>
@@ -106,7 +105,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 						<Box>
 							<Navbar
 								onOpen={onOpen}
-								logoText={'Horizon UI Dashboard PRO'}
+								logoText={'Smart'}
 								brandText={getActiveRoute(routes)}
 								secondary={getActiveNavbar(routes)}
 								message={getActiveNavbarText(routes)}
@@ -120,7 +119,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 						<Box mx="auto" p={{ base: '20px', md: '30px' }} pe="20px" minH="100vh" pt="50px">
 							<Switch>
 								{getRoutes(routes)}
-								<Redirect from="/" to="/admin/default" />
+								<Redirect from="/" to="/admin" />
 							</Switch>
 						</Box>
 					) : null}

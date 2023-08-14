@@ -28,6 +28,7 @@ export interface Collaborator {
   leader: string;
   id_collaborator?: number,
   date: string;
+  state: string;
   id: string; // Change the type from number to string here
   fk_collaborator_id: string; // Change the type from number to string here
   schedules: Schedule[];
@@ -39,6 +40,7 @@ const CollaboratorTable = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(5);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [filters, setFilters] = useState<Partial<Collaborator>>({
     document: '',
@@ -47,6 +49,7 @@ const CollaboratorTable = () => {
     email: '',
     bmail: '',
     position: '',
+    state: '',
     leader: '',
   });
 
@@ -55,8 +58,10 @@ const CollaboratorTable = () => {
   }, [first, rows, filters]);
 
   const fetchData = async () => {
+    setLoading(true); // Indicar que estamos cargando los datos
+  
     const response = await CollaboratorService.getAllCollaborators();
-
+  
     const filteredData = response.filter((collaborator: Collaborator) =>
       Object.entries(filters).every(([key, value]) => {
         const fieldValue = String(collaborator[key as keyof Collaborator]);
@@ -64,12 +69,15 @@ const CollaboratorTable = () => {
         return fieldValue.toLowerCase().includes(filterValue.toLowerCase());
       })
     );
-
+  
     setTotalRecords(filteredData.length);
-
+  
     const paginatedData = filteredData.slice(first, first + rows);
     setCollaborators(paginatedData);
+  
+    setLoading(false); // Indicar que hemos terminado de cargar los datos
   };
+  
 
   const onPage = (event: { first: number; rows: number }) => {
     setFirst(event.first);
@@ -122,6 +130,7 @@ const CollaboratorTable = () => {
     bmail: 'Correo smart',
     position: 'Cargo',
     leader: 'Líder',
+    state: 'Estado',
     date: 'Fecha',                
     id: 'ID',                       
     fk_collaborator_id: 'ID Colab.', 
@@ -161,6 +170,7 @@ const CollaboratorTable = () => {
       f_name: '',
       l_name: '',
       email: '',
+      state: '',
       position: '',
       leader: '',
     });
@@ -170,6 +180,9 @@ const CollaboratorTable = () => {
 
   return (
     <div className="card">
+      {loading ? (
+      <div className="text-center">Cargando...</div>
+    ) : (
     <DataTable
       style={{ fontSize: '.85em' }}
       value={collaborators}
@@ -231,6 +244,13 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por líder"
 />
 <Column
+    field="state"
+    header="Estado"
+    filter={true} // Set filter prop to true to enable filtering
+    filterElement={filterTemplate('state')} // Use filterElement to provide custom filter template
+    filterPlaceholder="Filtrar por estado"
+/>
+<Column
     field="date"
     header="Fecha"
     filter={true} 
@@ -240,7 +260,7 @@ const CollaboratorTable = () => {
 />
 <Column body={actionBodyTemplate} style={{ width: '3rem' }} />
 {/*  */}
-    </DataTable>
+    </DataTable>)}
       <Paginator
         first={first}
         rows={rows}
