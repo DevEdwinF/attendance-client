@@ -9,25 +9,38 @@ import { stat } from 'fs';
 const AttendancePie = () => {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
-    const [stats, setStats] = useState<number | null>()
+    const [lateTrue, setLateTrue] = useState<number | null>()
+    const [onTime, setOnTime] = useState<number | null>()
 
     const textColor = useColorModeValue('secondaryGray.900', 'white');
 
-    const getStaticRc = async () => {
+    const getLateAttendance = async () => {
         try {
-            const response = await StatService.getAllStats();
-            setStats(response);
+            const response = await StatService.CountLateAttendancesForDay();
+            setLateTrue(response);
         } catch (error) {
             console.error(error);
         }
     }
+
+    const getOnTimeAttendance = async ()=>{
+        try {
+            const response = await StatService.countOnTimeAttendancesForDay();
+            setOnTime(response);
+            console.log(response)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
 
     useEffect(() => {
         const data = {
             labels: ['A tiempo', 'tarde',],
             datasets: [
                 {
-                    data: [1, stats],
+                    data: [onTime, lateTrue],
                     backgroundColor: [
                         '#A3BE32', 
                         '#C91212', 
@@ -45,8 +58,9 @@ const AttendancePie = () => {
 
         setChartData(data);
         setChartOptions(options);
-        getStaticRc();
-    }, [stats]);
+        getLateAttendance();
+        getOnTimeAttendance();
+    }, [lateTrue, onTime]);
 
     // useEffect(() => {
     //     const interval = setInterval(() => {

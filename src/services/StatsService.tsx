@@ -25,5 +25,25 @@ export const StatService = {
         catch (error) {
             throw new Error('Error al obtener las estadísticas');
         }
+    },
+    CountLateAttendancesForDay: async ()=>{
+        try {
+            const response = await axios.get(`${baseUrl}/day/late`, HeaderPost);
+            console.log(response)
+            return response.data.count
+        }
+        catch (error) {
+            throw new Error('Error al obtener las estadísticas');
+        }
+    },
+    countOnTimeAttendancesForDay: async ()=>{
+        try {
+            const response = await axios.get(`${baseUrl}/day/ontime`, HeaderPost);
+            console.log(response)
+            return response.data.count
+        }
+        catch (error) {
+            throw new Error('Error al obtener las estadísticas');
+        }
     }
 }
