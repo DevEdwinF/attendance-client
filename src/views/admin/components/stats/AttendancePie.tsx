@@ -33,8 +33,6 @@ const AttendancePie = () => {
         }
     }
 
-
-
     useEffect(() => {
         const data = {
             labels: ['A tiempo', 'tarde',],
@@ -64,13 +62,12 @@ const AttendancePie = () => {
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
-    //         // Aquí va el código que quieres ejecutar cada 5 segundos
 
     //         const data = {
     //             labels: ['A tiempo', 'tarde'],
     //             datasets: [
     //                 {
-    //                     data: [1, stats],
+    //                     data: [onTime, lateTrue],
     //                     backgroundColor: ['#A3BE32', '#C91212'],
     //                     hoverBackgroundColor: ['#A3BE32', '#C91212']
     //                 }
@@ -83,11 +80,12 @@ const AttendancePie = () => {
 
     //         setChartData(data);
     //         setChartOptions(options);
-    //         getStaticRc();
+    //         getLateAttendance();
+    //         getOnTimeAttendance();
     //     }, 5000);
 
-    //     return () => clearInterval(interval); // Limpiar el intervalo al desmontar el componente
-    // }, [stats]);
+    //     return () => clearInterval(interval);
+    // }, [onTime, lateTrue]);
 
 
     return (
@@ -95,7 +93,7 @@ const AttendancePie = () => {
             <Text color={textColor} fontSize='28px' mb="50px" fontWeight='700' lineHeight='100%'>
                 Asistencias hoy
             </Text>
-            <Chart type="doughnut" data={chartData} options={chartOptions} className="w-full md:w-30rem" />
+            <Chart type="doughnut" data={chartData} options={chartOptions} className="w-full md:w-20rem" />
         </Card>
     )
 }
