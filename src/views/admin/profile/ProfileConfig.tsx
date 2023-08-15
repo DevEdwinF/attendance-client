@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import { UserService } from 'services/UserService';
 import { Formik, Field, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
+import { AuthService } from 'services/AuthService';
 
 export interface ProfileConfigInterface {
   document: string;
@@ -20,6 +22,7 @@ interface ProfileConfigProps {
 
 const ProfileConfig: React.FC<ProfileConfigProps> = ({ visible, onHide, onCreate }) => {
   const [userProfile, setUserProfile] = useState<ProfileConfigInterface | undefined>(undefined);
+  const history = useHistory();
 
   const jwt = localStorage.getItem('token');
   let userDocument = '';
@@ -51,6 +54,8 @@ const ProfileConfig: React.FC<ProfileConfigProps> = ({ visible, onHide, onCreate
         ...prevProfile,
         ...response,
       }));
+      // await AuthService.logout()
+      // history.push('/');
     } catch (error) {
       throw error;
     }
