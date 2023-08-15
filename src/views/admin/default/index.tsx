@@ -21,6 +21,7 @@ import tableDataComplex from 'views/admin/default/variables/tableDataComplex';
 import AttendancePie from '../components/stats/AttendancePie';
 import TotalAttendance from '../components/stats/TotalAttendance';
 import TotalAttendanceDay from '../components/stats/TotalAttendanceToday';
+import TotalCollaboratorsActive from '../components/stats/TotalCollaboratorsActive';
 
 export default function UserReports() {
 	// Chakra Color Mode
@@ -31,6 +32,7 @@ export default function UserReports() {
 			<SimpleGrid columns={{ base: 1, md: 2, lg: 3, '2xl': 3 }} gap='20px' mb='20px'>
 					<TotalAttendanceDay/>
 					<TotalAttendance/>
+					<TotalCollaboratorsActive/>
 			</SimpleGrid>
 
 			<SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>

@@ -11,7 +11,7 @@ const routes = [
 	{
 		name: 'Dashboard',
 		layout: '/admin',
-		path: '/default',
+		path: '/dashboard',
 		icon: <Icon as={MdOutlineDashboard} width='20px' height='20px' color='inherit' />,
 		component: MainDashboard
 	},

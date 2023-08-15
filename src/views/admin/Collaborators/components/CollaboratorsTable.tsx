@@ -197,57 +197,57 @@ const CollaboratorTable = () => {
         <Column
   field="document"
   header="Documento"
-  filter={true} // Set filter prop to true to enable filtering
-  filterElement={filterTemplate('document')} // Use filterElement to provide custom filter template
+  filter={true} 
+  filterElement={filterTemplate('document')}
   filterPlaceholder="Filtrar por documento"
 />
 <Column
   field="f_name"
   header="Nombre"
-  filter={true} // Set filter prop to true to enable filtering
-  filterElement={filterTemplate('f_name')} // Use filterElement to provide custom filter template
+  filter={true} 
+  filterElement={filterTemplate('f_name')}
   filterPlaceholder="Filtrar por nombre"
 />
 <Column
   field="l_name"
   header="Apellido"
-  filter={true} // Set filter prop to true to enable filtering
-  filterElement={filterTemplate('l_name')} // Use filterElement to provide custom filter template
+  filter={true} 
+  filterElement={filterTemplate('l_name')} 
   filterPlaceholder="Filtrar por apellido"
 />
 <Column
     field="email"
     header="Correo personal"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('email')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('email')} 
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
     field="bmail"
     header="Correo smart"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('bmail')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('bmail')} 
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
     field="position"
     header="Cargo"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('position')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('position')}
     filterPlaceholder="Filtrar por cargo"
 />
 <Column
     field="leader"
     header="Líder"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('leader')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('leader')} 
     filterPlaceholder="Filtrar por líder"
 />
 <Column
     field="state"
     header="Estado"
-    filter={true} // Set filter prop to true to enable filtering
-    filterElement={filterTemplate('state')} // Use filterElement to provide custom filter template
+    filter={true} 
+    filterElement={filterTemplate('state')} 
     filterPlaceholder="Filtrar por estado"
 />
 <Column

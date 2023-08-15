@@ -45,5 +45,14 @@ export const StatService = {
         catch (error) {
             throw new Error('Error al obtener las estadísticas');
         }
+    },
+    totalCollaboratorsActive: async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/total-collaborators`, HeaderPost);
+            return response.data.count
+        }
+        catch (error) {
+            throw new Error('Error al obtener las estadísticas');
+        }
     }
 }

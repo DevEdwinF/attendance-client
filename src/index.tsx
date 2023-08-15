@@ -36,7 +36,7 @@ const App = () => {
 				<BrowserRouter>
 					<Switch>
 						<Route exact path="/">
-							{authenticated ? <Redirect to="/admin" /> : <Attendance />}
+							{authenticated ? <Redirect to="/admin/default" /> : <Attendance />}
 						</Route>
 						<AuthRoute
 							path="/admin"
