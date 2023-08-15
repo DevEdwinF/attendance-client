@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
 import { UserService } from 'services/UserService';
-import EditUserComponent, { EditUserUserProps } from './UsersEditor';
+import EditUserComponent, { EditUserUserProps } from './UsersEditorCompnent';
 import { RiContactsBookUploadLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { MdDeleteOutline, MdEdit } from 'react-icons/md';
@@ -18,7 +18,7 @@ interface User {
     email: string;
     f_name: string;
     l_name: string;
-    role: string;
+    rol: number;
 }
 
 export default function UsersTable() {
@@ -33,7 +33,6 @@ export default function UsersTable() {
 
      useEffect(() => {
         if (!displayCreateDialog) {
-            // If the create dialog is closed, fetch the updated list of users
             UserService.getUserAll().then(data => setUsers(data));
         }
     }, [displayCreateDialog]);
@@ -112,13 +111,13 @@ export default function UsersTable() {
 
     return (
         <div className="card">
-             <Button label="Crear Usuario" onClick={handleCreateUserClick} />
+             <button className='btn-create-user-open' onClick={handleCreateUserClick}>Crear un nuevo</button>
             <DataTable value={users} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="document" header="Documento"></Column>
                 <Column field="email" header="Correo"></Column>
                 <Column field="f_name" header="Nombre"></Column>
                 <Column field="l_name" header="Apellido"></Column>
-                <Column field="role" header="Rol"></Column>
+                {/* <Column field="rol" header="Rol"></Column> */}
                 <Column field="role_name" header="Nombre del rol"></Column>
                 <Column body={actionBodyTemplate} style={{ width: '8rem', }} />
             </DataTable>
@@ -126,7 +125,7 @@ export default function UsersTable() {
             <CreateUserComponent
                 visible={displayCreateDialog}
                 onHide={() => setDisplayCreateDialog(false)}
-                onCreate={handleCreateUserClick} // Función para crear un nuevo usuario
+                onCreate={handleCreateUserClick}
             />
 
             {displayDialog && editingUser && (

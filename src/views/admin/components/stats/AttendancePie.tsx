@@ -27,7 +27,6 @@ const AttendancePie = () => {
         try {
             const response = await StatService.countOnTimeAttendancesForDay();
             setOnTime(response);
-            console.log(response)
         } catch (error) {
             console.error(error);
         }

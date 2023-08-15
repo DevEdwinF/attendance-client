@@ -23,6 +23,12 @@ interface CreateUserProps {
     onCreate: (user: UserCreate) => void;
 }
 
+const roles = [
+    { value: 1, label: 'Desarrollador' },
+    { value: 2, label: 'Administrador' },
+    { value: 3, label: 'Gestión Humana' },
+];
+
 const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCreate }) => {
     const [document, setDocument] = useState('');
     const [password, setPassword] = useState('');
@@ -46,14 +52,16 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
             rol: role as number,
         };
 
+
+
         try {
-            const response = await UserService.create(newUser); 
+            const response = await UserService.create(newUser);
             Swal.fire(
-                'Bien hecho!',  
+                'Bien hecho!',
                 response,
                 'success'
             )
-            onCreate(newUser); // Añade el usuario localmente solo después de que el servidor responda con éxito
+            onCreate(newUser);
             onHide();
         } catch (error) {
             Swal.fire({
@@ -63,6 +71,11 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
             });
         }
     };
+
+    const handleRoleChange = (selectedRole: number) => {
+        setRole(selectedRole);
+    };
+
 
     return (
         <Dialog header="Crear Usuario" visible={visible} onHide={onHide}>
@@ -83,18 +96,24 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
                 <InputText value={l_name} onChange={(e) => setLName(e.target.value)} />
 
                 <label>Rol:</label>
-                <Dropdown
+                {/* <Dropdown
                     value={role}
                     options={[1, 2, 3]} 
                     onChange={(e) => setRole(e.value)}
+                    placeholder="Seleccionar rol"
+                /> */}
+                <Dropdown
+                    value={role}
+                    options={roles}
+                    onChange={(e) => handleRoleChange(e.value)}
                     placeholder="Seleccionar rol"
                 />
 
                 {/* <Button label="Crear" onClick={handleCreate} />
                 <Button label="Cancelar" onClick={onHide} /> */}
                 <div className='btn-create-user-content'>
-                <button className="btn-cancel-create-user" onClick={onHide}>cancelar</button>
-                <button className="btn-create-user" onClick={handleCreate}>Crear</button>
+                    <button className="btn-cancel-create-user" onClick={onHide}>cancelar</button>
+                    <button className="btn-create-user" onClick={handleCreate}>Crear</button>
                 </div>
             </div>
         </Dialog>

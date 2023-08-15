@@ -24,7 +24,6 @@ export const UserService ={
           if (axios.isAxiosError(error) && error.response && error.response.data && error.response.data.message) {
             return error.response.data.message;
           } else {
-            // If the error object doesn't have the expected structure, return a generic error message
             return 'Error al crear el usuario';
           }
         }

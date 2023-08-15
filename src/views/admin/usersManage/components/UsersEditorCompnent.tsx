@@ -11,7 +11,7 @@ interface User {
     email: string;
     f_name: string;
     l_name: string;
-    role: string;
+    rol: number;
     password?: string;
 }
 
@@ -26,9 +26,10 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        const updatedValue = name === 'rol' ? parseInt(value, 10) : value;
         setEditedUser(prevUser => ({
             ...prevUser,
-            [name]: value
+            [name]: updatedValue
         }));
     };
 
@@ -58,11 +59,10 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose 
                 
                     <span>Rol:</span>
 
-                    {/* Seleccionar rol con dropdown */}
-                    <select name="role" value={editedUser.role} onChange={handleInputChange}>
-                        <option value="1">Administrador</option>
-                        <option value="2">Usuario</option>
-                        <option value="3">Invitado</option>
+                    <select name="rol" value={editedUser.rol} onChange={handleInputChange}>
+                        <option value={1}>Administrador</option>
+                        <option value={2}>Usuario</option>
+                        <option value={3}>Invitado</option>
                     </select>
                 
 

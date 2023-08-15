@@ -9,7 +9,6 @@ export const StatService = {
     getAllStats: async () => {
         try {
             const response = await axios.get(`${baseUrl}/all`, HeaderPost);
-            console.log(response)
             return response.data.count
         }
         catch (error) {
@@ -19,7 +18,6 @@ export const StatService = {
     getAllStatsToday: async () => {
         try {
             const response = await axios.get(`${baseUrl}/day/all`, HeaderPost);
-            console.log(response)
             return response.data.count
         }
         catch (error) {
@@ -29,7 +27,6 @@ export const StatService = {
     CountLateAttendancesForDay: async ()=>{
         try {
             const response = await axios.get(`${baseUrl}/day/late`, HeaderPost);
-            console.log(response)
             return response.data.count
         }
         catch (error) {
@@ -39,7 +36,6 @@ export const StatService = {
     countOnTimeAttendancesForDay: async ()=>{
         try {
             const response = await axios.get(`${baseUrl}/day/ontime`, HeaderPost);
-            console.log(response)
             return response.data.count
         }
         catch (error) {

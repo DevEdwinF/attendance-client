@@ -29,11 +29,14 @@ import routes from 'routes';
 import { async } from 'q';
 import Auth from 'layouts/auth';
 import { AuthService } from 'services/AuthService';
+import ProfileConfig from 'views/admin/profile/ProfileConfig';
+
 
 interface UserInfo {
 	fName: string;
 	lName: string;
-	role: string;
+	email: string;
+	document: string;
 	roleName: string;
 }
 
@@ -41,6 +44,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 	const { secondary } = props;
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [userInfo, setUserInfo] = useState<UserInfo>()
+	const [displayProfileConfig, setDisplayProfileConfig] = useState(false);
 
 	const handleLogout = async () => {
 		await AuthService.logout();
@@ -69,7 +73,12 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
+
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+	const handleProfileConfig = () => {
+        setDisplayProfileConfig(true);
+    };
 	return (
 		<Flex
 			w={{ sm: '100%', md: 'auto' }}
@@ -184,14 +193,16 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							fontWeight='700'
 							color={textColor}
 						>
-							👋&nbsp; Hey,&nbsp; {userInfo?.fName && userInfo.fName.split(' ')[0] }
+							👋&nbsp; Hey,&nbsp; {userInfo?.fName && userInfo.fName.split(' ')[0]}
+							{/* {userInfo?.document} */}
+						
 							<br />
 							{userInfo?.roleName}
 						</Text>
 					</Flex>
 					<Flex flexDirection='column' p='10px'>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
-							<Text fontSize='sm'>Configuración</Text>
+							<button onClick={handleProfileConfig}><Text fontSize='sm'>Configuración</Text></button>
 						</MenuItem>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
 							<Text fontSize='sm'>Noticias</Text>
@@ -207,6 +218,11 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 					</Flex>
 				</MenuList>
 			</Menu>
+			<ProfileConfig
+				visible={displayProfileConfig}
+				onHide={() => setDisplayProfileConfig(false)}
+				onCreate={handleProfileConfig}
+			/>
 		</Flex>
 	);
 }
