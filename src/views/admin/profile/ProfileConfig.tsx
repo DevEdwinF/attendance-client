@@ -62,7 +62,7 @@ const ProfileConfig: React.FC<ProfileConfigProps> = ({ visible, onHide, onCreate
   }
 
   return (
-    <Dialog header="Configuración de mi perfil" visible={visible} onHide={onHide}>
+    <Dialog header="Mi perfil" visible={visible} onHide={onHide}>
       {userProfile !== undefined ? (
         <Formik initialValues={userProfile} onSubmit={handleUpdateUser}>
           <Form>
@@ -118,10 +118,11 @@ const ProfileConfig: React.FC<ProfileConfigProps> = ({ visible, onHide, onCreate
               placeholder="Ingresa aquí tu apellido"
               className="field-style"
             />
-            
-            <button type="submit" className="button-style">
+            <div className='btn-update-profile-content'>
+            <button type="submit" className="btn-update-profile">
               Actualizar
             </button>
+            </div>
           </Form>
         </Formik>
       ) : (

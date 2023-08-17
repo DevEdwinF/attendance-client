@@ -11,6 +11,7 @@ import { RiContactsBookUploadLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { MdDeleteOutline, MdEdit } from 'react-icons/md';
 import CreateUserComponent from './CreateUserComponent';
+import { useColorModeValue } from '@chakra-ui/system';
 
 interface User {
     id: number;
@@ -26,6 +27,8 @@ export default function UsersTable() {
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [displayDialog, setDisplayDialog] = useState(false);
     const [displayCreateDialog, setDisplayCreateDialog] = useState(false);
+    const brandColor = useColorModeValue('brand.500', 'white');
+    const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
 
     useEffect(() => {
         UserService.getUserAll().then(data => setUsers(data));
@@ -130,10 +133,14 @@ export default function UsersTable() {
 
             {displayDialog && editingUser && (
                 <EditUserComponent
-                    user={editingUser}
-                    onSave={updateUser}
-                    onClose={() => setEditingUser(null)}
-                />
+                user={editingUser}
+                onSave={updateUser}
+                onClose={() => setEditingUser(null)}
+                brandColor={brandColor}
+                boxBg={boxBg}
+            />
+        
+
             )}
         </div>
     );

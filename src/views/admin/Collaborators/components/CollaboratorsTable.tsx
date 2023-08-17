@@ -58,7 +58,7 @@ const CollaboratorTable = () => {
   }, [first, rows, filters]);
 
   const fetchData = async () => {
-    setLoading(true); // Indicar que estamos cargando los datos
+    // setLoading(true); 
   
     const response = await CollaboratorService.getAllCollaborators();
   

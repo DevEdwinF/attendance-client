@@ -10,6 +10,7 @@ import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
 import '../../../../assets/css/App.css';
 import { formatDate } from 'util/DateUtil';
+import TranslatedTableComponent from './TranslatedTable';
 
 interface Attendance {
   document: string;
@@ -32,8 +33,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
-  const [first, setFirst] = useState(0); // Definir la variable first
-  const [rows, setRows] = useState(pageSizeOptions[0]); // Definir la variable rows
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(pageSizeOptions[0]); 
   const [filters, setFilters] = useState<Partial<Attendance>>({
     document: '',
     f_name: '',
@@ -41,6 +42,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     email: '',
     location: '',
   });
+  const [displayTranslatedDialog, setDisplayTranslatedDialog] = useState(false);
+
 
   const { colorMode } = useColorMode();
   const tableClass = colorMode === 'light' ? 'light-mode' : 'dark-mode';
@@ -110,7 +113,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   };
 
   const filterTemplate = (field: keyof Attendance) => {
-    const filterValue = filters[field] as string; // Cast the filter value to a string
+    const filterValue = filters[field] as string; 
 
     return (
       <InputText
@@ -131,7 +134,13 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     console.log('New filters:', filters);
   };
 
+  const handleTranslatedTableOpen = () => {
+    setDisplayTranslatedDialog(true)
+  }
+
   return (
+    <>
+      <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>Translados</button>
     <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
       <div className="">
         <DataTable
@@ -179,8 +188,13 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
         <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
           {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
         </Dialog>
+        <TranslatedTableComponent
+    visible={displayTranslatedDialog}
+    onHide={() => setDisplayTranslatedDialog(false)} // Pasa la función onHide aquí
+/>
       </div>
     </Card>
+    </>
   );
 };
 

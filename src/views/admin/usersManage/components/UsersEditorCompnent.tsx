@@ -15,13 +15,18 @@ interface User {
     password?: string;
 }
 
+
+
 export interface EditUserUserProps {
     user: User;
     onSave: (editedUser: User) => void;
     onClose: () => void;
+    brandColor: string; 
+    boxBg: string; 
 }
 
-const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose }) => {
+const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose, brandColor,
+    boxBg  }) => {
     const [editedUser, setEditedUser] = useState<User>({ ...user, password: '' });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -38,37 +43,38 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose 
     };
 
     return (
-        <Dialog visible={true} style={{ width: '45vw' }} header="Editar usuarios" onHide={onClose}>
-            <div>
+        <Dialog visible={true}  header="Editar usuarios" onHide={onClose}>
+
+            <div style={{  backgroundColor: boxBg}}>
                 <div className='user-data-content'>
                     <span>Documento:</span>
                     <InputText name="document" value={editedUser.document} onChange={handleInputChange} />
-               
+
                     <span>Correo:</span>
                     <InputText name="email" value={editedUser.email} onChange={handleInputChange} />
-                
+
                     <span>Contraseña:</span>
                     <InputText type="password" name="password" value={editedUser.password} onChange={handleInputChange} />
-               
+
                     <span>Nombre:</span>
                     <InputText name="f_name" value={editedUser.f_name} onChange={handleInputChange} />
-               
+
                     <span>Apellido:</span>
                     <InputText name="l_name" value={editedUser.l_name} onChange={handleInputChange} />
                 </div>
-                
-                    <span>Rol:</span>
 
-                    <select name="rol" value={editedUser.rol} onChange={handleInputChange}>
-                        <option value={1}>Administrador</option>
-                        <option value={2}>Usuario</option>
-                        <option value={3}>Invitado</option>
-                    </select>
-                
+                <span>Rol:</span>
+
+                <select name="rol" value={editedUser.rol} onChange={handleInputChange}>
+                    <option value={1}>Administrador</option>
+                    <option value={2}>Usuario</option>
+                    <option value={3}>Invitado</option>
+                </select>
+
 
                 <div className='btn-create-user-content'>
-                <button className="btn-cancel-create-user" onClick={onClose}>cancelar</button>
-                <button className="btn-create-user" onClick={handleSave}>Actualizar</button>
+                    <button className="btn-cancel-create-user" onClick={onClose}>cancelar</button>
+                    <button className="btn-create-user" onClick={handleSave}>Actualizar</button>
                 </div>
             </div>
         </Dialog>

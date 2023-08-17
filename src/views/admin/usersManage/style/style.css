@@ -4,13 +4,13 @@
     width: 450px;
 }
 
-.btn-create-user-content{
+.btn-create-user-content, .btn-update-profile-content{
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-.btn-create-user{
+.btn-create-user, .btn-update-profile{
     background-color:  #A3BD31;
     color: white;
     border: none;
@@ -22,7 +22,7 @@
     outline: none;
 }
 
-.btn-create-user-open{
+.btn-create-user-open, .btn-translated-open{
     background-color:  rgb(144, 191, 178);
     color: white;
     border: none;
@@ -32,6 +32,9 @@
     font-size: 16px;
     font-weight: bold;
     outline: none;
+}
+.btn-translated-open{
+    width: 150px !important;
 }
 
 .btn-cancel-create-user{

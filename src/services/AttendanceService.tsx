@@ -60,6 +60,15 @@ export const AttendanceService = {
       console.log(error);
       throw new Error('Error al obtener la asistencia');
     }
+  },
+  getAllTranslated: async() => {
+    try {
+      const response = await axios.get(`${baseUrl}/all/translated`, HeaderPost)
+      return response.data
+      
+    } catch (error) {
+      throw error
+    }
   }
 };
 
