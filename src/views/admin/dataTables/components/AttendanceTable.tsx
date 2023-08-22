@@ -94,6 +94,9 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     return null;
   };
 
+  //update
+  //uusjusb
+
   const renderLateStatus = (rowData: Attendance) => {
     if (rowData.late) {
       return <span className="text-red">Tarde</span>;
