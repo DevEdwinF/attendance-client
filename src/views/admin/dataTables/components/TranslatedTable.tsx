@@ -10,45 +10,67 @@ export interface TranslatedTableProps {
 }
 
 export interface Collaborator {
-    id?: number,
-    f_name: string,
-    l_name: string,
-    date: string
+    id?: number;
+    f_name: string;
+    l_name: string;
+    date: string;
 }
 
-const TranslatedTableComponent: React.FC<TranslatedTableProps> = ({ visible, onHide }) => {
+const TranslatedTableComponent: React.FC<TranslatedTableProps> = ({
+    visible,
+    onHide,
+}) => {
     const [collaboratorData, setCollaboratorData] = useState<Collaborator[]>([]);
 
     useEffect(() => {
-        AttendanceService.getAllTranslated().then(data => setCollaboratorData(data));
+        fetchData();
     }, []);
-
 
     const fetchData = async () => {
         try {
-            const response = await AttendanceService.getAllTranslated()
-            console.log(response)
-            return response
+            const response = await AttendanceService.getAllTranslated();
+            setCollaboratorData(response);
         } catch (error) {
-            throw error
+            throw error;
         }
-    }
+    };
 
-    fetchData()
+    const formatDateTime = (dateTimeString: string) => {
+        const dateTime = new Date(dateTimeString);
+        const day = dateTime.getDate();
+        const month = dateTime.getMonth() + 1; // Months are zero-based
+        const year = dateTime.getFullYear();
+        const hours = dateTime.getHours();
+        const minutes = dateTime.getMinutes();
+        const formattedDate = `${day}/${month}/${year}`;
+        const formattedTime = `${hours}:${minutes}`;
+        return { formattedDate, formattedTime };
+    };
 
     return (
-        <Dialog header="Lista de translados" visible={visible} onHide={onHide}>
+        <Dialog header="Lista de traslados" visible={visible} onHide={onHide}>
             <div className="card">
-                <DataTable value={collaboratorData} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="f_name" header="Nombre"></Column>
-                    <Column field="l_name" header="Apellido"></Column>
-                    <Column field="date" header="fecha"></Column>
+                <DataTable value={collaboratorData} tableStyle={{ minWidth: "50rem" }}>
+                    <Column field="f_name" header="Nombre" />
+                    <Column field="l_name" header="Apellido" />
+                    <Column
+                        field="date"
+                        header="Fecha y Hora"
+                        body={(rowData: Collaborator) => {
+                            const { formattedDate, formattedTime } = formatDateTime(
+                                rowData.date
+                            );
+                            return (
+                                <span>
+                                    {formattedDate} - {formattedTime}
+                                </span>
+                            );
+                        }}
+                    />
                 </DataTable>
             </div>
-
         </Dialog>
-    )
+    );
+};
 
-}
-
-export default TranslatedTableComponent
+export default TranslatedTableComponent;

@@ -27,6 +27,7 @@
 .cam {
 	border-radius: 20px;
 	width: 350px;
+	pointer-events: none;
 }
 
 .clock {
@@ -448,9 +449,11 @@
 	}
 
 	.icon-cancel {
+		display: flex;
 		font-size: 2.8rem;
 		color: rgb(255, 255, 255);
 		cursor: cell;
+		z-index: 999;
 	}
 
 	.icon-cancel:hover {
@@ -519,6 +522,11 @@
 @media (max-width: 320px) {
 	.attendance-register-container-desktop {
 		display: none;
+	}
+
+	.cam{
+		display: flex;
+		z-index: -10;
 	}
 
 	.attendance-register-container-mobile {

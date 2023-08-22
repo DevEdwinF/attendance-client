@@ -42,7 +42,7 @@ export default function Dashboard(props: { [x: string]: any }) {
 	};
 
 	const getActiveRoute = (routes: RoutesType[]): string => {
-		let activeRoute = 'Smart';
+		let activeRoute = '';
 		for (let i = 0; i < routes.length; i++) {
 			if (window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1) {
 				return routes[i].name;

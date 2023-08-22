@@ -21,18 +21,21 @@ export const AttendanceService = {
       throw new Error("Error al validar");
     }
   },
-  register: async (data: { document: string; state: string; location:string; photo: string }) => {
+  register: async (data: FormData) => {
     try {
-      const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data);
+      const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       showSuccessAlert();
       return response.data;
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: error.response?.data?.message
+        text: error.response?.data?.message,
       });
-      console.log(error);
       throw new Error("Verifica si el documento está escrito correctamente");
     }
   },

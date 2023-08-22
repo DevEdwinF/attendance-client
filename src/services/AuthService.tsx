@@ -21,7 +21,6 @@ export const AuthService = {
     validateToken: async()=>{
         try {
             const response = await axios.get(`${baseUrl}/validate-token`, HeaderPost);
-            console.log(response)
             return response.data;
         } catch (error: any) {
             console.log(error.response)

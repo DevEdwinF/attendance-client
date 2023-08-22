@@ -56,9 +56,17 @@ const ProfileConfig: React.FC<ProfileConfigProps> = ({ visible, onHide, onCreate
       }));
       // await AuthService.logout()
       // history.push('/');
+    //  await handleReset()
+      
     } catch (error) {
       throw error;
     }
+  }
+
+  const handleReset = async() => {
+    alert("perfil actualizado, ingresa nuevamente")
+    await AuthService.logout()
+    history.push('/')
   }
 
   return (
