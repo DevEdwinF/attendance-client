@@ -94,8 +94,9 @@ const MyForm = () => {
         text: 'Todos los campos son obligatorios!',
       });
     } else {
-      const imageSrc = webcamRef.current.getScreenshot();
-      // console.log("Imagen capturada:", imageSrc);
+      const video = webcamRef.current; 
+const imageSrc = video.getScreenshot();
+      console.log("Imagen capturada:", imageSrc);
       // const imageBlob = dataURItoBlob(imageSrc);
 
       const formData = new FormData();
@@ -103,7 +104,6 @@ const MyForm = () => {
       formData.append('state', values.state);
       formData.append('location', values.location);
       formData.append('photo', imageSrc);
-      console.log("Imagen base64:", imageSrc);
       // const photoBlob = dataURItoBlob(imageSrc);
       // formData.append('photo', photoBlob);
       // console.log("Form data:", formData);
@@ -139,7 +139,8 @@ const MyForm = () => {
         </label>
         <div className="attendance-register-content">
           <div className="cam-content">
-            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/png" className="cam" />
+            <Webcam audio={false} key={Date.now()}
+  ref={webcamRef} screenshotFormat="image/png" className="cam" />
             <Clock />
           </div>
           <div className="form">
@@ -245,7 +246,8 @@ const MyForm = () => {
       <div className='attendance-register-container-mobile'>
         <div className='attendance-register-content-mobile'>
           <div className="cam-content">
-            <Webcam audio={false} ref={webcamRef} screenshotFormat="image/png" className="cam" />
+          <Webcam audio={false} key={Date.now()}
+  ref={webcamRef} screenshotFormat="image/png" className="cam" />
             <Clock />
           </div>
           <div className="form-mobile">

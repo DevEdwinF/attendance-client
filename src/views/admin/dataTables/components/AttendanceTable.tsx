@@ -79,23 +79,20 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
 
   const renderPhoto = (rowData: Attendance) => {
     if (rowData.photo) {
-      const imageSrc = `data:image/png;base64,${rowData.photo}`;
       return (
         <img
-          src={imageSrc}
+          src={`data:image/png;base64,${rowData.photo}`}
           alt="Foto"
           width="50"
           height="50"
-          onClick={() => openDialog(imageSrc)}
+          onClick={() => openDialog(`data:image/png;base64,${rowData.photo}`)}
           style={{ cursor: 'pointer' }}
         />
       );
     }
     return null;
   };
-
-  //update
-  //uusjusb
+  
 
   const renderLateStatus = (rowData: Attendance) => {
     if (rowData.late) {

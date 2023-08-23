@@ -21,6 +21,7 @@ const isAuthenticated = () => {
 const App = () => {
 	const [authenticated, setAuthenticated] = useState(false);
 
+
 	useEffect(() => {
 		const checkAuthentication = () => {
 			const token = localStorage.getItem('token');
@@ -29,6 +30,8 @@ const App = () => {
 
 		checkAuthentication();
 	}, []);
+
+	
 
 	return (
 		<ChakraProvider theme={theme}>
