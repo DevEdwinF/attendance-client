@@ -10,8 +10,9 @@ import EditUserComponent, { EditUserUserProps } from './UsersEditorCompnent';
 import { RiContactsBookUploadLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { MdDeleteOutline, MdEdit } from 'react-icons/md';
-import CreateUserComponent from './CreateUserComponent';
+import CreateUserComponent, { Roles } from './CreateUserComponent';
 import { useColorModeValue } from '@chakra-ui/system';
+import { RolesService } from 'services/Roles.service';
 
 interface User {
     id: number;
@@ -27,12 +28,28 @@ export default function UsersTable() {
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [displayDialog, setDisplayDialog] = useState(false);
     const [displayCreateDialog, setDisplayCreateDialog] = useState(false);
+    const [roles, setRoles] = useState<Roles[]>([]);
     const brandColor = useColorModeValue('brand.500', 'white');
     const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
 
     useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const rolesData = await RolesService.getAllRoles();
+                setRoles(rolesData);
+            } catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        };
+
+        fetchRoles();
+    }, []);
+
+    useEffect(() => {
         UserService.getUserAll().then(data => setUsers(data));
     }, []);
+
+    
 
      useEffect(() => {
         if (!displayCreateDialog) {
@@ -136,11 +153,11 @@ export default function UsersTable() {
                 user={editingUser}
                 onSave={updateUser}
                 onClose={() => setEditingUser(null)}
-                brandColor={brandColor}
-                boxBg={boxBg}
+                roles={roles}
+                brandColor="yourBrandColor"
+                boxBg="yourBoxBackgroundColor"
             />
-        
-
+    
             )}
         </div>
     );

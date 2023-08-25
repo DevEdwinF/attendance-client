@@ -1,4 +1,3 @@
-// UsersEditor.tsx
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -15,26 +14,36 @@ interface User {
     password?: string;
 }
 
-
+export interface Role {
+    id: number;
+    name: string;
+}
 
 export interface EditUserUserProps {
     user: User;
     onSave: (editedUser: User) => void;
     onClose: () => void;
-    brandColor: string; 
-    boxBg: string; 
+    brandColor: string;
+    boxBg: string;
+    roles: Role[]; 
 }
 
-const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose, brandColor,
-    boxBg  }) => {
+const EditUserComponent: React.FC<EditUserUserProps> = ({
+    user,
+    onSave,
+    onClose,
+    brandColor,
+    boxBg,
+    roles,
+}) => {
     const [editedUser, setEditedUser] = useState<User>({ ...user, password: '' });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         const updatedValue = name === 'rol' ? parseInt(value, 10) : value;
-        setEditedUser(prevUser => ({
+        setEditedUser((prevUser) => ({
             ...prevUser,
-            [name]: updatedValue
+            [name]: updatedValue,
         }));
     };
 
@@ -43,10 +52,9 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose,
     };
 
     return (
-        <Dialog visible={true}  header="Editar usuarios" onHide={onClose}>
-
-            <div style={{  backgroundColor: boxBg}}>
-                <div className='user-data-content'>
+        <Dialog visible={true} header="Editar usuarios" onHide={onClose}>
+            <div style={{ backgroundColor: boxBg }}>
+                <div className="user-data-content">
                     <span>Documento:</span>
                     <InputText name="document" value={editedUser.document} onChange={handleInputChange} />
 
@@ -66,15 +74,20 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({ user, onSave, onClose,
                 <span>Rol:</span>
 
                 <select name="rol" value={editedUser.rol} onChange={handleInputChange}>
-                    <option value={1}>Administrador</option>
-                    <option value={2}>Usuario</option>
-                    <option value={3}>Invitado</option>
+                    {roles.map((role) => (
+                        <option key={role.id} value={role.id}>
+                            {role.name}
+                        </option>
+                    ))}
                 </select>
 
-
-                <div className='btn-create-user-content'>
-                    <button className="btn-cancel-create-user" onClick={onClose}>cancelar</button>
-                    <button className="btn-create-user" onClick={handleSave}>Actualizar</button>
+                <div className="btn-create-user-content">
+                    <button className="btn-cancel-create-user" onClick={onClose}>
+                        cancelar
+                    </button>
+                    <button className="btn-create-user" onClick={handleSave}>
+                        Actualizar
+                    </button>
                 </div>
             </div>
         </Dialog>

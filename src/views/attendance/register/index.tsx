@@ -74,18 +74,6 @@ const MyForm = () => {
     setTranslatedMobile(false);
   };
 
-  // function dataURItoBlob(dataURI: any) {
-  //   const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-  //   const byteString = atob(dataURI.split(',')[1]);
-  //   const ab = new ArrayBuffer(byteString.length);
-  //   const dw = new DataView(ab);
-
-  //   for(let i = 0; i < byteString.length; i++) {
-  //     dw.setUint8(i, byteString.charCodeAt(i)); 
-  //   }
-  //   return new Blob([ab], {type: mimeString});
-  // }
-
   const handleSubmit = async (values: FormValues) => {
     if (values.document === '' || values.state === '') {
       Swal.fire({
@@ -94,8 +82,8 @@ const MyForm = () => {
         text: 'Todos los campos son obligatorios!',
       });
     } else {
-      const video = webcamRef.current; 
-const imageSrc = video.getScreenshot();
+      const video = webcamRef.current;
+      const imageSrc = video.getScreenshot();
       console.log("Imagen capturada:", imageSrc);
       // const imageBlob = dataURItoBlob(imageSrc);
 
@@ -119,10 +107,6 @@ const imageSrc = video.getScreenshot();
     }
   };
 
-
-
-
-
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
   };
@@ -140,7 +124,7 @@ const imageSrc = video.getScreenshot();
         <div className="attendance-register-content">
           <div className="cam-content">
             <Webcam audio={false} key={Date.now()}
-  ref={webcamRef} screenshotFormat="image/png" className="cam" />
+              ref={webcamRef} screenshotFormat="image/png" className="cam" />
             <Clock />
           </div>
           <div className="form">
@@ -237,17 +221,13 @@ const imageSrc = video.getScreenshot();
               </Form>
             </Formik>
           </div>
-
-
         </div>
-
       </div>
-
       <div className='attendance-register-container-mobile'>
         <div className='attendance-register-content-mobile'>
           <div className="cam-content">
-          <Webcam audio={false} key={Date.now()}
-  ref={webcamRef} screenshotFormat="image/png" className="cam" />
+            <Webcam audio={false} key={Date.now()}
+              ref={webcamRef} screenshotFormat="image/png" className="cam" />
             <Clock />
           </div>
           <div className="form-mobile">
@@ -259,7 +239,6 @@ const imageSrc = video.getScreenshot();
                       <h2 className="hi-tittle">Hola,</h2>
                     </label>
                     <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
-
                     <label className="label" htmlFor="document">
                       Documento:
                     </label>
@@ -276,7 +255,6 @@ const imageSrc = video.getScreenshot();
                       }}
                     />
                     <ErrorMessage name="document" component="div" />
-
                     <label className="label" htmlFor="state">
                       ¿Qué vas a registrar?
                     </label>
@@ -317,7 +295,6 @@ const imageSrc = video.getScreenshot();
                     <button className="button-attendance" type="submit">
                       Enviar registro
                     </button>
-
                   </Form>
                 </Formik>
               </div>

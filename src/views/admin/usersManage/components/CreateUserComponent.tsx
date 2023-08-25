@@ -1,12 +1,12 @@
-// CreateUserComponent.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { UserService } from 'services/UserService';
 import Swal from 'sweetalert2';
-import '../style/style.css'
+import '../style/style.css';
+import { RolesService } from 'services/Roles.service';
 
 export interface UserCreate {
     document: string;
@@ -17,17 +17,16 @@ export interface UserCreate {
     rol: number;
 }
 
+export interface Roles {
+    id: number;
+    name: string;
+}
+
 interface CreateUserProps {
     visible: boolean;
     onHide: () => void;
     onCreate: (user: UserCreate) => void;
 }
-
-const roles = [
-    { value: 1, label: 'Desarrollador' },
-    { value: 2, label: 'Administrador' },
-    { value: 3, label: 'Gestión Humana' },
-];
 
 const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCreate }) => {
     const [document, setDocument] = useState('');
@@ -35,7 +34,21 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
     const [email, setEmail] = useState('');
     const [f_name, setFName] = useState('');
     const [l_name, setLName] = useState('');
+    const [roles, setRoles] = useState<Roles[]>([]);
     const [role, setRole] = useState<number | null>(null);
+
+    const fetchDataRole = async () => {
+        try {
+            const response = await RolesService.getAllRoles();
+            setRoles(response);
+        } catch (error) {
+            console.error('Error fetching roles:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchDataRole();
+    }, []);
 
     const handleCreate = async () => {
         if (!document || !email || !f_name || !l_name || role === null) {
@@ -52,22 +65,16 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
             rol: role as number,
         };
 
-
-
         try {
             const response = await UserService.create(newUser);
-            Swal.fire(
-                'Bien hecho!',
-                response,
-                'success'
-            )
+            Swal.fire('Bien hecho!', response, 'success');
             onCreate(newUser);
             onHide();
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: "Error",
+                text: 'Error',
             });
         }
     };
@@ -96,15 +103,9 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
                 <InputText value={l_name} onChange={(e) => setLName(e.target.value)} />
 
                 <label>Rol:</label>
-                {/* <Dropdown
-                    value={role}
-                    options={[1, 2, 3]} 
-                    onChange={(e) => setRole(e.value)}
-                    placeholder="Seleccionar rol"
-                /> */}
                 <Dropdown
                     value={role}
-                    options={roles}
+                    options={roles.map((r) => ({ value: r.id, label: r.name }))}
                     onChange={(e) => handleRoleChange(e.value)}
                     placeholder="Seleccionar rol"
                 />

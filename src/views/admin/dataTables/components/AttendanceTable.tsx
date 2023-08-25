@@ -55,6 +55,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     fetchData();
   }, [first, rows, filters]);
 
+  
   const fetchData = async () => {
     const response = await AttendanceService.getAllAttendance();
     setAttendance(response);
