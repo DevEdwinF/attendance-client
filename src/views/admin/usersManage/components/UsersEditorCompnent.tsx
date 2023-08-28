@@ -47,6 +47,20 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({
         }));
     };
 
+    const handleFNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditedUser((prevUser) => ({
+            ...prevUser,
+            f_name: e.target.value.toUpperCase(),
+        }));
+    };
+
+    const handleLNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditedUser((prevUser) => ({
+            ...prevUser,
+            l_name: e.target.value.toUpperCase(),
+        }));
+    };
+
     const handleSave = () => {
         onSave(editedUser);
     };
@@ -65,10 +79,10 @@ const EditUserComponent: React.FC<EditUserUserProps> = ({
                     <InputText type="password" name="password" value={editedUser.password} onChange={handleInputChange} />
 
                     <span>Nombre:</span>
-                    <InputText name="f_name" value={editedUser.f_name} onChange={handleInputChange} />
+                    <InputText name="f_name" value={editedUser.f_name} onChange={handleFNameChange} />
 
                     <span>Apellido:</span>
-                    <InputText name="l_name" value={editedUser.l_name} onChange={handleInputChange} />
+                    <InputText name="l_name" value={editedUser.l_name} onChange={handleLNameChange} />
                 </div>
 
                 <span>Rol:</span>

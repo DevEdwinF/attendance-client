@@ -37,6 +37,14 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
     const [roles, setRoles] = useState<Roles[]>([]);
     const [role, setRole] = useState<number | null>(null);
 
+    const handleFNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFName(e.target.value.toUpperCase());
+    };
+
+    const handleLNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLName(e.target.value.toUpperCase());
+    };
+
     const fetchDataRole = async () => {
         try {
             const response = await RolesService.getAllRoles();
@@ -60,8 +68,8 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
             document,
             email,
             password,
-            f_name,
-            l_name,
+            f_name: f_name.toUpperCase(), // Convertir a mayúsculas
+            l_name: l_name.toUpperCase(), // Convertir a mayúsculas
             rol: role as number,
         };
 
@@ -94,13 +102,13 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
                 <InputText value={email} onChange={(e) => setEmail(e.target.value)} />
 
                 <label>Contraseña:</label>
-                <InputText value={password} onChange={(e) => setPassword(e.target.value)} />
+                <InputText type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
                 <label>Nombre:</label>
-                <InputText value={f_name} onChange={(e) => setFName(e.target.value)} />
+                <InputText value={f_name} onChange={handleFNameChange} />
 
                 <label>Apellido:</label>
-                <InputText value={l_name} onChange={(e) => setLName(e.target.value)} />
+                <InputText value={l_name} onChange={handleLNameChange} />
 
                 <label>Rol:</label>
                 <Dropdown

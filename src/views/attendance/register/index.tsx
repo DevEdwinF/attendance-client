@@ -34,7 +34,7 @@ const initialValuesLogin: loginValues = {
 }
 
 const AttendanceForm = () => {
-  const webcamRef = useRef(null);
+  const webcamRef = useRef(null); 
   const [translatedDialog, SetTranslatedDialog] = useState(false);
   const [loginAdminContainer, setLoginAdminContainer] = useState(false);
   const [translatedMobile, setTranslatedMobile] = useState(false)
@@ -57,9 +57,8 @@ const AttendanceForm = () => {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
       const userIp = data.ip;
-      console.log('IP:', userIp);
 
-      const allowedOfficeIp = '190.217.98.138'; // Cambiar a la dirección IP correcta
+      const allowedOfficeIp = '190.217.98.138';
       if (userIp === allowedOfficeIp) {
         setLocation('oficina');
       } else {
@@ -69,8 +68,6 @@ const AttendanceForm = () => {
       console.error('Error fetching IP:', error);
     }
   };
-
-
 
   const handleLogin = async (values: loginValues) => {
     try {
@@ -100,11 +97,12 @@ const AttendanceForm = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
-    if (values.document === '' || values.state === '') {
+    if (values.document === '' || values.state === '' || values.photo === ''  
+  ) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Todos los campos son obligatorios!',
+        text: 'Todos los campos son obligatorios incluida la foto!',
       });
     } else {
       const video = webcamRef.current;
@@ -127,9 +125,6 @@ const AttendanceForm = () => {
       }
     }
   };
-
-
-
 
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
