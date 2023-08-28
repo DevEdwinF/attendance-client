@@ -8,25 +8,10 @@ import DataTables from 'views/admin/dataTables';
 import Collaborators from 'views/admin/Collaborators';
 import UserManage from 'views/admin/usersManage';
 import Novedades from 'views/admin/novedades';
+import { getUserRoleFromToken } from 'util/AuthTokenDecode';
 
-interface User {
-	rol: number; // Change this to the actual property name used in the token
-}
-
-// Obtener token
 const token = localStorage.getItem('token');
-console.log("este es el token:", token)
-
-let userRole: number | null = null; // Initialize to a default value
-
-if (token) {
-	// Decodificar token 
-	const tokenObj = jwtDecode(token);
-	console.log(token)
-
-	// Obtener rol
-	userRole = (tokenObj as User).rol;
-}
+const userRole = getUserRoleFromToken(token);
 
 const allRoutes = [
 	{
@@ -73,10 +58,8 @@ const allRoutes = [
 
 const routes = allRoutes.filter(route => {
 	if (userRole === null) {
-		return (route.allowedRoles?.includes(1) || route.allowedRoles?.includes(3)) ?? false;
+		return route.allowedRoles?.includes(1);
 	}
-
 	return route.allowedRoles?.includes(userRole) ?? false;
 });
-
 export default routes;

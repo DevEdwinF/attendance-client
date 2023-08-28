@@ -42,7 +42,14 @@ export const AttendanceService = {
   getAllAttendance: async () => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/all`,  HeaderPost);
-      console.log(response);
+      return response.data;
+    } catch (error) {
+      throw new Error('Error al obtener la asistencia');
+    }
+  },
+  getAllAttendanceForLeader: async () => {
+    try {
+      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all`,  HeaderPost);
       return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');

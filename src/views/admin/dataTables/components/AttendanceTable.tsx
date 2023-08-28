@@ -11,6 +11,8 @@ import { useColorMode } from '@chakra-ui/react';
 import '../../../../assets/css/App.css';
 import { formatDate } from 'util/DateUtil';
 import TranslatedTableComponent from './TranslatedTable';
+import { async } from 'q';
+import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 
 interface Attendance {
   document: string;
@@ -33,6 +35,10 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const token = localStorage.getItem('token');
+  const userRole = getUserRoleFromToken(token);
+  const [attendanceLeader, setAttenceLeader] = useState<Attendance[]>([])
+  const attendanceService = getServiceByUserRole(userRole);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(pageSizeOptions[0]); 
   const [filters, setFilters] = useState<Partial<Attendance>>({
@@ -53,13 +59,18 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
 
   useEffect(() => {
     fetchData();
-  }, [first, rows, filters]);
+    // fetchDataLeader();
+  }, [first, rows, filters, attendanceService]); 
 
-  
   const fetchData = async () => {
-    const response = await AttendanceService.getAllAttendance();
+    const response = await attendanceService(); // Invoca el servicio según el rol
     setAttendance(response);
   };
+
+  // const fetchDataLeader = async () => {
+  //   const response = await AttendanceService.getAllAttendanceForLeader();
+  //   setAttenceLeader(response);
+  // }
 
   const openDialog = (image: string) => {
     setSelectedImage(image);
