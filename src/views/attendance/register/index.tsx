@@ -33,7 +33,7 @@ const initialValuesLogin: loginValues = {
   password: '',
 }
 
-const MyForm = () => {
+const AttendanceForm = () => {
   const webcamRef = useRef(null);
   const [translatedDialog, SetTranslatedDialog] = useState(false);
   const [loginAdminContainer, setLoginAdminContainer] = useState(false);
@@ -44,12 +44,12 @@ const MyForm = () => {
   const initialValues = {
     document: '',
     state: '',
-    location: location, 
+    location: location,
     photo: '',
   };
 
   useEffect(() => {
-    getIp(); // Llamar a la función de verificación de IP al cargar el componente
+    getIp();
   }, []);
 
   const getIp = async () => {
@@ -129,6 +129,8 @@ const MyForm = () => {
   };
 
 
+
+
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
   };
@@ -136,6 +138,21 @@ const MyForm = () => {
   const handleTranslatedMobileClick = () => {
     setTranslatedMobile(!translatedMobile);
   }
+
+  const attendanceWarning = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Advertencia',
+      text: 'Recuerda que si te encuentras en nuestras instalaciones, es importante realizar el registro mientras estás conectado a nuestra red de internet. Esto ayudará a validar tu presencia de manera adecuada.',
+      confirmButtonColor: 'rgb(163, 190, 50)',
+      confirmButtonText: 'Aceptar',
+    });
+  };
+
+  useEffect(() => {
+    attendanceWarning()
+  }, []);
+
 
   return (
     <>
@@ -186,16 +203,6 @@ const MyForm = () => {
                     <label className="label" htmlFor="location">
                       ¿Dónde te encuentras?
                     </label>
-                    {/* <Field
-                      as="select"
-                      id="location"
-                      name="location"
-                      className="field-style"
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="casa">Casa</option>
-                      <option value="oficina">Oficina</option>
-                    </Field> */}
                     <ErrorMessage name="state" component="div" />
                     <button className="btn-attendance" type="submit">
                       Enviar registro
@@ -245,6 +252,8 @@ const MyForm = () => {
           </div>
         </div>
       </div>
+
+      {/* MOBILE FORM */}
       <div className='attendance-register-container-mobile'>
         <div className='attendance-register-content-mobile'>
           <div className="cam-content">
@@ -298,21 +307,6 @@ const MyForm = () => {
                     <label className="label" htmlFor="location">
                       ¿Dónde te encuentras?
                     </label>
-                    <Field
-                      as="select"
-                      id="location"
-                      name="location"
-                      style={{
-                        width: '100%',
-                        border: '1px solid #b3b3b3',
-                        borderRadius: '5px',
-                        padding: '5px',
-                      }}
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="casa">Casa</option>
-                      <option value="oficina">Oficina</option>
-                    </Field>
                     <ErrorMessage name="state" component="div" />
                     <button className="button-attendance" type="submit">
                       Enviar registro
@@ -345,7 +339,7 @@ const MyForm = () => {
   );
 };
 
-export default MyForm;
+export default AttendanceForm;
 
 
 
