@@ -97,7 +97,7 @@ const AttendanceForm = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
-    if (values.document === '' || values.state === '' || values.photo === ''  
+    if (values.document === '' || values.state === '' /* || values.photo === ''   */
   ) {
       Swal.fire({
         icon: 'error',
