@@ -2,7 +2,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import React, { useEffect, useState } from "react";
-import { AttendanceService } from "services/AttendanceService";
+import { AttendanceService } from "services/Attendance.service";
 
 export interface TranslatedTableProps {
     visible: boolean;

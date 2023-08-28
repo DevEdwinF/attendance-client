@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import Card from 'components/card/Card';
-import { StatService } from 'services/StatsService';
+import { StatService } from 'services/Stats.service';
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import { stat } from 'fs';
 

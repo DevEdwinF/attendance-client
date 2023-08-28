@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import { UserService } from 'services/UserService';
+import { UserService } from 'services/User.service';
 import Swal from 'sweetalert2';
 import '../style/style.css';
 import { RolesService } from 'services/Roles.service';

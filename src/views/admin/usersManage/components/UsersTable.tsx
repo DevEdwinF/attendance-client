@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
-import { UserService } from 'services/UserService';
+import { UserService } from 'services/User.service';
 import EditUserComponent, { EditUserUserProps } from './UsersEditorCompnent';
 import { RiContactsBookUploadLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';

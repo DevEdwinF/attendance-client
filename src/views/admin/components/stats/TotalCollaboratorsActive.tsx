@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { StatService } from 'services/StatsService'
+import { StatService } from 'services/Stats.service'
 import Card from 'components/card/Card';
 import { Text, useColorModeValue } from '@chakra-ui/react';
 

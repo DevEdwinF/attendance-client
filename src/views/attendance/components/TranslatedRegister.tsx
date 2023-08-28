@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { AttendanceService } from 'services/AttendanceService';
+import { AttendanceService } from 'services/Attendance.service';
 import Swal from 'sweetalert2';
 
 interface FormValues {

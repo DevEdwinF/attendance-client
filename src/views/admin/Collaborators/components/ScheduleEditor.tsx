@@ -6,7 +6,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Collaborator, Schedule } from './CollaboratorsTable';
 import { InputText } from 'primereact/inputtext';
-import { ScheduleService } from '../../../../services/ScheduleService';
+import { ScheduleService } from '../../../../services/Schedule.service';
 import classNames from 'classnames';
 import '../../../../assets/css/App.css';
 import { MdDeleteOutline } from 'react-icons/md';

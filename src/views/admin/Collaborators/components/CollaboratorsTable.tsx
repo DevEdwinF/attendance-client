@@ -4,7 +4,7 @@ import { Paginator } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { CollaboratorService } from 'services/CollaboratorService';
+import { CollaboratorService } from 'services/Collaborator.service';
 import { ScheduleEditor } from './ScheduleEditor';
 import { MdEdit } from 'react-icons/md';
 import { FilterMatchMode } from 'primereact/api';
@@ -29,8 +29,8 @@ export interface Collaborator {
   id_collaborator?: number,
   date: string;
   state: string;
-  id: string; // Change the type from number to string here
-  fk_collaborator_id: string; // Change the type from number to string here
+  id: string; 
+  fk_collaborator_id: string; 
   schedules: Schedule[];
 }
 
@@ -75,7 +75,7 @@ const CollaboratorTable = () => {
     const paginatedData = filteredData.slice(first, first + rows);
     setCollaborators(paginatedData);
   
-    setLoading(false); // Indicar que hemos terminado de cargar los datos
+    setLoading(false);
   };
   
 

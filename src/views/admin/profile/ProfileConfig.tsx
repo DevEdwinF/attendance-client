@@ -1,10 +1,10 @@
 import { Dialog } from 'primereact/dialog';
 import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
-import { UserService } from 'services/UserService';
+import { UserService } from 'services/User.service';
 import { Formik, Field, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { AuthService } from 'services/AuthService';
+import { AuthService } from 'services/Auth.service';
 
 export interface ProfileConfigInterface {
   document: string;

@@ -3,7 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { ScheduleService } from 'services/ScheduleService';
+import { ScheduleService } from 'services/Schedule.service';
 
 
 import Swal from 'sweetalert2';

@@ -6,7 +6,7 @@ import { SidebarContext } from 'contexts/SidebarContext';
 import { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import routes from 'routes';
-import { AuthService } from 'services/AuthService';
+import { AuthService } from 'services/Auth.service';
 
 export default function Dashboard(props: { [x: string]: any }) {
 	const [loading, setLoading] = useState(true);

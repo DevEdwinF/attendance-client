@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useRef, useState } from 'react';
-import { AttendanceService } from 'services/AttendanceService';
+import { useEffect, useRef, useState } from 'react';
+import { AttendanceService } from 'services/Attendance.service';
 import Swal from 'sweetalert2';
 import Clock from 'util/ClockUtil';
 import Webcam from 'react-webcam';
@@ -9,7 +9,7 @@ import TranslatedRegister from '../components/TranslatedRegister';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import './index.css';
-import { AuthService } from 'services/AuthService';
+import { AuthService } from 'services/Auth.service';
 import { MdArrowCircleLeft } from 'react-icons/md';
 import { Image } from '@chakra-ui/react';
 import AirplanePapper from 'assets/img/imgUtil/airplane-papper.svg'
@@ -21,12 +21,7 @@ interface FormValues {
   photo: string;
 }
 
-const initialValues: FormValues = {
-  document: '',
-  state: '',
-  location: '',
-  photo: '',
-};
+
 
 interface loginValues {
   email: string;
@@ -43,7 +38,37 @@ const MyForm = () => {
   const [translatedDialog, SetTranslatedDialog] = useState(false);
   const [loginAdminContainer, setLoginAdminContainer] = useState(false);
   const [translatedMobile, setTranslatedMobile] = useState(false)
+  const [location, setLocation] = useState('');
   const history: History = useHistory();
+
+  const initialValues = {
+    document: '',
+    state: '',
+    location: location, 
+    photo: '',
+  };
+
+  useEffect(() => {
+    getIp(); // Llamar a la función de verificación de IP al cargar el componente
+  }, []);
+
+  const getIp = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      const userIp = data.ip;
+      console.log('IP:', userIp);
+
+      const allowedOfficeIp = '190.217.98.138'; // Cambiar a la dirección IP correcta
+      if (userIp === allowedOfficeIp) {
+        setLocation('oficina');
+      } else {
+        setLocation('casa');
+      }
+    } catch (error) {
+      console.error('Error fetching IP:', error);
+    }
+  };
 
 
 
@@ -85,16 +110,12 @@ const MyForm = () => {
       const video = webcamRef.current;
       const imageSrc = video.getScreenshot();
       console.log("Imagen capturada:", imageSrc);
-      // const imageBlob = dataURItoBlob(imageSrc);
 
       const formData = new FormData();
       formData.append('document', values.document);
       formData.append('state', values.state);
-      formData.append('location', values.location);
+      formData.append('location', location); // Establecer la ubicación basada en la dirección IP
       formData.append('photo', imageSrc);
-      // const photoBlob = dataURItoBlob(imageSrc);
-      // formData.append('photo', photoBlob);
-      // console.log("Form data:", formData);
 
       try {
         await AttendanceService.validate(values.document);
@@ -106,6 +127,7 @@ const MyForm = () => {
       }
     }
   };
+
 
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
@@ -164,7 +186,7 @@ const MyForm = () => {
                     <label className="label" htmlFor="location">
                       ¿Dónde te encuentras?
                     </label>
-                    <Field
+                    {/* <Field
                       as="select"
                       id="location"
                       name="location"
@@ -173,7 +195,7 @@ const MyForm = () => {
                       <option value="">Seleccionar...</option>
                       <option value="casa">Casa</option>
                       <option value="oficina">Oficina</option>
-                    </Field>
+                    </Field> */}
                     <ErrorMessage name="state" component="div" />
                     <button className="btn-attendance" type="submit">
                       Enviar registro

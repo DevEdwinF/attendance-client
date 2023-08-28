@@ -4,7 +4,7 @@ import { Paginator } from 'primereact/paginator';
 import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
-import { AttendanceService } from 'services/AttendanceService';
+import { AttendanceService } from 'services/Attendance.service';
 import Card from 'components/card/Card';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
