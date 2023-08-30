@@ -3,6 +3,7 @@
 	"name": "Smart",
 	"version": "1.1.0",
 	"private": true,
+	"homepage":"https://smart.edu.co",
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.5",
 		"@chakra-ui/react": "1.8.8",
