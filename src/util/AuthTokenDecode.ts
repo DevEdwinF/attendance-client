@@ -27,3 +27,14 @@ export const getServiceByUserRole = (role: number | null) => {
             return null; 
     }
 };
+
+export const getServiceByUserRoleLateTable = (role: number | null) => {
+    switch (role) {
+        case AllAttendanceRoles.find((r) => r === role):
+            return AttendanceService.getAllAttendanceForLate; 
+        case AllLeaderRoles.find((r) => r === role):
+            return AttendanceService.getAttendanceForLeaderToLate;
+        default:
+            return null; 
+    }
+}

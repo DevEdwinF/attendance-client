@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import DevelopmentTable from 'views/admin/dataTables/components/DevelopmentTable';
-import AttendanceTable from 'views/admin/dataTables/components/AttendanceTable'
+import AttendanceTable from 'views/attendance/components/AttendanceTable'
 import CheckTable from 'views/admin/dataTables/components/CheckTable';
 import ColumnsTable from 'views/admin/dataTables/components/ColumnsTable';
 import ComplexTable from 'views/admin/dataTables/components/ComplexTable';

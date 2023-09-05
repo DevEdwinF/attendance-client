@@ -8,13 +8,13 @@ import { AttendanceService } from 'services/Attendance.service';
 import Card from 'components/card/Card';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
-import '../../../../assets/css/App.css';
 import { formatDate } from 'util/DateUtil';
-import TranslatedTableComponent from './TranslatedTable';
+import TranslatedTableComponent from 'views/attendance/components/TranslatedTable';
 import { async } from 'q';
 import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
+import LateTableComponent from './LateTable';
 
-interface Attendance {
+export interface Attendance {
   document: string;
   f_name: string;
   l_name: string;
@@ -40,7 +40,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [attendanceLeader, setAttenceLeader] = useState<Attendance[]>([])
   const attendanceService = getServiceByUserRole(userRole);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(pageSizeOptions[0]); 
+  const [rows, setRows] = useState(pageSizeOptions[0]);
   const [filters, setFilters] = useState<Partial<Attendance>>({
     document: '',
     f_name: '',
@@ -49,6 +49,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     location: '',
   });
   const [displayTranslatedDialog, setDisplayTranslatedDialog] = useState(false);
+  const [displayLateDialog, setDisplayLateDialog] = useState(false);
 
 
   const { colorMode } = useColorMode();
@@ -60,10 +61,10 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   useEffect(() => {
     fetchData();
     // fetchDataLeader();
-  }, [first, rows, filters, attendanceService]); 
+  }, [first, rows, filters, attendanceService]);
 
   const fetchData = async () => {
-    const response = await attendanceService(); // Invoca el servicio según el rol
+    const response = await attendanceService();
     setAttendance(response);
   };
 
@@ -104,7 +105,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     }
     return null;
   };
-  
+
 
   const renderLateStatus = (rowData: Attendance) => {
     if (rowData.late) {
@@ -126,7 +127,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   };
 
   const filterTemplate = (field: keyof Attendance) => {
-    const filterValue = filters[field] as string; 
+    const filterValue = filters[field] as string;
 
     return (
       <InputText
@@ -141,9 +142,9 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Attendance) => {
     console.log('Filtering by:', field);
     console.log('Old filters:', filters);
-  
+
     setFilters({ ...filters, [field]: e.target.value });
-  
+
     console.log('New filters:', filters);
   };
 
@@ -151,62 +152,74 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     setDisplayTranslatedDialog(true)
   }
 
+  const handleLateTableOpen = () => {
+    setDisplayLateDialog(true)
+  }
+
   return (
     <>
-      <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>Translados</button>
-    <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-      <div className="">
-        <DataTable
-          style={{ fontSize: '.85em' }}
-          value={attendance}
-          header={header}
-          footer={footer}
-          className={tableClass}
-          first={first}
-          rows={rows}
-          // filterDisplay="row"
-          onPage={onPage}
-        >
-          <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
-          <Column
-            field="document"
-            header="Documento"
-            filter={true}
-            filterPlaceholder="Filtrar por documento"
-            filterElement={filterTemplate('document')}
-          />
-          <Column
-            field="f_name"
-            header="Nombre"
-            filter={true}
-            filterPlaceholder="Filtrar por nombre"
-            filterElement={filterTemplate('f_name')}
-          />
-          <Column
-            field="l_name"
-            header="Apellido"
-            filter={true}
-            filterPlaceholder="Filtrar por apellido"
-            filterElement={filterTemplate('l_name')}
-          />
-
-          <Column field="email" header="Correo" filter={true} filterElement={filterTemplate('email')} />
-          <Column field="location" header="Lugar" filter={true} filterElement={filterTemplate('location')} />
-          <Column field="arrival" header="Llegada"></Column>
-          <Column field="departure" header="Salida"></Column>
-          <Column field="late" header="Estado" body={renderLateStatus}></Column>
-          <Column field="photo" header="Foto" body={renderPhoto}></Column>
-        </DataTable>
-        {renderPaginator()}
-        <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
-          {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
-        </Dialog>
-        <TranslatedTableComponent
-    visible={displayTranslatedDialog}
-    onHide={() => setDisplayTranslatedDialog(false)} // Pasa la función onHide aquí
-/>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>Translados</button>
+        <button className="btn-translated-open" onClick={handleLateTableOpen}>Retardos acomulados</button>
       </div>
-    </Card>
+
+      <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
+        <div className="">
+          <DataTable
+            style={{ fontSize: '.85em' }}
+            value={attendance}
+            header={header}
+            footer={footer}
+            className={tableClass}
+            first={first}
+            rows={rows}
+            // filterDisplay="row"
+            onPage={onPage}
+          >
+            <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
+            <Column
+              field="document"
+              header="Documento"
+              filter={true}
+              filterPlaceholder="Filtrar por documento"
+              filterElement={filterTemplate('document')}
+            />
+            <Column
+              field="f_name"
+              header="Nombre"
+              filter={true}
+              filterPlaceholder="Filtrar por nombre"
+              filterElement={filterTemplate('f_name')}
+            />
+            <Column
+              field="l_name"
+              header="Apellido"
+              filter={true}
+              filterPlaceholder="Filtrar por apellido"
+              filterElement={filterTemplate('l_name')}
+            />
+
+            <Column field="email" header="Correo" filter={true} filterElement={filterTemplate('email')} />
+            <Column field="location" header="Lugar" filter={true} filterElement={filterTemplate('location')} />
+            <Column field="arrival" header="Llegada"></Column>
+            <Column field="departure" header="Salida"></Column>
+            <Column field="late" header="Estado" body={renderLateStatus}></Column>
+            <Column field="photo" header="Foto" body={renderPhoto}></Column>
+          </DataTable>
+          {renderPaginator()}
+          <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
+            {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
+          </Dialog>
+          <TranslatedTableComponent
+            visible={displayTranslatedDialog}
+            onHide={() => setDisplayTranslatedDialog(false)} // Pasa la función onHide aquí
+          />
+          <LateTableComponent
+            visibleTwo={displayLateDialog}
+            onHideTwo={() => setDisplayLateDialog(false)} // Pasa la función onHide aquí
+          />
+        </div>
+      </Card>
     </>
   );
 };

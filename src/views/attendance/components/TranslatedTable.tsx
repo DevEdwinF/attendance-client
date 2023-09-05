@@ -16,10 +16,7 @@ export interface Collaborator {
     date: string;
 }
 
-const TranslatedTableComponent: React.FC<TranslatedTableProps> = ({
-    visible,
-    onHide,
-}) => {
+const TranslatedTableComponent: React.FC<TranslatedTableProps> = ({visible, onHide}) => {
     const [collaboratorData, setCollaboratorData] = useState<Collaborator[]>([]);
 
     useEffect(() => {
@@ -38,7 +35,7 @@ const TranslatedTableComponent: React.FC<TranslatedTableProps> = ({
     const formatDateTime = (dateTimeString: string) => {
         const dateTime = new Date(dateTimeString);
         const day = dateTime.getDate();
-        const month = dateTime.getMonth() + 1; // Months are zero-based
+        const month = dateTime.getMonth() + 1;
         const year = dateTime.getFullYear();
         const hours = dateTime.getHours();
         const minutes = dateTime.getMinutes();

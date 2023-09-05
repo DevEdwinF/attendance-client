@@ -79,6 +79,22 @@ export const AttendanceService = {
     } catch (error) {
       throw error
     }
+  },
+  getAttendanceForLeaderToLate:async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/leader/late/all`, HeaderPost)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+  getAllAttendanceForLate: async () =>{
+    try {
+      const response = await axios.get(`${baseUrl}/late/all`, HeaderPost)
+      return response.data
+    } catch (error) {
+      throw error
+    }
   }
 };
 

@@ -1,9 +1,8 @@
 {
-	"homepage": "",
+	"homepage": "https://smart.edu.co",
 	"name": "Smart",
 	"version": "1.1.0",
 	"private": true,
-	"homepage":"https://smart.edu.co",
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.5",
 		"@chakra-ui/react": "1.8.8",
@@ -34,6 +33,7 @@
 		"primeflex": "^3.3.1",
 		"primereact": "^9.6.0",
 		"react": "^17.0.2",
+		"react-accordion": "^0.3.0",
 		"react-apexcharts": "^1.4.0",
 		"react-calendar": "^3.7.0",
 		"react-camera": "^0.1.3",
