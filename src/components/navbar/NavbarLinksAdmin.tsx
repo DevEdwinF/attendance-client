@@ -27,7 +27,7 @@ import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
 import { async } from 'q';
-import Auth from 'layouts/auth';
+// import Auth from 'layouts/auth';
 import { AuthService } from 'services/Auth.service';
 import ProfileConfig from 'views/admin/profile/ProfileConfig';
 

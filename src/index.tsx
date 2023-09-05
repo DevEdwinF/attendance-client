@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './assets/css/App.css';
 import { HashRouter, Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
-import AuthLayout from './layouts/auth';
+// import AuthLayout from './layouts/auth';
 import AdminLayout from './layouts/admin';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme/theme';
@@ -31,7 +31,7 @@ const App = () => {
 		checkAuthentication();
 	}, []);
 
-	
+
 
 	return (
 		<ChakraProvider theme={theme}>
@@ -39,8 +39,9 @@ const App = () => {
 				<BrowserRouter>
 					<Switch>
 						<Route exact path="/">
-							{authenticated ? <Redirect to="/admin/default" /> : <Attendance />}
+							{authenticated ? <Redirect to="/admin/dashboard" /> : <Attendance />}
 						</Route>
+
 						<AuthRoute
 							path="/admin"
 							component={AdminLayout}
