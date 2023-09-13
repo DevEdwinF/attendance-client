@@ -31,8 +31,6 @@ const App = () => {
 		checkAuthentication();
 	}, []);
 
-
-
 	return (
 		<ChakraProvider theme={theme}>
 			<React.StrictMode>
