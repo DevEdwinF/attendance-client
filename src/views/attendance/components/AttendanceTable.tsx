@@ -60,18 +60,12 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
 
   useEffect(() => {
     fetchData();
-    // fetchDataLeader();
   }, [first, rows, filters, attendanceService]);
 
   const fetchData = async () => {
     const response = await attendanceService();
     setAttendance(response);
   };
-
-  // const fetchDataLeader = async () => {
-  //   const response = await AttendanceService.getAllAttendanceForLeader();
-  //   setAttenceLeader(response);
-  // }
 
   const openDialog = (image: string) => {
     setSelectedImage(image);

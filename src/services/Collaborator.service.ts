@@ -25,5 +25,14 @@ export const CollaboratorService = {
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
+  },
+  getCollaboratorForLeader:async () => {
+    try {
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all/leader`, HeaderPost)
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      throw error
+    }
   }
 };

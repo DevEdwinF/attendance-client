@@ -517,7 +517,59 @@
 		transform: translateX(0%);
 		transition: .8s ease-in-out;
 	}
+
+	.login-admin-content{
+		width: 60%;
+	}
+
+	.login-admin-container-mobile {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		padding: 10% 0px;
+		width: 100%;
+		height: 100vh;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgb(163, 190, 50);
+		background-size: 100% 100%;
+		transform: translateX(70em);
+		z-index: 2;
+		transition: transform .6s ease-out;
+	}
+
+	.login-admin-container-mobile-open {
+		height: 100vh;
+		transform: translateX(0em);
+		transition: transform .6s ease-in-out;
+	}
+
+	.btn-cancel{
+		position: absolute;
+		top: 3%;
+		left: 5%;
+	}
+
+	.login-admin-tittle{
+		font-size: 1.6rem;
+		color: rgb(255, 255, 255);
+	}
+
+	.field-style {
+		width: 100%;
+		/* height: 50px; */
+		padding: 10px 20px;
+		border-radius: 20% / 110%;
+		border: 1px solid rgb(179, 179, 179);
+		transition: .2s;
+	}
 }
+
+
 
 @media (max-width: 320px) {
 	.attendance-register-container-desktop {

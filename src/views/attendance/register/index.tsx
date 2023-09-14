@@ -37,6 +37,7 @@ const AttendanceForm = () => {
   const webcamRef = useRef(null); 
   const [translatedDialog, SetTranslatedDialog] = useState(false);
   const [loginAdminContainer, setLoginAdminContainer] = useState(false);
+  const [loginAdminContainerMobile, setLoginAdminContainerMobile] = useState(false);
   const [translatedMobile, setTranslatedMobile] = useState(false)
   const [location, setLocation] = useState('');
   const history: History = useHistory();
@@ -86,6 +87,8 @@ const AttendanceForm = () => {
 
   const handleCloseDialog = () => {
     setLoginAdminContainer(false);
+    setLoginAdminContainerMobile(false);
+
   };
 
   const handleTranslatedDialog = () => {
@@ -97,7 +100,7 @@ const AttendanceForm = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
-    if (values.document === '' || values.state === '' /* || values.photo === ''   */
+    if (values.document === '' || values.state === '' || values.photo === ''  
   ) {
       Swal.fire({
         icon: 'error',
@@ -112,7 +115,7 @@ const AttendanceForm = () => {
       const formData = new FormData();
       formData.append('document', values.document);
       formData.append('state', values.state);
-      formData.append('location', location); // Establecer la ubicación basada en la dirección IP
+      formData.append('location', location);
       formData.append('photo', imageSrc);
 
       try {
@@ -128,6 +131,9 @@ const AttendanceForm = () => {
 
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
+  };
+  const handleLoginAdminMobileClick = () => {
+    setLoginAdminContainerMobile(true);
   };
 
   const handleTranslatedMobileClick = () => {
@@ -195,9 +201,6 @@ const AttendanceForm = () => {
                       <option value="arrival">Llegada</option>
                       <option value="departure">Salida</option>
                     </Field>
-                    <label className="label" htmlFor="location">
-                      ¿Dónde te encuentras?
-                    </label>
                     <ErrorMessage name="state" component="div" />
                     <button className="btn-attendance" type="submit">
                       Enviar registro
@@ -299,12 +302,10 @@ const AttendanceForm = () => {
                       <option value="arrival">Llegada</option>
                       <option value="departure">Salida</option>
                     </Field>
-                    <label className="label" htmlFor="location">
-                      ¿Dónde te encuentras?
-                    </label>
                     <ErrorMessage name="state" component="div" />
-                    <button className="button-attendance" type="submit">
+                    <button className="btn-attendance" type="submit">
                       Enviar registro
+                    <Image src={AirplanePapper} />
                     </button>
                   </Form>
                 </Formik>
@@ -315,7 +316,7 @@ const AttendanceForm = () => {
             <button className='btn-translated-mobile' onClick={handleTranslatedMobileClick}>
               Translados
             </button>
-            <button className='btn-admin-login-mobile'>
+            <button className='btn-admin-login-mobile' onClick={handleLoginAdminMobileClick}>
               Administrador
             </button>
           </div>
@@ -329,6 +330,37 @@ const AttendanceForm = () => {
           </label>
           <TranslatedRegister />
         </div>
+        {/* ___ */}
+        <div className={`login-admin-container-mobile${loginAdminContainerMobile ? ' login-admin-container-mobile-open' : ''}`}>
+          <div className='login-admin-content'>
+            <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
+              <Form className='login-admin-form'>
+                <label className='btn-cancel' onClick={handleCloseDialog}>
+                  <MdArrowCircleLeft className='icon-cancel' />
+                </label>
+                <label className='login-admin-tittle'>
+                  Ingreso Administrador
+                </label>
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Correo smart"
+                  className="field-style field-email"
+                />
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Contraseña"
+                  className="field-style field-password"
+                />
+                <button className="btn-login-admin" type="submit">
+                  Entrar
+                </button>
+              </Form>
+            </Formik>
+          </div>
+        </div>
+        {/* _____ */}
       </div>
     </>
   );

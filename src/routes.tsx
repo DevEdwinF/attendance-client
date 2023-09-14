@@ -18,7 +18,7 @@ const allRoutes = [
 		name: 'Dashboard',
 		layout: '/admin',
 		path: '/dashboard',
-		allowedRoles: [1, 2, 3, 7, 8],
+		allowedRoles: [1, 2, 3, 4, 5, 6, 7],
 		icon: <Icon as={MdOutlineDashboard} width='20px' height='20px' color='inherit' />,
 		component: MainDashboard
 	},
@@ -26,14 +26,14 @@ const allRoutes = [
 		name: 'Asistencia',
 		layout: '/admin',
 		icon: <Icon as={MdOutlineCalendarMonth} width='20px' height='20px' color='inherit' />,
-		allowedRoles: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+		allowedRoles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
 		path: '/data-tables',
 		component: DataTables
 	},
 	{
 		name: 'Colaboradores',
 		layout: '/admin',
-		allowedRoles: [1, 2, 3, 4, 7],
+		allowedRoles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
 		icon: <Icon as={MdOutlinePeopleOutline} width='20px' height='20px' color='inherit' />,
 		path: '/collaborators',
 		component: Collaborators
@@ -41,7 +41,7 @@ const allRoutes = [
 	{
 		name: 'Usuarios',
 		layout: '/admin',
-		allowedRoles: [1, 2, 3, 7],
+		allowedRoles: [1, 2, 3, 4, 5, 6],
 		icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
 		path: '/users',
 		component: UserManage
@@ -49,7 +49,7 @@ const allRoutes = [
 	{
 		name: 'Novedades',
 		layout: '/admin',
-		allowedRoles: [7],
+		allowedRoles: [1, 2, 7],
 		icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
 		path: '/novedades',
 		component: Novedades

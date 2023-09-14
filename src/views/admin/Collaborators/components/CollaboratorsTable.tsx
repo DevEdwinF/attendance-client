@@ -9,6 +9,7 @@ import { ScheduleEditor } from './ScheduleEditor';
 import { MdEdit } from 'react-icons/md';
 import { FilterMatchMode } from 'primereact/api';
 import { formatDate } from 'util/DateUtil';
+import { getCollaboratorByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 
 export interface Schedule {
   id: number;
@@ -41,6 +42,9 @@ const CollaboratorTable = () => {
   const [rows, setRows] = useState(5);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('token');
+  const userRole = getUserRoleFromToken(token);
+  const collaboratorService = getCollaboratorByUserRole(userRole)
 
   const [filters, setFilters] = useState<Partial<Collaborator>>({
     document: '',
@@ -55,12 +59,12 @@ const CollaboratorTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, [first, rows, filters]);
+  }, [first, rows, filters, collaboratorService]);
 
   const fetchData = async () => {
     // setLoading(true); 
   
-    const response = await CollaboratorService.getAllCollaborators();
+    const response = await collaboratorService();
   
     const filteredData = response.filter((collaborator: Collaborator) =>
       Object.entries(filters).every(([key, value]) => {
