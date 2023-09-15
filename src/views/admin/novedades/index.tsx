@@ -2,7 +2,9 @@ import React from 'react'
 
 const Novedades = () => {
   return (
-    <div>Novedades</div>
+    <>
+      <h1 style={{marginTop:"10%",fontSize:"3em"}}>Bloqueado</h1>
+    </>
   )
 }
 

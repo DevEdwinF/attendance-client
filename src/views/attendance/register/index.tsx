@@ -41,6 +41,7 @@ const AttendanceForm = () => {
   const [translatedMobile, setTranslatedMobile] = useState(false)
   const [location, setLocation] = useState('');
   const history: History = useHistory();
+  const [cameraActive, setCameraActive] = useState(false);
 
   const initialValues = {
     document: '',
@@ -50,8 +51,26 @@ const AttendanceForm = () => {
   };
 
   useEffect(() => {
+    async function initializeCamera() {
+      const videoConstraints = {
+        facingMode: 'user',
+      };
+  
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
+        if (webcamRef.current) {
+          webcamRef.current.srcObject = stream;
+          setCameraActive(true); 
+        }
+      } catch (error) {
+        console.error('Error al habilitar la cámara:', error);
+      }
+    }
+  
+    initializeCamera();
     getIp();
   }, []);
+  
 
   const getIp = async () => {
     try {
@@ -100,7 +119,15 @@ const AttendanceForm = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
-    if (values.document === '' || values.state === '' || values.photo === ''  
+    if (!cameraActive) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'La cámara no está activada. Activa la cámara antes de registrar.',
+      });
+      return; 
+    }
+    if (values.document === '' || values.state === '' 
   ) {
       Swal.fire({
         icon: 'error',

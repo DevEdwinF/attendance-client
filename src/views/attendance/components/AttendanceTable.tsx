@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Paginator } from 'primereact/paginator';
-import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
-import { AttendanceService } from 'services/Attendance.service';
+import { Dialog } from 'primereact/dialog';
 import Card from 'components/card/Card';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
 import { formatDate } from 'util/DateUtil';
 import TranslatedTableComponent from 'views/attendance/components/TranslatedTable';
-import { async } from 'q';
-import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 import LateTableComponent from './LateTable';
+import { async } from 'q'; // Esta importación parece innecesaria e incorrecta
+import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 
 export interface Attendance {
   document: string;
@@ -37,7 +36,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const token = localStorage.getItem('token');
   const userRole = getUserRoleFromToken(token);
-  const [attendanceLeader, setAttenceLeader] = useState<Attendance[]>([])
+  const [attendanceLeader, setAttendanceLeader] = useState<Attendance[]>([]);
   const attendanceService = getServiceByUserRole(userRole);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(pageSizeOptions[0]);
@@ -51,7 +50,6 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [displayTranslatedDialog, setDisplayTranslatedDialog] = useState(false);
   const [displayLateDialog, setDisplayLateDialog] = useState(false);
 
-
   const { colorMode } = useColorMode();
   const tableClass = colorMode === 'light' ? 'light-mode' : 'dark-mode';
 
@@ -63,8 +61,12 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   }, [first, rows, filters, attendanceService]);
 
   const fetchData = async () => {
-    const response = await attendanceService();
-    setAttendance(response);
+    try {
+      const response = await attendanceService();
+      setAttendance(response);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
   };
 
   const openDialog = (image: string) => {
@@ -100,7 +102,6 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     return null;
   };
 
-
   const renderLateStatus = (rowData: Attendance) => {
     if (rowData.late) {
       return <span className="text-red">Tarde</span>;
@@ -134,27 +135,26 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   };
 
   const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Attendance) => {
-    console.log('Filtering by:', field);
-    console.log('Old filters:', filters);
-
     setFilters({ ...filters, [field]: e.target.value });
-
-    console.log('New filters:', filters);
   };
 
   const handleTranslatedTableOpen = () => {
-    setDisplayTranslatedDialog(true)
-  }
+    setDisplayTranslatedDialog(true);
+  };
 
   const handleLateTableOpen = () => {
-    setDisplayLateDialog(true)
-  }
+    setDisplayLateDialog(true);
+  };
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>Translados</button>
-        <button className="btn-translated-open" onClick={handleLateTableOpen}>Retardos acomulados</button>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>
+          Translados
+        </button>
+        <button className="btn-translated-open" onClick={handleLateTableOpen}>
+          Retardos acumulados
+        </button>
       </div>
 
       <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
@@ -167,7 +167,6 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
             className={tableClass}
             first={first}
             rows={rows}
-            // filterDisplay="row"
             onPage={onPage}
           >
             <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>

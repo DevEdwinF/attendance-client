@@ -1,5 +1,5 @@
 import { Icon } from '@chakra-ui/react';
-import { MdPerson, MdOutlineCalendarMonth, MdOutlineDashboard, MdOutlinePeopleOutline } from 'react-icons/md';
+import { MdLock, MdPerson, MdOutlineCalendarMonth, MdOutlineDashboard, MdOutlinePeopleOutline } from 'react-icons/md';
 import jwtDecode from 'jwt-decode';
 
 // Admin Imports
@@ -46,11 +46,11 @@ const allRoutes = [
 		path: '/users',
 		component: UserManage
 	},
-	{
-		name: 'Novedades',
+{
+		name: 'Nómina',
 		layout: '/admin',
 		allowedRoles: [1, 2, 7],
-		icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+		icon: <Icon as={MdLock} width='20px' height='20px' color='red' />,
 		path: '/novedades',
 		component: Novedades
 	},

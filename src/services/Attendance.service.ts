@@ -15,7 +15,7 @@ export const AttendanceService = {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: error.response?.data?.message || 'Error desconocido'
+        text: error.response?.data?.message || 'Todos los campos son obligatorios, verifica que la cámar esté encendida'
       });
       console.log(error);
       throw new Error("Error al validar");
