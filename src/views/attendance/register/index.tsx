@@ -118,6 +118,8 @@ const AttendanceForm = () => {
     setTranslatedMobile(false);
   };
 
+  //
+
   const handleSubmit = async (values: FormValues) => {
     if (!cameraActive) {
       Swal.fire({
