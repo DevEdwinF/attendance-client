@@ -548,7 +548,7 @@
 		transition: transform .6s ease-in-out;
 	}
 
-	.btn-cancel{
+	.btn-cancel-mobile{
 		position: absolute;
 		top: 3%;
 		left: 5%;

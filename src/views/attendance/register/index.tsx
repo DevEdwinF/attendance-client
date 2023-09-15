@@ -364,7 +364,7 @@ const AttendanceForm = () => {
           <div className='login-admin-content'>
             <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
               <Form className='login-admin-form'>
-                <label className='btn-cancel' onClick={handleCloseDialog}>
+                <label className='btn-cancel-mobile' onClick={handleCloseDialog}>
                   <MdArrowCircleLeft className='icon-cancel' />
                 </label>
                 <label className='login-admin-tittle'>

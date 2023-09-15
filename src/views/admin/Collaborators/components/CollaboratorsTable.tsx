@@ -248,6 +248,20 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por líder"
 />
 <Column
+    field="headquarters"
+    header="Sede"
+    filter={true} 
+    filterElement={filterTemplate('leader')} 
+    filterPlaceholder="Filtrar por líder"
+/>
+<Column
+    field="subprocess"
+    header="Subproceso"
+    filter={true} 
+    filterElement={filterTemplate('leader')} 
+    filterPlaceholder="Filtrar por líder"
+/>
+<Column
     field="state"
     header="Estado"
     filter={true} 

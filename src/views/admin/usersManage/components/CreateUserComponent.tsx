@@ -96,22 +96,22 @@ const CreateUserComponent: React.FC<CreateUserProps> = ({ visible, onHide, onCre
         <Dialog header="Crear Usuario" visible={visible} onHide={onHide}>
             <div className='user-data-content'>
                 <label>Documento:</label>
-                <InputText value={document} onChange={(e) => setDocument(e.target.value)} />
+                <InputText style={{borderRadius:"30px", marginBottom: "15px"}} value={document} onChange={(e) => setDocument(e.target.value)} />
 
                 <label>Correo:</label>
-                <InputText value={email} onChange={(e) => setEmail(e.target.value)} />
+                <InputText style={{borderRadius:"30px", marginBottom: "20px"}} value={email} onChange={(e) => setEmail(e.target.value)} />
 
                 <label>Contraseña:</label>
-                <InputText type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <InputText style={{borderRadius:"30px", marginBottom: "15px"}} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
                 <label>Nombre:</label>
-                <InputText value={f_name} onChange={handleFNameChange} />
+                <InputText style={{borderRadius:"30px", marginBottom: "15px"}} value={f_name} onChange={handleFNameChange} />
 
                 <label>Apellido:</label>
-                <InputText value={l_name} onChange={handleLNameChange} />
+                <InputText style={{borderRadius:"30px", marginBottom: "15px"}} value={l_name} onChange={handleLNameChange} />
 
                 <label>Rol:</label>
-                <Dropdown
+                <Dropdown style={{borderRadius:"30px", marginBottom: "15px"}}
                     value={role}
                     options={roles.map((r) => ({ value: r.id, label: r.name }))}
                     onChange={(e) => handleRoleChange(e.value)}

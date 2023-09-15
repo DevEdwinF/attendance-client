@@ -131,7 +131,7 @@ export default function UsersTable() {
 
     return (
         <div className="card">
-             <button className='btn-create-user-open' onClick={handleCreateUserClick}>Crear un nuevo</button>
+             <button className='btn-create-user-open' onClick={handleCreateUserClick}>Crear un nuevo usuario</button>
             <DataTable value={users} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="document" header="Documento"></Column>
                 <Column field="email" header="Correo"></Column>

@@ -150,9 +150,9 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     <>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <button className="btn-translated-open" onClick={handleTranslatedTableOpen}>
-          Translados
+          Traslados
         </button>
-        <button className="btn-translated-open" onClick={handleLateTableOpen}>
+        <button className="btn-retard-represed-open" onClick={handleLateTableOpen}>
           Retardos acumulados
         </button>
       </div>
