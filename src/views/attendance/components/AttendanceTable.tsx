@@ -8,7 +8,7 @@ import Card from 'components/card/Card';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
 import { formatDate, formatTime } from 'util/DateUtil';
-import TranslatedTableComponent from 'views/attendance/components/TranslatedTable';
+import TranslatedTableComponent, { Collaborator } from 'views/attendance/components/TranslatedTable';
 import LateTableComponent from './LateTable';
 import { async } from 'q'; // Esta importación parece innecesaria e incorrecta
 import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
@@ -41,6 +41,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(pageSizeOptions[0]);
   const [filters, setFilters] = useState<Partial<Attendance>>({
+    date: '',
     document: '',
     f_name: '',
     l_name: '',
@@ -61,12 +62,20 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   }, [first, rows, filters, attendanceService]);
 
   const fetchData = async () => {
-    try {
-      const response = await attendanceService();
-      setAttendance(response);
-    } catch (error) {
-      console.error('Error al obtener los datos:', error);
-    }
+    const response = await attendanceService();
+
+    const filteredData = response.filter((attendance: Attendance) =>
+      Object.entries(filters).every(([key, value]) => {
+        const fieldValue = String(attendance[key as keyof Attendance]);
+        const filterValue = value as string;
+        return fieldValue.toLowerCase().includes((value as string).toLowerCase());
+      })
+    );
+
+    setAttendance(filteredData.lenght);
+
+    const paginatedData = filteredData.slice(first, first + rows);
+    setAttendance(paginatedData);
   };
 
   const openDialog = (image: string) => {
@@ -92,8 +101,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
         <img
           src={`data:image/png;base64,${rowData.photo}`}
           alt="Foto"
-          width="50"
-          height="50"
+          width="60"
+          height="60"
           onClick={() => openDialog(`data:image/png;base64,${rowData.photo}`)}
           style={{ cursor: 'pointer' }}
         />
@@ -157,62 +166,106 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
         </button>
       </div>
 
-      <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}>
-        <div className="">
-          <DataTable
-            style={{ fontSize: '.85em' }}
-            value={attendance}
-            header={header}
-            footer={footer}
-            className={tableClass}
-            first={first}
-            rows={rows}
-            onPage={onPage}
-          >
-            <Column field="date" header="Fecha" body={(rowData) => formatDate(rowData.date)}></Column>
-            <Column
-              field="document"
-              header="Documento"
-              filter={true}
-              filterPlaceholder="Filtrar por documento"
-              filterElement={filterTemplate('document')}
-            />
-            <Column
-              field="f_name"
-              header="Nombre"
-              filter={true}
-              filterPlaceholder="Filtrar por nombre"
-              filterElement={filterTemplate('f_name')}
-            />
-            <Column
-              field="l_name"
-              header="Apellido"
-              filter={true}
-              filterPlaceholder="Filtrar por apellido"
-              filterElement={filterTemplate('l_name')}
-            />
-
-            <Column field="email" header="Correo" filter={true} filterElement={filterTemplate('email')} />
-            <Column field="location" header="Lugar" filter={true} filterElement={filterTemplate('location')} />
-            <Column field="arrival" header="Llegada" body={(rowData) => formatTime(rowData.arrival)}></Column>
-            <Column field="departure" header="Salida" body={(rowData) => formatTime(rowData.departure)}></Column>
-            <Column field="late" header="Estado" body={renderLateStatus}></Column>
-            <Column field="photo" header="Foto" body={renderPhoto}></Column>
-          </DataTable>
-          {renderPaginator()}
-          <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
-            {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
-          </Dialog>
-          <TranslatedTableComponent
-            visible={displayTranslatedDialog}
-            onHide={() => setDisplayTranslatedDialog(false)}
+      {/* <Card flexDirection="column" w="100%" px="0px" overflowX={{ sm: 'scroll', lg: 'hidden' }}> */}
+      <div className="">
+        <DataTable
+          tableStyle={{ width: "auto" }}
+          value={attendance}
+          header={header}
+          footer={footer}
+          className={tableClass}
+          first={first}
+          rows={rows}
+          onPage={onPage}
+          filterDisplay="row"
+        >
+          <Column 
+          style={{ minWidth: '14rem' }}
+          field="date" 
+          header="Fecha" 
+          body={(rowData) => formatDate(rowData.date)} 
+          filterPlaceholder="Filtrar por documento" 
+          filter={true}
+          filterElement={filterTemplate('date')}/>
+          <Column
+          style={{ minWidth: '15rem' }}
+            field="document"
+            header="Documento"
+            filter={true}
+            filterElement={filterTemplate('document')}
+            filterPlaceholder="Filtrar por documento"
           />
-          <LateTableComponent
-            visibleTwo={displayLateDialog}
-            onHideTwo={() => setDisplayLateDialog(false)}
+          <Column
+          style={{ minWidth: '22rem' }}
+            field="f_name"
+            header="Nombre"
+            filter={true}
+            filterElement={filterTemplate('f_name')}
+            filterPlaceholder="Filtrar por nombre"
           />
-        </div>
-      </Card>
+          <Column
+          style={{ minWidth: '22rem' }}
+            field="l_name"
+            header="Apellido"
+            filter={true}
+            filterPlaceholder="Filtrar por apellido"
+            filterElement={filterTemplate('l_name')}
+          />
+          <Column
+          style={{ minWidth: '22rem' }}
+            field="email"
+            header="Correo"
+            filter={true}
+            filterElement={filterTemplate('email')} />
+          <Column
+          style={{ minWidth: '14rem' }}
+            field="location"
+            header="Lugar"
+            filter={true}
+            filterElement={filterTemplate('location')} />
+          <Column
+          style={{ minWidth: '14rem' }}
+            field="arrival"
+            header="Llegada"
+            body={(rowData) => formatTime(rowData.arrival)}
+            filter={true}
+            filterElement={filterTemplate('arrival')}
+          />
+          <Column
+          style={{ minWidth: '14rem' }}
+            field="departure"
+            header="Salida"
+            body={(rowData) => formatTime(rowData.departure)}
+            filter={true}
+            filterElement={filterTemplate('departure')}
+          />
+          <Column
+          style={{ minWidth: '14rem' }}
+            field="late"
+            header="Estado"
+            body={renderLateStatus}
+            filter={true}
+            filterElement={filterTemplate('late')}
+          />
+          <Column
+            field="photo"
+            header="Foto"
+            body={renderPhoto} />
+        </DataTable>
+        {renderPaginator()}
+        <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
+          {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
+        </Dialog>
+        <TranslatedTableComponent
+          visible={displayTranslatedDialog}
+          onHide={() => setDisplayTranslatedDialog(false)}
+        />
+        <LateTableComponent
+          visibleTwo={displayLateDialog}
+          onHideTwo={() => setDisplayLateDialog(false)}
+        />
+      </div>
+      {/* </Card> */}
     </>
   );
 };
