@@ -27,6 +27,8 @@ export interface Collaborator {
   bmail: string;
   position: string;
   leader: string;
+  headquarters: string;
+  subprocess: string;
   id_collaborator?: number,
   date: string;
   state: string;
@@ -55,6 +57,8 @@ const CollaboratorTable = () => {
     position: '',
     state: '',
     leader: '',
+    headquarters: '',
+    subprocess: '',
   });
 
   useEffect(() => {
@@ -134,6 +138,8 @@ const CollaboratorTable = () => {
     bmail: 'Correo smart',
     position: 'Cargo',
     leader: 'Líder',
+    headquarters: 'Sede',
+    subprocess: 'Subproceso',
     state: 'Estado',
     date: 'Fecha',                
     id: 'ID',                       
@@ -177,6 +183,8 @@ const CollaboratorTable = () => {
       state: '',
       position: '',
       leader: '',
+      headquarters: '',
+      subprocess: '',
     });
   };
 
@@ -188,17 +196,19 @@ const CollaboratorTable = () => {
       <div className="text-center">Cargando...</div>
     ) : (
     <DataTable
-      style={{ fontSize: '.85em' }}
+      tableStyle={{width:"auto"}}
       value={collaborators}
       header={header}
       footer={footer}
       first={first}
       rows={rows}
-      // filterDisplay="row"
+      filterDisplay="row"
       onPage={onPage}
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
+      // filterDisplay="row"
     >
         <Column
+        style={{ minWidth: '14rem' }}
   field="document"
   header="Documento"
   filter={true} 
@@ -206,6 +216,7 @@ const CollaboratorTable = () => {
   filterPlaceholder="Filtrar por documento"
 />
 <Column
+  style={{ minWidth: '16rem' }}
   field="f_name"
   header="Nombre"
   filter={true} 
@@ -213,6 +224,7 @@ const CollaboratorTable = () => {
   filterPlaceholder="Filtrar por nombre"
 />
 <Column
+style={{ minWidth: '16rem' }}
   field="l_name"
   header="Apellido"
   filter={true} 
@@ -220,6 +232,7 @@ const CollaboratorTable = () => {
   filterPlaceholder="Filtrar por apellido"
 />
 <Column
+style={{ minWidth: '22rem' }}
     field="email"
     header="Correo personal"
     filter={true} 
@@ -227,6 +240,7 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
+style={{ minWidth: '22rem' }}
     field="bmail"
     header="Correo smart"
     filter={true} 
@@ -234,6 +248,7 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
+style={{ minWidth: '16rem'}}
     field="position"
     header="Cargo"
     filter={true} 
@@ -241,6 +256,7 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por cargo"
 />
 <Column
+ style={{ minWidth: '16rem'}}
     field="leader"
     header="Líder"
     filter={true} 
@@ -248,27 +264,31 @@ const CollaboratorTable = () => {
     filterPlaceholder="Filtrar por líder"
 />
 <Column
+style={{ minWidth: '16rem'}}
     field="headquarters"
     header="Sede"
     filter={true} 
-    filterElement={filterTemplate('leader')} 
-    filterPlaceholder="Filtrar por líder"
+    filterElement={filterTemplate('headquarters')} 
+    filterPlaceholder="Filtrar por sede"
 />
 <Column
+style={{ minWidth: '16rem'}}
     field="subprocess"
     header="Subproceso"
     filter={true} 
-    filterElement={filterTemplate('leader')} 
+    filterElement={filterTemplate('subprocess')} 
     filterPlaceholder="Filtrar por líder"
 />
-<Column
+{/* <Column
+style={{ minWidth: '16rem'}}
     field="state"
     header="Estado"
     filter={true} 
     filterElement={filterTemplate('state')} 
     filterPlaceholder="Filtrar por estado"
-/>
+/> */}
 <Column
+style={{ minWidth: '16rem'}}
     field="date"
     header="Fecha"
     filter={true} 

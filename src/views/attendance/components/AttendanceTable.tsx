@@ -7,7 +7,7 @@ import { Dialog } from 'primereact/dialog';
 import Card from 'components/card/Card';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useColorMode } from '@chakra-ui/react';
-import { formatDate } from 'util/DateUtil';
+import { formatDate, formatTime } from 'util/DateUtil';
 import TranslatedTableComponent from 'views/attendance/components/TranslatedTable';
 import LateTableComponent from './LateTable';
 import { async } from 'q'; // Esta importación parece innecesaria e incorrecta
@@ -194,8 +194,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
 
             <Column field="email" header="Correo" filter={true} filterElement={filterTemplate('email')} />
             <Column field="location" header="Lugar" filter={true} filterElement={filterTemplate('location')} />
-            <Column field="arrival" header="Llegada"></Column>
-            <Column field="departure" header="Salida"></Column>
+            <Column field="arrival" header="Llegada" body={(rowData) => formatTime(rowData.arrival)}></Column>
+            <Column field="departure" header="Salida" body={(rowData) => formatTime(rowData.departure)}></Column>
             <Column field="late" header="Estado" body={renderLateStatus}></Column>
             <Column field="photo" header="Foto" body={renderPhoto}></Column>
           </DataTable>
@@ -205,11 +205,11 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
           </Dialog>
           <TranslatedTableComponent
             visible={displayTranslatedDialog}
-            onHide={() => setDisplayTranslatedDialog(false)} // Pasa la función onHide aquí
+            onHide={() => setDisplayTranslatedDialog(false)}
           />
           <LateTableComponent
             visibleTwo={displayLateDialog}
-            onHideTwo={() => setDisplayLateDialog(false)} // Pasa la función onHide aquí
+            onHideTwo={() => setDisplayLateDialog(false)}
           />
         </div>
       </Card>
