@@ -143,6 +143,14 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     );
   };
 
+  const formatTime = (time: string | undefined): string => {
+    return time ? time : 'No hay registro';
+  };
+
+  const renderDepartureTime = (rowData: Attendance) => {
+    return <span>{formatTime(rowData.departure)}</span>;
+  };
+
   const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Attendance) => {
     setFilters({ ...filters, [field]: e.target.value });
   };
@@ -232,13 +240,13 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
             filterElement={filterTemplate('arrival')}
           />
           <Column
-          style={{ minWidth: '14rem' }}
-            field="departure"
-            header="Salida"
-            body={(rowData) => formatTime(rowData.departure)}
-            filter={true}
-            filterElement={filterTemplate('departure')}
-          />
+        style={{ minWidth: '14rem' }}
+        field="departure"
+        header="Salida"
+        body={renderDepartureTime}
+        filter={true}
+        filterElement={filterTemplate('departure')}
+      />
           <Column
           style={{ minWidth: '14rem' }}
             field="late"
