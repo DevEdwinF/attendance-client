@@ -180,6 +180,7 @@
 }
 
 .login-admin-container-open {
+	position: absolute;
 	height: 100vh;
 	transform: translateX(0em);
 	transition: transform .6s ease-in-out;
@@ -360,12 +361,14 @@
 		display: none;
 	}
 
+
+
 	.attendance-register-container-mobile {
-		overflow-x: hidden;
+		overflow-x: hidden !important;
 		display: flex;
 		justify-content: center;
-		width: 100vw;
-		height: 100vh;
+		max-width: 100vw;
+		max-height: 100vh;
 		background-image: url("/src/assets/img/attendance/bg-mobile.jpg");
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
@@ -523,7 +526,7 @@
 	}
 
 	.login-admin-container-mobile {
-		position: absolute;
+		position: fixed;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -543,6 +546,7 @@
 	}
 
 	.login-admin-container-mobile-open {
+		display: flex;
 		height: 100vh;
 		transform: translateX(0em);
 		transition: transform .6s ease-in-out;
@@ -582,6 +586,7 @@
 	}
 
 	.attendance-register-container-mobile {
+		overflow-x: hidden;
 		display: flex;
 		justify-content: center;
 		width: 100vw;

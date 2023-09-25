@@ -41,7 +41,7 @@ const allRoutes = [
 	{
 		name: 'Usuarios',
 		layout: '/admin',
-		allowedRoles: [1, 2, 3, 4, 5, 6],
+		allowedRoles: [1, 2, 3, 4, 5, 6, 7],
 		icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
 		path: '/users',
 		component: UserManage

@@ -169,19 +169,19 @@ const AttendanceForm = () => {
     setTranslatedMobile(!translatedMobile);
   }
 
-  const attendanceWarning = () => {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Advertencia',
-      text: 'Recuerda que si te encuentras en nuestras instalaciones, es importante realizar el registro mientras estás conectado a nuestra red de internet. Esto ayudará a validar tu presencia de manera adecuada.',
-      confirmButtonColor: 'rgb(163, 190, 50)',
-      confirmButtonText: 'Aceptar',
-    });
-  };
+  // const attendanceWarning = () => {
+  //   Swal.fire({
+  //     icon: 'warning',
+  //     title: 'Advertencia',
+  //     text: 'Recuerda que si te encuentras en nuestras instalaciones, es importante realizar el registro mientras estás conectado a nuestra red de internet. Esto ayudará a validar tu presencia de manera adecuada.',
+  //     confirmButtonColor: 'rgb(163, 190, 50)',
+  //     confirmButtonText: 'Aceptar',
+  //   });
+  // };
 
-  useEffect(() => {
-    attendanceWarning()
-  }, []);
+  // useEffect(() => {
+  //   attendanceWarning()
+  // }, []);
 
 
   return (
@@ -350,7 +350,11 @@ const AttendanceForm = () => {
             </button>
           </div>
         </div>
-        <div className={`translated-content-mobile${translatedMobile ? ' translated-content-mobile-open' : ''}`}>
+        
+        {/* ___ */}
+        
+      </div>
+      <div className={`translated-content-mobile${translatedMobile ? ' translated-content-mobile-open' : ''}`}>
           <label className='btn-cancel-login' onClick={handleTranslatedMobileClick}>
             <MdArrowCircleLeft className='icon-cancel' />
           </label>
@@ -359,8 +363,7 @@ const AttendanceForm = () => {
           </label>
           <TranslatedRegister />
         </div>
-        {/* ___ */}
-        <div className={`login-admin-container-mobile${loginAdminContainerMobile ? ' login-admin-container-mobile-open' : ''}`}>
+      <div className={`login-admin-container-mobile${loginAdminContainerMobile ? ' login-admin-container-mobile-open' : ''}`}>
           <div className='login-admin-content'>
             <Formik initialValues={initialValuesLogin} onSubmit={handleLogin}>
               <Form className='login-admin-form'>
@@ -389,8 +392,6 @@ const AttendanceForm = () => {
             </Formik>
           </div>
         </div>
-        {/* _____ */}
-      </div>
     </>
   );
 };
