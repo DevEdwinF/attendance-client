@@ -169,19 +169,19 @@ const AttendanceForm = () => {
     setTranslatedMobile(!translatedMobile);
   }
 
-  // const attendanceWarning = () => {
-  //   Swal.fire({
-  //     icon: 'warning',
-  //     title: 'Advertencia',
-  //     text: 'Recuerda que si te encuentras en nuestras instalaciones, es importante realizar el registro mientras estás conectado a nuestra red de internet. Esto ayudará a validar tu presencia de manera adecuada.',
-  //     confirmButtonColor: 'rgb(163, 190, 50)',
-  //     confirmButtonText: 'Aceptar',
-  //   });
-  // };
+  const attendanceWarning = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Advertencia',
+      text: 'Recuerda que si te encuentras en nuestras instalaciones, es importante realizar el registro mientras estás conectado a nuestra red de internet. Esto ayudará a validar tu presencia de manera adecuada.',
+      confirmButtonColor: 'rgb(163, 190, 50)',
+      confirmButtonText: 'Aceptar',
+    });
+  };
 
-  // useEffect(() => {
-  //   attendanceWarning()
-  // }, []);
+  useEffect(() => {
+    attendanceWarning()
+  }, []);
 
 
   return (
