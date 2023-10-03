@@ -148,7 +148,7 @@ const AttendanceForm = () => {
       formData.append('photo', imageSrc);
 
       try {
-        await AttendanceService.validate(values.document);
+        // await AttendanceService.validate(values.document);
         await AttendanceService.register(formData);
         handleCloseDialog();
         window.close();
