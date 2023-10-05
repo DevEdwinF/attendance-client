@@ -62,13 +62,17 @@ const CollaboratorTable = () => {
   });
 
   useEffect(() => {
-    fetchData();
+    fetchData(
+      Math.ceil(first / rows) + 1,
+      rows
+    );
   }, [first, rows, filters, collaboratorService]);
 
-  const fetchData = async () => {
-    // setLoading(true); 
-  
-    const response = await collaboratorService();
+  const fetchData = async (page: number, pageSize: number) => {
+    const response = await collaboratorService(
+      page,
+      pageSize
+    );
   
     const filteredData = response.filter((collaborator: Collaborator) =>
       Object.entries(filters).every(([key, value]) => {
@@ -79,8 +83,12 @@ const CollaboratorTable = () => {
     );
   
     setTotalRecords(filteredData.length);
+
+    // Calcula el índice inicial (first) y la cantidad de registros por página (rows)
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
   
-    const paginatedData = filteredData.slice(first, first + rows);
     setCollaborators(paginatedData);
   
     setLoading(false);
@@ -195,18 +203,17 @@ const CollaboratorTable = () => {
       {loading ? (
       <div className="text-center">Cargando...</div>
     ) : (
-    <DataTable
-      tableStyle={{width:"auto"}}
-      value={collaborators}
-      header={header}
-      footer={footer}
-      first={first}
-      rows={rows}
-      filterDisplay="row"
-      onPage={onPage}
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-      // filterDisplay="row"
-    >
+      <DataTable
+  tableStyle={{ width: "auto" }}
+  value={collaborators}
+  header={header}
+  footer={footer}
+  first={first}
+  rows={rows}
+  filterDisplay="row"
+  onPage={onPage}
+  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
+>
         <Column
         style={{ minWidth: '14rem' }}
   field="document"

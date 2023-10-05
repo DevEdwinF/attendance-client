@@ -58,11 +58,14 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const boxBg = useColorModeValue('secondaryRed.300', 'whiteAlpha.100');
 
   useEffect(() => {
-    fetchData();
+    fetchData(
+      first,
+      rows
+    );
   }, [first, rows, filters, attendanceService]);
 
-  const fetchData = async () => {
-    const response = await attendanceService();
+  const fetchData = async (page: number, pageSize: number) => {
+    const response = await attendanceService(page, pageSize);
 
     const filteredData = response.filter((attendance: Attendance) =>
       Object.entries(filters).every(([key, value]) => {

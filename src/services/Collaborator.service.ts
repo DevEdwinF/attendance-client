@@ -8,9 +8,9 @@ const baseUrl = Api.url + endPoint;
 
 
 export const CollaboratorService = {
-  getAllCollaborators: async () => {
+  getAllCollaborators: async (page: number, pageSize: number) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all`,  HeaderPost);
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}&pageSize=${pageSize}`, HeaderPost);
       console.log(response);
       return response.data;
     } catch (error) {

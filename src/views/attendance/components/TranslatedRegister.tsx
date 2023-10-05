@@ -24,7 +24,6 @@ const TranslatedRegister  = () => {
         }
 
         try {
-            await AttendanceService.validate(values.document);
             await AttendanceService.saveTranslated({ document: values.document });
 
             await Swal.fire({

@@ -7,20 +7,6 @@ const endPoint = '/api/attendance';
 const baseUrl = Api.url + endPoint;
   
 export const AttendanceService = {
-  validate: async (document: any) => {
-    try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/validate/${document}`);
-      return response.data;
-    } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.response?.data?.message || 'Todos los campos son obligatorios, verifica que la cámar esté encendida'
-      });
-      console.log(error);
-      throw new Error("Error al validar");
-    }
-  },
   register: async (data: FormData) => {
     try {
       const response: AxiosResponse = await axios.post(`${baseUrl}/register`, data, {
@@ -39,17 +25,17 @@ export const AttendanceService = {
       throw new Error("Verifica si el documento está escrito correctamente");
     }
   },
-  getAllAttendance: async () => {
+  getAllAttendance: async (page: number, pageSize: number) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all`,  HeaderPost);
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}pageSize=${pageSize}`,  HeaderPost);
       return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
   },
-  getAllAttendanceForLeader: async () => {
+  getAllAttendanceForLeader: async (page: number, pageSize: number) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all`,  HeaderPost);
+      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all?page=${page}pageSize=${pageSize}`,  HeaderPost);
       return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
