@@ -10,6 +10,7 @@ import { MdEdit } from 'react-icons/md';
 import { FilterMatchMode } from 'primereact/api';
 import { formatDate } from 'util/DateUtil';
 import { getCollaboratorByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
+import { StatService } from 'services/Stats.service';
 
 export interface Schedule {
   id: number;
@@ -37,16 +38,33 @@ export interface Collaborator {
   schedules: Schedule[];
 }
 
+const useCollaboratorCount = () => {
+
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchTotal = async () => {
+      const response = await StatService.totalCollaboratorsActive();
+      setTotal(response); 
+    }
+    fetchTotal();
+  }, []);
+
+  return total;
+
+}
+
 const CollaboratorTable = () => {
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [editingCollaborator, setEditingCollaborator] = useState<Collaborator | null>(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(5);
+  const [rows, setRows] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
   const userRole = getUserRoleFromToken(token);
   const collaboratorService = getCollaboratorByUserRole(userRole)
+  const total = useCollaboratorCount();
 
   const [filters, setFilters] = useState<Partial<Collaborator>>({
     document: '',
@@ -61,6 +79,7 @@ const CollaboratorTable = () => {
     subprocess: '',
   });
 
+
   useEffect(() => {
     fetchData(
       Math.ceil(first / rows) + 1,
@@ -70,8 +89,8 @@ const CollaboratorTable = () => {
 
   const fetchData = async (page: number, pageSize: number) => {
     const response = await collaboratorService(
-      page,
-      pageSize
+      2,
+      50
     );
   
     const filteredData = response.filter((collaborator: Collaborator) =>
@@ -84,20 +103,24 @@ const CollaboratorTable = () => {
   
     setTotalRecords(filteredData.length);
 
-    // Calcula el índice inicial (first) y la cantidad de registros por página (rows)
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = filteredData.slice(startIndex, endIndex);
   
     setCollaborators(paginatedData);
   
-    setLoading(false);
+    // setLoading(false);
   };
   
 
   const onPage = (event: { first: number; rows: number }) => {
     setFirst(event.first);
     setRows(event.rows);
+      fetchData(
+        Math.ceil(first / rows) + 1,
+        rows
+      );
+  
   };
 
   const updateCollaborator = async (updatedCollaborator: Collaborator) => {
@@ -286,14 +309,6 @@ style={{ minWidth: '16rem'}}
     filterElement={filterTemplate('subprocess')} 
     filterPlaceholder="Filtrar por líder"
 />
-{/* <Column
-style={{ minWidth: '16rem'}}
-    field="state"
-    header="Estado"
-    filter={true} 
-    filterElement={filterTemplate('state')} 
-    filterPlaceholder="Filtrar por estado"
-/> */}
 <Column
 style={{ minWidth: '16rem'}}
     field="date"
@@ -309,7 +324,7 @@ style={{ minWidth: '16rem'}}
       <Paginator
         first={first}
         rows={rows}
-        totalRecords={totalRecords}
+        totalRecords={total}
         rowsPerPageOptions={pageSizeOptions}
         onPageChange={onPage}
       />
