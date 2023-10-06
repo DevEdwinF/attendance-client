@@ -29,7 +29,7 @@ const TranslatedRegister  = () => {
             await Swal.fire({
                 icon: 'success',
                 title: 'Registro exitoso',
-                text: 'El registro de translado se ha guardado correctamente.',
+                text: 'El registro de traslado se ha guardado correctamente.',
             });
 
             resetForm();

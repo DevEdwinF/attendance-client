@@ -11,32 +11,10 @@ import { FilterMatchMode } from 'primereact/api';
 import { formatDate } from 'util/DateUtil';
 import { getCollaboratorByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 import { StatService } from 'services/Stats.service';
+import { CollaboratorDto } from 'dto/Collaborator.dto';
+import { Schedule } from 'dto/Schedule.dto';
 
-export interface Schedule {
-  id: number;
-  day: string;
-  arrival_time: string;
-  departure_time: string;
-  fk_collaborator_id: any;
-}
 
-export interface Collaborator {
-  document: string;
-  f_name: string;
-  l_name: string;
-  email: string;
-  bmail: string;
-  position: string;
-  leader: string;
-  headquarters: string;
-  subprocess: string;
-  id_collaborator?: number,
-  date: string;
-  state: string;
-  id: string; 
-  fk_collaborator_id: string; 
-  schedules: Schedule[];
-}
 
 const useCollaboratorCount = () => {
 
@@ -55,10 +33,10 @@ const useCollaboratorCount = () => {
 }
 
 const CollaboratorTable = () => {
-  const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
-  const [editingCollaborator, setEditingCollaborator] = useState<Collaborator | null>(null);
+  const [collaborators, setCollaborators] = useState<CollaboratorDto[]>([]);
+  const [editingCollaborator, setEditingCollaborator] = useState<CollaboratorDto | null>(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(50);
+  const [rows, setRows] = useState(5);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
@@ -66,7 +44,7 @@ const CollaboratorTable = () => {
   const collaboratorService = getCollaboratorByUserRole(userRole)
   const total = useCollaboratorCount();
 
-  const [filters, setFilters] = useState<Partial<Collaborator>>({
+  const [filters, setFilters] = useState<Partial<CollaboratorDto>>({
     document: '',
     f_name: '',
     l_name: '',
@@ -80,6 +58,29 @@ const CollaboratorTable = () => {
   });
 
 
+  const fetchData = async (page: number, pageSize: number) => {
+    const response = await collaboratorService(
+      page,
+      pageSize
+    );
+  
+    const filteredData = response.filter((collaborator: CollaboratorDto) =>
+      Object.entries(filters).every(([key, value]) => {
+        const fieldValue = String(collaborator[key as keyof CollaboratorDto]);
+        const filterValue = value as string;
+        return fieldValue.toLowerCase().includes(filterValue.toLowerCase());
+      })
+    );
+  
+    setTotalRecords(filteredData.length);
+  
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
+  
+    setCollaborators(paginatedData);
+  };
+
   useEffect(() => {
     fetchData(
       Math.ceil(first / rows) + 1,
@@ -87,46 +88,18 @@ const CollaboratorTable = () => {
     );
   }, [first, rows, filters, collaboratorService]);
 
-  const fetchData = async (page: number, pageSize: number) => {
-    const response = await collaboratorService(
-      2,
-      50
-    );
-  
-    const filteredData = response.filter((collaborator: Collaborator) =>
-      Object.entries(filters).every(([key, value]) => {
-        const fieldValue = String(collaborator[key as keyof Collaborator]);
-        const filterValue = value as string;
-        return fieldValue.toLowerCase().includes(filterValue.toLowerCase());
-      })
-    );
-  
-    setTotalRecords(filteredData.length);
-
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedData = filteredData.slice(startIndex, endIndex);
-  
-    setCollaborators(paginatedData);
-  
-    // setLoading(false);
-  };
-  
-
   const onPage = (event: { first: number; rows: number }) => {
     setFirst(event.first);
     setRows(event.rows);
-      fetchData(
-        Math.ceil(first / rows) + 1,
-        rows
-      );
   
+    fetchData(Math.ceil(event.first / event.rows) + 1, event.rows);
   };
 
-  const updateCollaborator = async (updatedCollaborator: Collaborator) => {
+
+  const updateCollaborator = async (updatedCollaborator: CollaboratorDto) => {
   };
 
-  const actionBodyTemplate = (rowData: Collaborator) => {
+  const actionBodyTemplate = (rowData: CollaboratorDto) => {
     return (
       <Button
         rounded
@@ -157,11 +130,11 @@ const CollaboratorTable = () => {
       <span className="text-xl text-900 font-bold">Registros</span>
     </div>
   );
-  const footer = `Hay un total de ${totalRecords} registros.`;
+  const footer = `Hay un total de ${total} registros.`;
 
   const pageSizeOptions = [5, 25, 50, 100];
 
-  const filterableFields: { [key in keyof Collaborator]: string } = {
+  const filterableFields: { [key in keyof CollaboratorDto]: string } = {
     document: 'Documento',
     f_name: 'Nombre',
     l_name: 'Apellido',
@@ -188,7 +161,7 @@ const CollaboratorTable = () => {
     return value;
   };
   
-  const filterTemplate = (field: keyof Collaborator) => {
+  const filterTemplate = (field: keyof CollaboratorDto) => {
     return (
       <InputText
         type="text"
@@ -201,7 +174,7 @@ const CollaboratorTable = () => {
   
   
 
-  const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Collaborator) => {
+  const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof CollaboratorDto) => {
     setFilters({ ...filters, [field]: e.target.value });
   };
 

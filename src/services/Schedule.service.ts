@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Collaborator, Schedule } from '../views/admin/Collaborators/components/CollaboratorsTable';
 import Swal from 'sweetalert2';
 import { HeaderPost } from './Header';
 import { Api } from 'config/Api';
+import { Schedule } from 'dto/Schedule.dto';
 
 const endPoint = '/api/schedule';
 const baseUrl = Api.url + endPoint;

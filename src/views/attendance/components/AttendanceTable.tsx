@@ -22,12 +22,13 @@ export interface Attendance {
   arrival: string;
   departure: string;
   date: string;
-  photo: string;
+  photo_arrival: string;
+  photo_departure: string;
   late: boolean;
 }
 
 interface AttendanceTableProps {
-  pageSizeOptions?: number[]; // Opciones para el número de registros por página
+  pageSizeOptions?: number[]; 
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5, 10, 25, 50, 100] }) => {
@@ -98,21 +99,39 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   );
   const footer = `Hay un total de ${attendance ? attendance.length : 0} registros.`;
 
-  const renderPhoto = (rowData: Attendance) => {
-    if (rowData.photo) {
+  const renderPhotoArrival = (rowData: Attendance) => {
+    if (rowData.photo_arrival) {
       return (
         <img
-          src={`data:image/png;base64,${rowData.photo}`}
+          src={`data:image/png;base64,${rowData.photo_arrival}`}
           alt="Foto"
           width="60"
           height="60"
-          onClick={() => openDialog(`data:image/png;base64,${rowData.photo}`)}
+          onClick={() => openDialog(`data:image/png;base64,${rowData.photo_arrival}`)}
           style={{ cursor: 'pointer' }}
         />
       );
     }
     return null;
   };
+
+  const renderPhotoDeparture = (rowData: Attendance) => {
+    if (rowData.photo_departure) {
+      return (
+        <img
+          src={`data:image/png;base64,${rowData.photo_departure}`}
+          alt="Foto"
+          width="60"
+          height="60"
+          onClick={() => openDialog(`data:image/png;base64,${rowData.photo_departure}`)}
+          style={{ cursor: 'pointer' }}
+        />
+      );
+    }
+    return null;
+  };
+
+
 
   const renderLateStatus = (rowData: Attendance) => {
     if (rowData.late) {
@@ -259,9 +278,14 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
             filterElement={filterTemplate('late')}
           />
           <Column
-            field="photo"
-            header="Foto"
-            body={renderPhoto} />
+            field="photo_arrival"
+            header="Foto Salida"
+            body={renderPhotoArrival} />
+
+          <Column
+            field="photo_departure"
+            header="Foto Entrada"
+            body={renderPhotoDeparture} />
         </DataTable>
         {renderPaginator()}
         <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
