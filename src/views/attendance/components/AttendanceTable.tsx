@@ -82,6 +82,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     setAttendance(paginatedData);
   };
 
+
   const openDialog = (image: string) => {
     setSelectedImage(image);
     setVisible(true);
@@ -279,12 +280,12 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
           />
           <Column
             field="photo_arrival"
-            header="Foto Salida"
+            header="Foto"
             body={renderPhotoArrival} />
 
           <Column
             field="photo_departure"
-            header="Foto Entrada"
+            header="Foto"
             body={renderPhotoDeparture} />
         </DataTable>
         {renderPaginator()}

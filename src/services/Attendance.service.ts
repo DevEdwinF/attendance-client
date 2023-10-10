@@ -28,7 +28,7 @@ export const AttendanceService = {
   getAllAttendance: async (page: number, pageSize: number) => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}pageSize=${pageSize}`,  HeaderPost);
-      return response.data;
+      return response.data.rows;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }

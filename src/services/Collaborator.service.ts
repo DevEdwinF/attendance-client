@@ -11,7 +11,7 @@ export const CollaboratorService = {
   getAllCollaborators: async (page: number, pageSize: number) => {
     try {
       const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}&pageSize=${pageSize}`, HeaderPost);
-      console.log(response);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');

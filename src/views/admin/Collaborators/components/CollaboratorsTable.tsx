@@ -10,41 +10,47 @@ import { MdEdit } from 'react-icons/md';
 import { FilterMatchMode } from 'primereact/api';
 import { formatDate } from 'util/DateUtil';
 import { getCollaboratorByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
-import { StatService } from 'services/Stats.service';
 import { CollaboratorDto } from 'dto/Collaborator.dto';
-import { Schedule } from 'dto/Schedule.dto';
 
+export interface Schedule {
+  id: number;
+  day: string;
+  arrival_time: string;
+  departure_time: string;
+  fk_collaborator_id: any;
+}
 
-
-const useCollaboratorCount = () => {
-
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    const fetchTotal = async () => {
-      const response = await StatService.totalCollaboratorsActive();
-      setTotal(response); 
-    }
-    fetchTotal();
-  }, []);
-
-  return total;
-
+export interface Collaborator {
+  document: string;
+  f_name: string;
+  l_name: string;
+  email: string;
+  bmail: string;
+  position: string;
+  leader: string;
+  headquarters: string;
+  subprocess: string;
+  id_collaborator?: number,
+  date: string;
+  state: string;
+  id: string; 
+  fk_collaborator_id: string; 
+  schedules: Schedule[];
 }
 
 const CollaboratorTable = () => {
-  const [collaborators, setCollaborators] = useState<CollaboratorDto[]>([]);
-  const [editingCollaborator, setEditingCollaborator] = useState<CollaboratorDto | null>(null);
+  const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
+  const [editingCollaborator, setEditingCollaborator] = useState<Collaborator | null>(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(5);
+  const [rows, setRows] = useState(6);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
   const userRole = getUserRoleFromToken(token);
   const collaboratorService = getCollaboratorByUserRole(userRole)
-  const total = useCollaboratorCount();
 
-  const [filters, setFilters] = useState<Partial<CollaboratorDto>>({
+  const [filters, setFilters] = useState<Partial<Collaborator>>({
     document: '',
     f_name: '',
     l_name: '',
@@ -57,49 +63,44 @@ const CollaboratorTable = () => {
     subprocess: '',
   });
 
+  useEffect(() => {
+    fetchData(
+      currentPage,
+      rows
+    );
+  }, [currentPage, rows, filters]);
 
   const fetchData = async (page: number, pageSize: number) => {
-    const response = await collaboratorService(
+    try {
+      setLoading(true);
+    const {rows, total_rows} = await collaboratorService(
       page,
       pageSize
     );
+
+    setTotalRecords(total_rows);
   
-    const filteredData = response.filter((collaborator: CollaboratorDto) =>
-      Object.entries(filters).every(([key, value]) => {
-        const fieldValue = String(collaborator[key as keyof CollaboratorDto]);
-        const filterValue = value as string;
-        return fieldValue.toLowerCase().includes(filterValue.toLowerCase());
-      })
-    );
   
-    setTotalRecords(filteredData.length);
-  
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedData = filteredData.slice(startIndex, endIndex);
-  
-    setCollaborators(paginatedData);
+    setCollaborators(rows);
+    setLoading(false);
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
-  useEffect(() => {
-    fetchData(
-      Math.ceil(first / rows) + 1,
-      rows
-    );
-  }, [first, rows, filters, collaboratorService]);
+  
 
-  const onPage = (event: { first: number; rows: number }) => {
+  const onPage = (event: { first: number; rows: number; page: number }) => {
     setFirst(event.first);
     setRows(event.rows);
-  
-    fetchData(Math.ceil(event.first / event.rows) + 1, event.rows);
+    setCurrentPage(event.page + 1)
   };
 
-
-  const updateCollaborator = async (updatedCollaborator: CollaboratorDto) => {
+  const updateCollaborator = async (updatedCollaborator: Collaborator) => {
   };
 
-  const actionBodyTemplate = (rowData: CollaboratorDto) => {
+  const actionBodyTemplate = (rowData: Collaborator) => {
     return (
       <Button
         rounded
@@ -130,11 +131,11 @@ const CollaboratorTable = () => {
       <span className="text-xl text-900 font-bold">Registros</span>
     </div>
   );
-  const footer = `Hay un total de ${total} registros.`;
+  const footer = `Hay un total de ${totalRecords} registros.`;
 
   const pageSizeOptions = [5, 25, 50, 100];
 
-  const filterableFields: { [key in keyof CollaboratorDto]: string } = {
+  const filterableFields: { [key in keyof Collaborator]: string } = {
     document: 'Documento',
     f_name: 'Nombre',
     l_name: 'Apellido',
@@ -161,7 +162,7 @@ const CollaboratorTable = () => {
     return value;
   };
   
-  const filterTemplate = (field: keyof CollaboratorDto) => {
+  const filterTemplate = (field: keyof Collaborator) => {
     return (
       <InputText
         type="text"
@@ -174,7 +175,7 @@ const CollaboratorTable = () => {
   
   
 
-  const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof CollaboratorDto) => {
+  const onFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Collaborator) => {
     setFilters({ ...filters, [field]: e.target.value });
   };
 
@@ -207,7 +208,6 @@ const CollaboratorTable = () => {
   first={first}
   rows={rows}
   filterDisplay="row"
-  onPage={onPage}
   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
 >
         <Column
@@ -282,6 +282,14 @@ style={{ minWidth: '16rem'}}
     filterElement={filterTemplate('subprocess')} 
     filterPlaceholder="Filtrar por líder"
 />
+{/* <Column
+style={{ minWidth: '16rem'}}
+    field="state"
+    header="Estado"
+    filter={true} 
+    filterElement={filterTemplate('state')} 
+    filterPlaceholder="Filtrar por estado"
+/> */}
 <Column
 style={{ minWidth: '16rem'}}
     field="date"
@@ -294,13 +302,14 @@ style={{ minWidth: '16rem'}}
 <Column body={actionBodyTemplate} style={{ width: '3rem' }} />
 {/*  */}
     </DataTable>)}
-      <Paginator
+    <div id='paginator'>  <Paginator
         first={first}
         rows={rows}
-        totalRecords={total}
+        totalRecords={totalRecords}
         rowsPerPageOptions={pageSizeOptions}
         onPageChange={onPage}
-      />
+      /></div>
+    
       
       {editingCollaborator && (
         <ScheduleEditor
