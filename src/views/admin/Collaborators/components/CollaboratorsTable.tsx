@@ -97,7 +97,6 @@ const CollaboratorTable = () => {
   const onPage = (event: { first: number; rows: number; page: number }) => {
     setFirst(event.first);
     setRow(event.rows);
-    console.log(event.rows);
     
     setCurrentPage(event.page + 1)
   };
@@ -220,8 +219,6 @@ const CollaboratorTable = () => {
       subprocess: '',
     });
   };
-
-
 
   return (
     <div className="card">

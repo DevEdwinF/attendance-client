@@ -10,7 +10,6 @@ import { useColorMode } from '@chakra-ui/react';
 import { formatDate, formatTime } from 'util/DateUtil';
 import TranslatedTableComponent, { Collaborator } from 'views/attendance/components/TranslatedTable';
 import LateTableComponent from './LateTable';
-import { async } from 'q'; // Esta importación parece innecesaria e incorrecta
 import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
 
 export interface Attendance {
@@ -18,8 +17,12 @@ export interface Attendance {
   f_name: string;
   l_name: string;
   email: string;
+  b_email: string;
+  position: string;
   location: string;
   arrival: string;
+  subprocess: string,
+  headquarters: string,
   departure: string;
   date: string;
   photo_arrival: string;
@@ -27,11 +30,25 @@ export interface Attendance {
   late: boolean;
 }
 
-interface AttendanceTableProps {
-  pageSizeOptions?: number[]; 
+export interface FiltersAttendance {
+  document?: string,
+  f_name?: string,
+  l_name?: string,
+  email?: string,
+  bemail?: string,
+  location?: string,
+  arrival?: string,
+  departure?: string,
+  position?: string,
+  state?: string,
+  leader?: string,
+  headquarters?: string,
+  subprocess?: string,
+  late?: boolean
 }
 
-const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5, 10, 25, 50, 100] }) => {
+
+const AttendanceTable = () => {
   const [visible, setVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
@@ -40,15 +57,25 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
   const [attendanceLeader, setAttendanceLeader] = useState<Attendance[]>([]);
   const attendanceService = getServiceByUserRole(userRole);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(pageSizeOptions[0]);
+  const [row, setRow] = useState(5);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [filters, setFilters] = useState<Partial<Attendance>>({
     date: '',
     document: '',
     f_name: '',
     l_name: '',
     email: '',
-    location: '',
+    b_email: '',
+    location:'',
+    position:'',
+    arrival: '',
+    departure: '',
+    subprocess: '',
+    headquarters: '',
   });
+  
   const [displayTranslatedDialog, setDisplayTranslatedDialog] = useState(false);
   const [displayLateDialog, setDisplayLateDialog] = useState(false);
 
@@ -60,26 +87,32 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
 
   useEffect(() => {
     fetchData(
-      first,
-      rows
+      currentPage,
+      row,
+      filters
     );
-  }, [first, rows, filters, attendanceService]);
+  }, [currentPage, row, filters]);
 
-  const fetchData = async (page: number, pageSize: number) => {
-    const response = await attendanceService(page, pageSize);
+  const fetchData = async (page: number, limit: number, filter: FiltersAttendance) => {
+    try {
+      const {rows, total_rows} = await attendanceService(
+        page,
+        limit,
+        filter
+      );
+        console.log(rows);
+        
 
-    const filteredData = response.filter((attendance: Attendance) =>
-      Object.entries(filters).every(([key, value]) => {
-        const fieldValue = String(attendance[key as keyof Attendance]);
-        const filterValue = value as string;
-        return fieldValue.toLowerCase().includes((value as string).toLowerCase());
-      })
-    );
+    setTotalRecords(total_rows)
 
-    setAttendance(filteredData.lenght);
+    setAttendance(rows)
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
 
-    const paginatedData = filteredData.slice(first, first + rows);
-    setAttendance(paginatedData);
+
   };
 
 
@@ -88,9 +121,11 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     setVisible(true);
   };
 
-  const onPage = (event: { first: number; rows: number }) => {
+  const onPage = (event: { first: number; rows: number; page: number }) => {
     setFirst(event.first);
-    setRows(event.rows);
+    setRow(event.rows);
+    
+    setCurrentPage(event.page + 1)
   };
 
   const header = (
@@ -98,7 +133,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
       <span className="text-xl text-900 font-bold">Registros</span>
     </div>
   );
-  const footer = `Hay un total de ${attendance ? attendance.length : 0} registros.`;
+  const footer = `Hay un total de ${totalRecords} registros.`;
 
   const renderPhotoArrival = (rowData: Attendance) => {
     if (rowData.photo_arrival) {
@@ -141,17 +176,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
     return <span className="text-green">A tiempo</span>;
   };
 
-  const renderPaginator = () => {
-    return (
-      <Paginator
-        first={first}
-        rows={rows}
-        totalRecords={attendance ? attendance.length : 0}
-        rowsPerPageOptions={pageSizeOptions}
-        onPageChange={onPage}
-      />
-    );
-  };
+ 
 
   const filterTemplate = (field: keyof Attendance) => {
     const filterValue = filters[field] as string;
@@ -206,8 +231,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
           footer={footer}
           className={tableClass}
           first={first}
-          rows={rows}
-          onPage={onPage}
+          rows={row}
           filterDisplay="row"
         >
           <Column 
@@ -288,7 +312,14 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({ pageSizeOptions = [5,
             header="Foto"
             body={renderPhotoDeparture} />
         </DataTable>
-        {renderPaginator()}
+
+        <Paginator
+        first={first}
+        rows={row}
+        totalRecords={totalRecords}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        onPageChange={onPage}
+      />
         <Dialog visible={visible} header="Foto" modal={true} onHide={() => setVisible(false)}>
           {selectedImage && <img src={selectedImage} style={{ width: '100%', borderRadius: '10px' }} />}
         </Dialog>

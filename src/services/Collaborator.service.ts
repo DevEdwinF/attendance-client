@@ -1,3 +1,4 @@
+import { filter } from '@chakra-ui/system';
 import { Collaborator } from 'views/attendance/components/TranslatedTable';
 import axios, { AxiosResponse } from "axios";
 import { Api } from '../config/Api'
@@ -18,7 +19,6 @@ export interface Filters {
   leader?: string,
   headquarters?: string,
   subprocess?: string
-
 }
 
 
@@ -54,10 +54,22 @@ export const CollaboratorService = {
   },
   getCollaboratorForLeader:async (
     page: number,
-    limit: number
+    limit: number,
+    filter: Filters
   ) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all/leader?page=${page}&limit=${limit}`, HeaderPost)
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all/leader?page=${page}&limit=${limit}
+      ${filter.document && `&document=${filter.document}`}
+      ${filter.f_name && `&f_name=${filter.f_name}`}
+      ${filter.l_name && `&l_name=${filter.l_name}`}
+      ${filter.email && `&email=${filter.email}`}
+      ${filter.bmail && `&bmail=${filter.bmail}`}
+      ${filter.position && `&position=${filter.position}`}
+      ${filter.state && `&state=${filter.state}`}
+      ${filter.leader && `&leader=${filter.leader}`}
+      ${filter.headquarters && `&headquarters=${filter.headquarters}`}
+      ${filter.subprocess && `&subprocess=${filter.subprocess}`}  
+    `, HeaderPost)
       console.log(response.data)
       return response.data;
     } catch (error) {

@@ -1,10 +1,13 @@
+import { filter } from '@chakra-ui/system';
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 import { HeaderPost } from "./Header";
 import { Api } from "config/Api";
+import { FiltersAttendance } from 'views/attendance/components/AttendanceTable';
 
 const endPoint = '/api/attendance';
 const baseUrl = Api.url + endPoint;
+
   
 export const AttendanceService = {
   register: async (data: FormData) => {
@@ -25,17 +28,44 @@ export const AttendanceService = {
       throw new Error("Verifica si el documento está escrito correctamente");
     }
   },
-  getAllAttendance: async (page: number, pageSize: number) => {
+  getAllAttendance: async (page: number, limit: number, filter: FiltersAttendance) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}pageSize=${pageSize}`,  HeaderPost);
-      return response.data.rows;
+      const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}&limit=${limit}
+      ${filter.document && `&document=${filter.document}`}
+      ${filter.f_name && `&f_name=${filter.f_name}`}
+      ${filter.l_name && `&l_name=${filter.l_name}`}
+      ${filter.bemail && `&bemail=${filter.bemail}`}
+      ${filter.email && `&email=${filter.email}`}
+      ${filter.location && `&location=${filter.location}`}
+      ${filter.arrival && `&arrival=${filter.arrival}`}
+      ${filter.departure && `&departure=${filter.departure}`}
+      ${filter.leader && `&leader=${filter.leader}`}
+      ${filter.position && `&position=${filter.position}`}
+      ${filter.headquarters && `&headquarters=${filter.headquarters}`}
+      ${filter.subprocess && `&subprocess=${filter.subprocess}`}
+      `,  HeaderPost);
+      return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
   },
-  getAllAttendanceForLeader: async (page: number, pageSize: number) => {
+  getAllAttendanceForLeader: async (page: number, limit: number, filter: FiltersAttendance) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all?page=${page}pageSize=${pageSize}`,  HeaderPost);
+      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all?page=${page}&limit=${limit}
+      ${filter.document && `&document=${filter.document}`}
+      ${filter.f_name && `&f_name=${filter.f_name}`}
+      ${filter.l_name && `&l_name=${filter.l_name}`}
+      ${filter.bemail && `&bemail=${filter.bemail}`}
+      ${filter.email && `&email=${filter.email}`}
+      ${filter.location && `&location=${filter.location}`}
+      ${filter.arrival && `&arrival=${filter.arrival}`}
+      ${filter.departure && `&departure=${filter.departure}`}
+      ${filter.leader && `&leader=${filter.leader}`}
+      ${filter.position && `&position=${filter.position}`}
+      ${filter.headquarters && `&headquarters=${filter.headquarters}`}
+      ${filter.subprocess && `&subprocess=${filter.subprocess}`}
+      ${filter.late && `&late=${filter.late}`}
+      `,  HeaderPost);
       return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
