@@ -10,7 +10,7 @@ export interface CollaboratorDto{
     leader: string;
     headquarters: string;
     subprocess: string;
-    id_collaborator?: number,
+    id_collaborator: number,
     date: string;
     state: string;
     id: string; 

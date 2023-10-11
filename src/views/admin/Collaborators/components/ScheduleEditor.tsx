@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Collaborator, Schedule } from './CollaboratorsTable';
 import { InputText } from 'primereact/inputtext';
 import { ScheduleService } from '../../../../services/Schedule.service';
 import classNames from 'classnames';
@@ -11,13 +12,11 @@ import '../../../../assets/css/App.css';
 import { MdDeleteOutline } from 'react-icons/md';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Toast } from 'primereact/toast';
-import { CollaboratorDto } from 'dto/Collaborator.dto';
-import { Schedule } from 'dto/Schedule.dto';
 
 
 interface ScheduleEditorProps {
-  collaborator: CollaboratorDto;
-  onSave: (collaborator: CollaboratorDto) => void;
+  collaborator: Collaborator;
+  onSave: (collaborator: Collaborator) => void;
   onClose: () => void;
 }
 
@@ -36,7 +35,7 @@ const spanishDays: SpanishDays = {
   Saturday: 'Sábado',
 };
 export const ScheduleEditor: React.FC<ScheduleEditorProps> = ({ collaborator, onSave, onClose }) => {
-  const [schedules, setSchedules] = useState<CollaboratorDto['schedules']>([]);
+  const [schedules, setSchedules] = useState<Collaborator['schedules']>([]);
   const [loading, setLoading] = useState(false);
   const toast = useRef<any>(null);
 
