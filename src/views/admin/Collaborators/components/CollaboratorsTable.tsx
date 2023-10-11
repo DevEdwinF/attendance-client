@@ -4,7 +4,7 @@ import { Paginator } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { CollaboratorService } from 'services/Collaborator.service';
+import { CollaboratorService, Filters } from 'services/Collaborator.service';
 import { ScheduleEditor } from './ScheduleEditor';
 import { MdEdit } from 'react-icons/md';
 import { FilterMatchMode } from 'primereact/api';
@@ -42,7 +42,7 @@ const CollaboratorTable = () => {
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [editingCollaborator, setEditingCollaborator] = useState<Collaborator | null>(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(6);
+  const [row, setRow] = useState(5);
   const [totalRecords, setTotalRecords] = useState(0);
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false);
@@ -66,23 +66,26 @@ const CollaboratorTable = () => {
   useEffect(() => {
     fetchData(
       currentPage,
-      rows
+      row,
+      filters
     );
-  }, [currentPage, rows, filters]);
+  }, [currentPage, row, filters]);
 
-  const fetchData = async (page: number, pageSize: number) => {
+  const fetchData = async (page: number, limit: number, filter: Filters) => {
     try {
-      setLoading(true);
+      /* setLoading(true); */
     const {rows, total_rows} = await collaboratorService(
       page,
-      pageSize
+      limit,
+    filter
     );
+    console.log(rows)
 
     setTotalRecords(total_rows);
-  
+      
   
     setCollaborators(rows);
-    setLoading(false);
+    /* setLoading(false); */
     } catch (error) {
       console.log(error);
       
@@ -93,14 +96,20 @@ const CollaboratorTable = () => {
 
   const onPage = (event: { first: number; rows: number; page: number }) => {
     setFirst(event.first);
-    setRows(event.rows);
+    setRow(event.rows);
+    console.log(event.rows);
+    
     setCurrentPage(event.page + 1)
   };
 
   const updateCollaborator = async (updatedCollaborator: Collaborator) => {
   };
 
+  
+
   const actionBodyTemplate = (rowData: Collaborator) => {
+    console.log("row",rowData);
+    
     return (
       <Button
         rounded
@@ -133,7 +142,7 @@ const CollaboratorTable = () => {
   );
   const footer = `Hay un total de ${totalRecords} registros.`;
 
-  const pageSizeOptions = [5, 25, 50, 100];
+
 
   const filterableFields: { [key in keyof Collaborator]: string } = {
     document: 'Documento',
@@ -161,6 +170,9 @@ const CollaboratorTable = () => {
     }
     return value;
   };
+
+  console.log("este es el log collaborators", collaborators);
+  
   
   const filterTemplate = (field: keyof Collaborator) => {
     return (
@@ -168,10 +180,26 @@ const CollaboratorTable = () => {
         type="text"
         value={convertToString(filters[field])}
         onChange={(e) => onFilterInputChange(e, field)}
-        placeholder={`Filtrar ${filterableFields[field]}`}
+        placeholder={`Filtrar ${filterableFields[field]}
+        `}
+        
       />
     );
   };
+
+  const Header = () => {
+    return (
+      <div className="table-header">
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            type="search"
+            placeholder="Buscar..."
+          />
+        </span>
+      </div>
+    );
+  }
   
   
 
@@ -206,78 +234,89 @@ const CollaboratorTable = () => {
   header={header}
   footer={footer}
   first={first}
-  rows={rows}
+  rows={row}
+
   filterDisplay="row"
+  filterIcon="null"
   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
 >
         <Column
         style={{ minWidth: '14rem' }}
   field="document"
   header="Documento"
-  filter={true} 
+  filter={true}
+  showFilterMenu={false} 
   filterElement={filterTemplate('document')}
   filterPlaceholder="Filtrar por documento"
 />
 <Column
   style={{ minWidth: '16rem' }}
-  field="f_name"
+  field="FName"
   header="Nombre"
   filter={true} 
+  showFilterMenu={false} 
   filterElement={filterTemplate('f_name')}
   filterPlaceholder="Filtrar por nombre"
 />
 <Column
 style={{ minWidth: '16rem' }}
-  field="l_name"
+  field="LName"
   header="Apellido"
   filter={true} 
+  showFilterMenu={false} 
   filterElement={filterTemplate('l_name')} 
   filterPlaceholder="Filtrar por apellido"
 />
 <Column
 style={{ minWidth: '22rem' }}
-    field="email"
+    field="Email"
     header="Correo personal"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('email')} 
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
 style={{ minWidth: '22rem' }}
-    field="bmail"
+    field="Bmail"
     header="Correo smart"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('bmail')} 
     filterPlaceholder="Filtrar por correo personal"
 />
 <Column
 style={{ minWidth: '16rem'}}
-    field="position"
+    field="Position"
     header="Cargo"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('position')}
     filterPlaceholder="Filtrar por cargo"
 />
 <Column
  style={{ minWidth: '16rem'}}
-    field="leader"
+    field="Leader"
     header="Líder"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('leader')} 
     filterPlaceholder="Filtrar por líder"
 />
 <Column
 style={{ minWidth: '16rem'}}
-    field="headquarters"
+    field="Headquarters"
     header="Sede"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('headquarters')} 
     filterPlaceholder="Filtrar por sede"
 />
 <Column
 style={{ minWidth: '16rem'}}
-    field="subprocess"
+    field="Subprocess"
     header="Subproceso"
+  showFilterMenu={false} 
     filter={true} 
     filterElement={filterTemplate('subprocess')} 
     filterPlaceholder="Filtrar por líder"
@@ -292,9 +331,10 @@ style={{ minWidth: '16rem'}}
 /> */}
 <Column
 style={{ minWidth: '16rem'}}
-    field="date"
+    field="Date"
     header="Fecha"
     filter={true} 
+  showFilterMenu={false} 
     filterElement={filterTemplate('date')} 
     filterPlaceholder="Filtrar por fecha"
     body={(rowData) => formatDate(rowData.date)}
@@ -302,13 +342,13 @@ style={{ minWidth: '16rem'}}
 <Column body={actionBodyTemplate} style={{ width: '3rem' }} />
 {/*  */}
     </DataTable>)}
-    <div id='paginator'>  <Paginator
+  <Paginator
         first={first}
-        rows={rows}
+        rows={row}
         totalRecords={totalRecords}
-        rowsPerPageOptions={pageSizeOptions}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         onPageChange={onPage}
-      /></div>
+      />
     
       
       {editingCollaborator && (
