@@ -19,6 +19,7 @@ export interface Filters {
   leader?: string,
   headquarters?: string,
   subprocess?: string
+
 }
 
 

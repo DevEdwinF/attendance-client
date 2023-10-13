@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { HeaderPost } from "./Header";
 import { Api } from "config/Api";
 import { FiltersAttendance } from 'views/attendance/components/AttendanceTable';
+import { compareAsc, format } from 'date-fns'
 
 const endPoint = '/api/attendance';
 const baseUrl = Api.url + endPoint;
@@ -30,43 +31,82 @@ export const AttendanceService = {
   },
   getAllAttendance: async (page: number, limit: number, filter: FiltersAttendance) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/all?page=${page}&limit=${limit}
-      ${filter.document && `&document=${filter.document}`}
-      ${filter.f_name && `&f_name=${filter.f_name}`}
-      ${filter.l_name && `&l_name=${filter.l_name}`}
-      ${filter.bemail && `&bemail=${filter.bemail}`}
-      ${filter.email && `&email=${filter.email}`}
-      ${filter.location && `&location=${filter.location}`}
-      ${filter.arrival && `&arrival=${filter.arrival}`}
-      ${filter.departure && `&departure=${filter.departure}`}
-      ${filter.leader && `&leader=${filter.leader}`}
-      ${filter.position && `&position=${filter.position}`}
-      ${filter.headquarters && `&headquarters=${filter.headquarters}`}
-      ${filter.subprocess && `&subprocess=${filter.subprocess}`}
-      `,  HeaderPost);
-      return response.data;
+      const url = new URL(`${baseUrl}/all`);
+
+    url.searchParams.append('page', page.toString());
+    url.searchParams.append('limit', limit.toString());
+
+    if(filter){
+      if(filter.date){
+        url.searchParams.append('date', format(filter.date, `yyyy-MM-dd`) + "T00:00:00Z");
+      }
+      if(filter.document){
+        url.searchParams.append('document', filter.document);
+      }
+      if(filter.f_name){
+        url.searchParams.append('f_name', filter.f_name);
+      }
+      if(filter.l_name){
+        url.searchParams.append('l_name', filter.l_name);
+      }
+      if(filter.position){
+        url.searchParams.append('position', filter.position);
+      }
+      if(filter.subprocess){
+        url.searchParams.append('subprocess', filter.subprocess);
+      }
+      if(filter.email){
+        url.searchParams.append('email', filter.email);
+      }
+      if(filter.location){
+        url.searchParams.append('location', filter.location);
+      }
+    }
+
+   const response = await axios.get(url.toString(), HeaderPost);
+
+    return response.data;
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }
   },
   getAllAttendanceForLeader: async (page: number, limit: number, filter: FiltersAttendance) => {
     try {
-      const response: AxiosResponse = await axios.get(`${baseUrl}/leader/all?page=${page}&limit=${limit}
-      ${filter.document && `&document=${filter.document}`}
-      ${filter.f_name && `&f_name=${filter.f_name}`}
-      ${filter.l_name && `&l_name=${filter.l_name}`}
-      ${filter.bemail && `&bemail=${filter.bemail}`}
-      ${filter.email && `&email=${filter.email}`}
-      ${filter.location && `&location=${filter.location}`}
-      ${filter.arrival && `&arrival=${filter.arrival}`}
-      ${filter.departure && `&departure=${filter.departure}`}
-      ${filter.leader && `&leader=${filter.leader}`}
-      ${filter.position && `&position=${filter.position}`}
-      ${filter.headquarters && `&headquarters=${filter.headquarters}`}
-      ${filter.subprocess && `&subprocess=${filter.subprocess}`}
-      ${filter.late && `&late=${filter.late}`}
-      `,  HeaderPost);
+      const url = new URL(`${baseUrl}/leader/all`);
+      url.searchParams.append('page', page.toString());
+      url.searchParams.append('limit', limit.toString());
+      
+      if(filter){
+        if(filter.date){
+          url.searchParams.append('date', format(filter.date, `yyyy-MM-dd`) + "T00:00:00Z");
+        }
+        if(filter.document){
+          url.searchParams.append('document', filter.document);
+        }
+        if(filter.f_name){
+          url.searchParams.append('f_name', filter.f_name);
+        }
+        if(filter.l_name){
+          url.searchParams.append('l_name', filter.l_name);
+        }
+        if(filter.position){
+          url.searchParams.append('position', filter.position);
+        }
+        if(filter.subprocess){
+          url.searchParams.append('subprocess', filter.subprocess);
+        }
+        if(filter.email){
+          url.searchParams.append('email', filter.email);
+        }
+        if(filter.location){
+          url.searchParams.append('location', filter.location);
+        }
+      }
+  
+     const response = await axios.get(url.toString(), HeaderPost);
+  
       return response.data;
+      
     } catch (error) {
       throw new Error('Error al obtener la asistencia');
     }

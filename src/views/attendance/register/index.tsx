@@ -13,6 +13,8 @@ import { AuthService } from 'services/Auth.service';
 import { MdArrowCircleLeft } from 'react-icons/md';
 import { Image } from '@chakra-ui/react';
 import AirplanePapper from 'assets/img/imgUtil/airplane-papper.svg'
+import { ThreeDots } from  'react-loader-spinner'
+import AdminIcon from 'assets/img/attendance/admin-icon.svg'
 
 interface FormValues {
   document: string | null;
@@ -42,6 +44,7 @@ const AttendanceForm = () => {
   const [location, setLocation] = useState('');
   const history: History = useHistory();
   const [cameraActive, setCameraActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     document: '',
@@ -149,11 +152,16 @@ const AttendanceForm = () => {
 
       try {
         // await AttendanceService.validate(values.document);
+    setIsLoading(true);
+
         await AttendanceService.register(formData);
         handleCloseDialog();
         window.close();
       } catch (error) {
         console.error(error);
+      }
+      finally {
+        setIsLoading(false); 
       }
     }
   };
@@ -184,11 +192,12 @@ const AttendanceForm = () => {
   }, []);
 
 
+
   return (
     <>
       <div className="attendance-register-container-desktop">
         <label className="btn-translated" aria-hidden="true" onClick={handleLoginAdminClick}>
-          <p>Ingreso administrador</p>
+          <p>Ingreso administrador <img src={AdminIcon} alt="" /></p>
         </label>
         <div className="attendance-register-content">
           <div className="cam-content">
@@ -231,10 +240,22 @@ const AttendanceForm = () => {
                       <option value="departure">Salida</option>
                     </Field>
                     <ErrorMessage name="state" component="div" />
-                    <button className="btn-attendance" type="submit">
-                      Enviar registro
-                      <Image src={AirplanePapper} />
-                    </button>
+                    <button className="btn-attendance" type="submit" disabled={isLoading}>
+        {isLoading ? ( // Mostrar loader si está en estado de carga
+          <ThreeDots 
+          height="50" 
+          width="50" 
+          radius="9"
+          color="#fff" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          visible={true}
+           />
+        ) : (
+          'Enviar registro'
+        )}
+        <Image src={AirplanePapper} />
+      </button>
                   </Form>
                 </Formik>
 
@@ -332,10 +353,22 @@ const AttendanceForm = () => {
                       <option value="departure">Salida</option>
                     </Field>
                     <ErrorMessage name="state" component="div" />
-                    <button className="btn-attendance" type="submit">
-                      Enviar registro
-                    <Image src={AirplanePapper} />
-                    </button>
+                    <button className="btn-attendance" type="submit" disabled={isLoading}>
+        {isLoading ? ( // Mostrar loader si está en estado de carga
+          <ThreeDots 
+          height="50" 
+          width="50" 
+          radius="9"
+          color="#fff" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          visible={true}
+           />
+        ) : (
+          'Enviar registro'
+        )}
+        <Image src={AirplanePapper} />
+        </button>
                   </Form>
                 </Formik>
               </div>
@@ -347,6 +380,7 @@ const AttendanceForm = () => {
             </button>
             <button className='btn-admin-login-mobile' onClick={handleLoginAdminMobileClick}>
               Administrador
+              <img src={AdminIcon} />
             </button>
           </div>
         </div>

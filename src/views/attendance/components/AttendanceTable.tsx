@@ -11,6 +11,7 @@ import { formatDate, formatTime } from 'util/DateUtil';
 import TranslatedTableComponent, { Collaborator } from 'views/attendance/components/TranslatedTable';
 import LateTableComponent from './LateTable';
 import { getServiceByUserRole, getUserRoleFromToken } from 'util/AuthTokenDecode';
+import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
 
 export interface Attendance {
   document: string;
@@ -23,28 +24,31 @@ export interface Attendance {
   arrival: string;
   subprocess: string,
   headquarters: string,
+  leader: string,
   departure: string;
-  date: string;
+  date: Date;
   photo_arrival: string;
   photo_departure: string;
   late: boolean;
+  early_departure: boolean;
 }
 
 export interface FiltersAttendance {
+  date?: Date,
   document?: string,
   f_name?: string,
   l_name?: string,
   email?: string,
-  bemail?: string,
   location?: string,
   arrival?: string,
   departure?: string,
   position?: string,
-  state?: string,
   leader?: string,
   headquarters?: string,
   subprocess?: string,
   late?: boolean
+  early_departure?: boolean,
+
 }
 
 
@@ -62,7 +66,7 @@ const AttendanceTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [filters, setFilters] = useState<Partial<Attendance>>({
-    date: '',
+    date: null,
     document: '',
     f_name: '',
     l_name: '',
@@ -70,6 +74,9 @@ const AttendanceTable = () => {
     b_email: '',
     location:'',
     position:'',
+    leader:'',
+    late: null,
+    early_departure: null,
     arrival: '',
     departure: '',
     subprocess: '',
@@ -128,12 +135,48 @@ const AttendanceTable = () => {
     setCurrentPage(event.page + 1)
   };
 
+  const OnFilterDate = (e: CalendarChangeEvent) => {
+    setFilters({
+      ...filters,
+      date: new Date(e.value as string) 
+    })
+  }
+  const DateFilter = () => {
+    return (
+      <div className="card flex justify-content-center">
+      <Calendar value={filters.date} maxDate={new Date()} onChange={(e) => OnFilterDate(e)} />
+  </div>
+    )
+  }
+  
+
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
       <span className="text-xl text-900 font-bold">Registros</span>
     </div>
   );
   const footer = `Hay un total de ${totalRecords} registros.`;
+
+const filterableFields: { [key in keyof Attendance]: string} ={
+  date: 'Fecha',
+  document: 'Documento',
+  f_name: 'Nombre',
+  l_name: 'Apellido',
+  email: 'Correo',
+  b_email: 'Correo B',
+  position: 'Cargo',
+  location: 'Lugar',
+  arrival: 'Llegada',
+  subprocess: 'Subproceso',
+  headquarters: 'Sede',
+  leader: 'Lider',
+  departure: 'Salida',
+  photo_arrival: 'Foto llegada',
+  photo_departure: 'Foto salida',
+  late: 'Tarde',
+  early_departure: 'Salida temprano',
+}
+
 
   const renderPhotoArrival = (rowData: Attendance) => {
     if (rowData.photo_arrival) {
@@ -176,6 +219,14 @@ const AttendanceTable = () => {
     return <span className="text-green">A tiempo</span>;
   };
 
+  const renderEarlyStatus = (rowData: Attendance) => {
+    if (rowData.early_departure) {
+      return <span className="text-red">No cumple</span>;
+    }
+    return <span className="text-green">Cumple</span>;
+  };
+
+
  
 
   const filterTemplate = (field: keyof Attendance) => {
@@ -186,7 +237,7 @@ const AttendanceTable = () => {
         type="text"
         value={filterValue}
         onChange={(e) => onFilterInputChange(e, field)}
-        placeholder={`Filtrar por ${field}`}
+        placeholder={`Filtrar  ${filterableFields[field]}`}
       />
     );
   };
@@ -233,6 +284,7 @@ const AttendanceTable = () => {
           first={first}
           rows={row}
           filterDisplay="row"
+          
         >
           <Column 
           style={{ minWidth: '14rem' }}
@@ -241,12 +293,14 @@ const AttendanceTable = () => {
           body={(rowData) => formatDate(rowData.date)} 
           filterPlaceholder="Filtrar por documento" 
           filter={true}
-          filterElement={filterTemplate('date')}/>
+          showFilterMenu={false} 
+          filterElement={DateFilter()}/>
           <Column
           style={{ minWidth: '15rem' }}
             field="document"
             header="Documento"
             filter={true}
+            showFilterMenu={false} 
             filterElement={filterTemplate('document')}
             filterPlaceholder="Filtrar por documento"
           />
@@ -255,6 +309,7 @@ const AttendanceTable = () => {
             field="f_name"
             header="Nombre"
             filter={true}
+            showFilterMenu={false} 
             filterElement={filterTemplate('f_name')}
             filterPlaceholder="Filtrar por nombre"
           />
@@ -263,6 +318,7 @@ const AttendanceTable = () => {
             field="l_name"
             header="Apellido"
             filter={true}
+            showFilterMenu={false} 
             filterPlaceholder="Filtrar por apellido"
             filterElement={filterTemplate('l_name')}
           />
@@ -271,19 +327,20 @@ const AttendanceTable = () => {
             field="email"
             header="Correo"
             filter={true}
+            showFilterMenu={false} 
             filterElement={filterTemplate('email')} />
           <Column
           style={{ minWidth: '14rem' }}
             field="location"
             header="Lugar"
             filter={true}
+            showFilterMenu={false} 
             filterElement={filterTemplate('location')} />
           <Column
           style={{ minWidth: '14rem' }}
             field="arrival"
             header="Llegada"
             body={(rowData) => formatTime(rowData.arrival)}
-            filter={true}
             filterElement={filterTemplate('arrival')}
           />
           <Column
@@ -291,7 +348,6 @@ const AttendanceTable = () => {
         field="departure"
         header="Salida"
         body={renderDepartureTime}
-        filter={true}
         filterElement={filterTemplate('departure')}
       />
           <Column
@@ -300,7 +356,17 @@ const AttendanceTable = () => {
             header="Estado"
             body={renderLateStatus}
             filter={true}
+            showFilterMenu={false} 
             filterElement={filterTemplate('late')}
+          />
+          <Column
+          style={{ minWidth: '14rem' }}
+            field="early_departure"
+            header="Salida"
+            body={renderEarlyStatus}
+            filter={true}
+            showFilterMenu={false} 
+            filterElement={filterTemplate('early_departure')}
           />
           <Column
             field="photo_arrival"

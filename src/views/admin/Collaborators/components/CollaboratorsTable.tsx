@@ -285,11 +285,20 @@ style={{ minWidth: '22rem' }}
 <Column
 style={{ minWidth: '16rem'}}
     field="Position"
-    header="Cargo"
+    header="Proceso"
     filter={true} 
   showFilterMenu={false} 
     filterElement={filterTemplate('position')}
     filterPlaceholder="Filtrar por cargo"
+/>
+<Column
+style={{ minWidth: '16rem'}}
+    field="Subprocess"
+    header="Subproceso"
+  showFilterMenu={false} 
+    filter={true} 
+    filterElement={filterTemplate('subprocess')} 
+    filterPlaceholder="Filtrar por líder"
 />
 <Column
  style={{ minWidth: '16rem'}}
@@ -309,15 +318,7 @@ style={{ minWidth: '16rem'}}
     filterElement={filterTemplate('headquarters')} 
     filterPlaceholder="Filtrar por sede"
 />
-<Column
-style={{ minWidth: '16rem'}}
-    field="Subprocess"
-    header="Subproceso"
-  showFilterMenu={false} 
-    filter={true} 
-    filterElement={filterTemplate('subprocess')} 
-    filterPlaceholder="Filtrar por líder"
-/>
+
 {/* <Column
 style={{ minWidth: '16rem'}}
     field="state"
@@ -326,7 +327,7 @@ style={{ minWidth: '16rem'}}
     filterElement={filterTemplate('state')} 
     filterPlaceholder="Filtrar por estado"
 /> */}
-<Column
+{/* <Column
 style={{ minWidth: '16rem'}}
     field="Date"
     header="Fecha"
@@ -335,7 +336,7 @@ style={{ minWidth: '16rem'}}
     filterElement={filterTemplate('date')} 
     filterPlaceholder="Filtrar por fecha"
     body={(rowData) => formatDate(rowData.date)}
-/>
+/> */}
 <Column body={actionBodyTemplate} style={{ width: '3rem' }} />
 {/*  */}
     </DataTable>)}

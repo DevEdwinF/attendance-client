@@ -4,6 +4,7 @@ import { Dialog } from "primereact/dialog";
 import React, { useEffect, useState } from "react";
 import { Attendance } from "./AttendanceTable";
 import { getServiceByUserRoleLateTable, getUserRoleFromToken } from "util/AuthTokenDecode";
+import { Paginator } from "primereact/paginator";
 
 export interface LateTableProps {
     visibleTwo: boolean;
@@ -13,6 +14,13 @@ export interface LateTableProps {
 const LateTableComponent: React.FC<LateTableProps> = ({ visibleTwo, onHideTwo }) => {
     const [attendanceLate, setAttendanceLate] = useState<Attendance[]>([]);
     const token = localStorage.getItem('token');
+    const [first, setFirst] = useState(0);
+    const [row, setRow] = useState(5);
+    useEffect(()=>{
+        setFirst(0);
+        setRow(5);
+    }
+    ,[visibleTwo])
 
     const userRole = getUserRoleFromToken(token);
     const attendanceService = getServiceByUserRoleLateTable(userRole);
@@ -55,6 +63,15 @@ const LateTableComponent: React.FC<LateTableProps> = ({ visibleTwo, onHideTwo })
                 <Column field="nameAndLastName" header="Nombre completo"></Column>
                 <Column field="count" header="Llegadas tarde" sortable></Column>
             </DataTable>
+            <Paginator
+                first={first}
+                rows={row}
+                totalRecords={dataToShow.length}
+                rowsPerPageOptions={[5, 10, 20]}
+                onPageChange={(e) => {
+                    setFirst(e.first);
+                    setRow(e.rows);
+                }}/>
         </Dialog>
     )
 }

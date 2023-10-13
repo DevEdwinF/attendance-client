@@ -292,6 +292,11 @@
 	color: white !important;
 }
 
+.translated{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
 .btn-translated p {
 	position: absolute;
 	right: 60px;
