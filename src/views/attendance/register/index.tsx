@@ -6,7 +6,7 @@ import Clock from 'util/ClockUtil';
 import Webcam from 'react-webcam';
 import { Dialog } from 'primereact/dialog';
 import TranslatedRegister from '../components/TranslatedRegister';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { History } from 'history';
 import './index.css';
 import { AuthService } from 'services/Auth.service';
@@ -35,6 +35,10 @@ const initialValuesLogin: loginValues = {
   password: '',
 }
 
+interface RouteParams {
+  sede: string; 
+}
+
 const AttendanceForm = () => {
   const webcamRef = useRef(null); 
   const [translatedDialog, SetTranslatedDialog] = useState(false);
@@ -45,6 +49,7 @@ const AttendanceForm = () => {
   const history: History = useHistory();
   const [cameraActive, setCameraActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { sede } = useParams<RouteParams>();
 
   const initialValues = {
     document: '',
@@ -71,26 +76,18 @@ const AttendanceForm = () => {
     }
   
     initializeCamera();
-    getIp();
   }, []);
+
   
-
-  const getIp = async () => {
-    try {
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      const userIp = data.ip;
-
-      const allowedOfficeIp = '190.217.98.138';
-      if (userIp === allowedOfficeIp) {
-        setLocation('oficina');
-      } else {
-        setLocation('casa');
-      }
-    } catch (error) {
-      console.error('Error fetching IP:', error);
-    }
+  const determineLocation = () => {
+    return sede ? sede : 'Casa';
   };
+
+  useEffect(() => {
+    const determinedLocation = determineLocation();
+    setLocation(determinedLocation);
+  }, []);
+
 
   const handleLogin = async (values: loginValues) => {
     try {
@@ -130,10 +127,10 @@ const AttendanceForm = () => {
         title: 'Oops...',
         text: 'La cámara no está activada. Activa la cámara antes de registrar.',
       });
-      return; 
+      return;
     }
-    if (values.document === '' || values.state === '' 
-  ) {
+  
+    if (values.document === '' || values.state === '') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -142,29 +139,27 @@ const AttendanceForm = () => {
     } else {
       const video = webcamRef.current;
       const imageSrc = video.getScreenshot();
-      console.log("Imagen capturada:", imageSrc);
-
+      console.log('Imagen capturada:', imageSrc);
+  
       const formData = new FormData();
       formData.append('document', values.document);
       formData.append('state', values.state);
-      formData.append('location', location);
+      formData.append('location', determineLocation());  
       formData.append('photo', imageSrc);
-
+    
       try {
-        // await AttendanceService.validate(values.document);
-    setIsLoading(true);
-
+        setIsLoading(true);
         await AttendanceService.register(formData);
         handleCloseDialog();
         window.close();
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-      finally {
-        setIsLoading(false); 
-      }
-    }
-  };
+    };
+  }
+  
 
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
@@ -241,7 +236,7 @@ const AttendanceForm = () => {
                     </Field>
                     <ErrorMessage name="state" component="div" />
                     <button className="btn-attendance" type="submit" disabled={isLoading}>
-        {isLoading ? ( // Mostrar loader si está en estado de carga
+        {isLoading ? ( 
           <ThreeDots 
           height="50" 
           width="50" 
@@ -430,4 +425,8 @@ const AttendanceForm = () => {
   );
 };
 
+
 export default AttendanceForm;
+
+
+
