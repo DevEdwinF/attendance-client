@@ -187,6 +187,17 @@ const AttendanceForm = () => {
   }, []);
 
 
+  const WelcomeMessage = (sede: RouteParams) => {
+    if (sede.sede == null) {
+      return (
+        <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
+      );
+    } else {
+      return (
+        <h2 className="hi-msg">Bienvenido(a) de nuevo a nuestra sede {sede.sede}</h2>
+      );
+    }
+  };
 
   return (
     <>
@@ -208,10 +219,11 @@ const AttendanceForm = () => {
                     <label className="label title" aria-hidden="true">
                       <h2 className="hi-tittle">Hola,</h2>
                     </label>
-                    <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
+                    {WelcomeMessage({ sede })}
                     <label className="label" htmlFor="document">
                       Documento:
                     </label>
+                    
                     <Field
                       type="text"
                       id="document"
@@ -312,7 +324,7 @@ const AttendanceForm = () => {
                     <label className="label title" htmlFor="chk" aria-hidden="true">
                       <h2 className="hi-tittle">Hola,</h2>
                     </label>
-                    <h2 className="hi-msg">Bienvenido(a) de nuevo</h2>
+                    <h2>{WelcomeMessage({ sede })}</h2>
                     <label className="label" htmlFor="document">
                       Documento:
                     </label>
