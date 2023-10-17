@@ -35,6 +35,46 @@ const initialValuesLogin: loginValues = {
   password: '',
 }
 
+const sedePorSegmento: { [key: string]: string } = {
+  '10.40.': 'CALASANZ',
+  '10.41.': 'BELLO A (bello b)',
+  '10.43.': 'CENTRO MEDELLÍN',
+  '10.44.': 'ITAGÜÍ',
+  '10.45.': 'ARKADIA',
+  '10.46.': 'OLAYA',
+  '10.47.': 'ENVIGADO',
+  '10.48.': 'BELLO B (bello a)',
+  '10.49.': 'SANTA FE MEDELLÍN (back up)',
+  '10.0.': 'CUNDINAMARCA Administrativa',
+  '10.1.': 'Chapinero A',
+  '10.3.': 'Suba',
+  '10.4.': 'Modelia',
+  '10.5.': 'Modelia Juan Valdez',
+  '10.6.': 'Plaza de las Americas',
+  '10.7.': 'Centro Mayor',
+  '10.8.': 'Cedritos',
+  '10.9.': 'Chia',
+  '10.10.': 'UNICENTRO DE OCCIDENTE',
+  '10.11.': 'Madelena',
+  '10.12.': 'Soacha',
+  '10.13.': 'Restrepo',
+  '10.14.': 'Multiplaza',
+  '10.15.': 'Plaza Central',
+  '10.16.': 'Mall Plaza',
+  '10.17.': 'Fontanar',
+  '10.18.': 'Chapinero B',
+  '10.19.': 'Palatino',
+  '10.20.': 'Nuestro Bogotá',
+  '10.21.': 'San Martin',
+  '10.22.': 'Santa Fe Bogotá',
+  '10.23.': 'Hayuelos',
+  '10.24.': 'Kenedy',
+  '10.25.': 'SUBA AL PASO A',
+  '10.70.': 'SANTANDER Piedecuesta',
+  '10.71.': 'Floridablanca',
+};
+
+
 const AttendanceForm = () => {
   const webcamRef = useRef(null); 
   const [translatedDialog, SetTranslatedDialog] = useState(false);
@@ -71,25 +111,27 @@ const AttendanceForm = () => {
     }
   
     initializeCamera();
-    getIp();
+    determineLocationBasedOnIP();
   }, []);
+
   
 
-  const getIp = async () => {
+  const determineLocationBasedOnIP = async () => {
     try {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
       const userIp = data.ip;
 
-      const allowedOfficeIp = '190.217.98.138';
-      if (userIp === allowedOfficeIp) {
-        setLocation('oficina');
-      } else {
-        setLocation('casa');
-      }
+      setLocation(getSedeFromIP(userIp));
     } catch (error) {
       console.error('Error fetching IP:', error);
     }
+  };
+
+  const getSedeFromIP = (ip: string): string => {
+    const segment = ip.split('.').slice(0, 2).join('.');
+
+    return sedePorSegmento[segment] || 'CASA';
   };
 
   const handleLogin = async (values: loginValues) => {
@@ -130,10 +172,10 @@ const AttendanceForm = () => {
         title: 'Oops...',
         text: 'La cámara no está activada. Activa la cámara antes de registrar.',
       });
-      return; 
+      return;
     }
-    if (values.document === '' || values.state === '' 
-  ) {
+  
+    if (values.document === '' || values.state === '') {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -142,29 +184,39 @@ const AttendanceForm = () => {
     } else {
       const video = webcamRef.current;
       const imageSrc = video.getScreenshot();
-      console.log("Imagen capturada:", imageSrc);
-
+      console.log('Imagen capturada:', imageSrc);
+  
       const formData = new FormData();
       formData.append('document', values.document);
       formData.append('state', values.state);
-      formData.append('location', location);
+  
+      // Obtener el segmento de la dirección IP
+      const ipAddress = '10.41.0.20'; // Aquí debes colocar la dirección IP real
+      const ipSegment = ipAddress.split('.').slice(0, 2).join('.');
+  
+      // Asignar la sede basada en el segmento
+      if (sedePorSegmento[ipSegment]) {
+        formData.append('location', sedePorSegmento[ipSegment]);
+      } else {
+        // Si no coincide ningún segmento, marcar como casa
+        formData.append('location', 'casa');
+      }
+  
       formData.append('photo', imageSrc);
-
+  
       try {
-        // await AttendanceService.validate(values.document);
-    setIsLoading(true);
-
+        setIsLoading(true);
         await AttendanceService.register(formData);
         handleCloseDialog();
         window.close();
       } catch (error) {
         console.error(error);
-      }
-      finally {
-        setIsLoading(false); 
+      } finally {
+        setIsLoading(false);
       }
     }
   };
+  
 
   const handleLoginAdminClick = () => {
     setLoginAdminContainer(true);
@@ -431,3 +483,6 @@ const AttendanceForm = () => {
 };
 
 export default AttendanceForm;
+
+
+
