@@ -50,6 +50,10 @@ const AttendanceForm = () => {
   const [cameraActive, setCameraActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { sede } = useParams<RouteParams>();
+  const [userIp, setUserIp] = useState('');
+  const [redirected, setRedirected] = useState(false);
+
+
 
   const initialValues = {
     document: '',
@@ -87,6 +91,29 @@ const AttendanceForm = () => {
     const determinedLocation = determineLocation();
     setLocation(determinedLocation);
   }, []);
+
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const ip = data.ip;
+        setUserIp(ip);
+  
+        const allowedOfficeIp = '190.217.98.138';
+        if (ip !== allowedOfficeIp) {
+          // Redirect only if the IP is not allowed
+          history.replace('/');  // Use history.replace to avoid adding to the history stack
+        }
+      } catch (error) {
+        console.error('Error fetching IP:', error);
+      }
+    };
+  
+    getIp();
+  }, [history]);  // Include history in the dependency array
+  
+  
 
 
   const handleLogin = async (values: loginValues) => {

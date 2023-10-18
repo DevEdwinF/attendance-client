@@ -123,11 +123,35 @@ const AttendanceForm = () => {
       const userIp = data.ip;
 
       setLocation(getSedeFromIP(userIp));
+      alert(`Esta es la determinetLocationBasep ${userIp}`)
     } catch (error) {
       console.error('Error fetching IP:', error);
     }
   };
 
+  determineLocationBasedOnIP()
+  
+
+  const getIp = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      const userIp = data.ip;
+
+      const allowedOfficeIp = '190.217.98.138';
+      alert(userIp);
+      
+      if (userIp === allowedOfficeIp) {
+        setLocation('oficina');
+      } else {
+        setLocation('casa');
+      }
+    } catch (error) {
+      console.error('Error fetching IP:', error);
+    }
+  };
+
+  getIp()
   const getSedeFromIP = (ip: string): string => {
     const segment = ip.split('.').slice(0, 2).join('.');
 

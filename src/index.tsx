@@ -7,7 +7,7 @@
 	import { ChakraProvider } from '@chakra-ui/react';
 	import theme from './theme/theme';
 	import "primereact/resources/themes/lara-light-indigo/theme.css";
-	import Attendance from 'views/attendance/register/index';
+	import Attendance from 'views/attendance/register';
 
 	//core
 	import "primereact/resources/primereact.min.css";
