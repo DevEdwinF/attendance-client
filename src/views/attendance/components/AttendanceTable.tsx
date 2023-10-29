@@ -19,7 +19,7 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
     f_name: string;
     l_name: string;
     email: string;
-    b_email: string;
+    bmail: string;
     position: string;
     location: string;
     arrival: string;
@@ -72,7 +72,7 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
       f_name: '',
       l_name: '',
       email: '',
-      b_email: '',
+      bmail: '',
       location:'',
       position:'',
       leader:'',
@@ -176,8 +176,8 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
     f_name: 'Nombre',
     l_name: 'Apellido',
     email: 'Correo',
-    b_email: 'Correo B',
-    position: 'Cargo',
+    bmail: 'Correo B',
+    position: 'Proceso',
     location: 'Ubicación',
     arrival: 'Llegada',
     subprocess: 'Subproceso',
@@ -337,11 +337,25 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
             />
             <Column
             style={{ minWidth: '22rem' }}
-              field="email"
+              field="bmail"
               header="Correo"
               filter={true}
               showFilterMenu={false} 
-              filterElement={filterTemplate('email')} />
+              filterElement={filterTemplate('bmail')} />
+              <Column
+            style={{ minWidth: '22rem' }}
+              field="position"
+              header="Proceso"
+              filter={true}
+              showFilterMenu={false} 
+              filterElement={filterTemplate('position')} />
+              <Column
+            style={{ minWidth: '22rem' }}
+              field="sub_process"
+              header="Subproceso"
+              filter={true}
+              showFilterMenu={false} 
+              filterElement={filterTemplate('position')} />
             <Column
             style={{ minWidth: '14rem' }}
               field="location"
