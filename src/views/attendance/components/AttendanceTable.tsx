@@ -355,7 +355,7 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
               header="Subproceso"
               filter={true}
               showFilterMenu={false} 
-              filterElement={filterTemplate('position')} />
+              filterElement={filterTemplate('subprocess')} />
             <Column
             style={{ minWidth: '14rem' }}
               field="location"
